@@ -1,0 +1,78 @@
+/* ===== ROOMS ===== */
+#rooms {
+  padding: 100px 0;
+  background: var(--white);
+}
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 28px;
+}
+.room-card {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--white);
+  box-shadow: 0 4px 24px var(--shadow);
+  transition: var(--transition);
+}
+.room-card:hover { transform: translateY(-8px); box-shadow: 0 20px 50px rgba(44,24,16,0.18); }
+.room-img {
+  height: 220px;
+  position: relative;
+  overflow: hidden;
+}
+.room-img img { height: 100%; transition: transform 0.5s; }
+.room-card:hover .room-img img { transform: scale(1.06); }
+.room-badge {
+  position: absolute;
+  top: 14px; left: 14px;
+  background: var(--terracotta);
+  color: var(--white);
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 50px;
+}
+.room-body { padding: 24px; }
+.room-name { font-size: 1.2rem; color: var(--text-dark); margin-bottom: 8px; }
+.room-desc { font-size: 0.88rem; color: var(--text-light); margin-bottom: 16px; line-height: 1.65; }
+.room-amenities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.amenity-tag {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  background: var(--beige);
+  padding: 5px 11px;
+  border-radius: 50px;
+}
+.amenity-tag i { color: var(--terracotta); font-size: 0.72rem; }
+.room-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 16px;
+  border-top: 1px solid var(--beige-dark);
+}
+.room-price .price { font-size: 1.3rem; font-family: 'Playfair Display', serif; color: var(--terracotta); font-weight: 700; }
+.room-price .per { font-size: 0.8rem; color: var(--text-light); }
+.room-book {
+  padding: 9px 20px;
+  border-radius: 50px;
+  background: var(--beige-dark);
+  color: var(--brown);
+  font-size: 0.83rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: var(--transition);
+}
+.room-book:hover { background: var(--terracotta); color: var(--white); }

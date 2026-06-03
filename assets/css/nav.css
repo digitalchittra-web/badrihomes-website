@@ -1,0 +1,175 @@
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 18px 0;
+  transition: var(--transition);
+}
+nav.scrolled {
+  background: rgba(255,255,255,0.97);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px var(--shadow);
+  padding: 12px 0;
+}
+.nav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: 280px;
+}
+.nav-logo img {
+  height: 92px;
+  width: auto;
+  object-fit: contain;
+  transition: filter 0.3s;
+  filter: drop-shadow(0 2px 12px rgba(0,0,0,0.18));
+}
+@media (max-width: 768px) {
+  .nav-logo img { height: 52px; }
+}
+nav:not(.scrolled) .nav-logo img {
+  filter: brightness(0) invert(1) drop-shadow(0 2px 8px rgba(0,0,0,0.4));
+}
+nav.scrolled .nav-logo img { filter: none; }
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.nav-links a {
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+nav:not(.scrolled) .nav-links a { color: rgba(255,255,255,0.9); }
+nav:not(.scrolled) .nav-links a:hover { color: var(--white); }
+nav.scrolled .nav-links a { color: var(--text-mid); }
+nav.scrolled .nav-links a:hover { color: var(--terracotta); }
+
+.nav-cta {
+  padding: 10px 24px;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: var(--transition);
+}
+nav:not(.scrolled) .nav-cta { background: var(--white); color: var(--terracotta); }
+nav.scrolled .nav-cta { background: var(--terracotta); color: var(--white); }
+.nav-cta:hover { transform: translateY(-2px); box-shadow: 0 4px 16px var(--shadow); }
+
+/* ===== HAMBURGER ===== */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  padding: 6px;
+  z-index: 1001;
+  border: none;
+  background: none;
+}
+.hamburger span {
+  display: block;
+  width: 24px; height: 2.5px;
+  border-radius: 2px;
+  background: var(--white);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+nav.scrolled .hamburger span { background: var(--text-dark); }
+/* Menu open: nav gets white bg, hamburger spans turn dark */
+nav.menu-open { background: rgba(255,255,255,0.98) !important; box-shadow: none; }
+.hamburger.active span { background: var(--text-dark) !important; }
+.hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5.5px); }
+.hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+.hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5.5px); }
+/* When menu is open the nav has white bg — hamburger becomes dark automatically */
+.hamburger.active {
+  background: none;
+}
+
+/* ===== MOBILE OVERLAY ===== */
+.mobile-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  z-index: 998;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.mobile-overlay.open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ===== MOBILE MENU — drops down from below the navbar ===== */
+.mobile-menu {
+  position: fixed;
+  top: 88px;   /* exactly below the navbar (52px logo + 18px padding × 2) */
+  left: 0;
+  right: 0;
+  width: 100%;
+  background: #ffffff;
+  z-index: 999;
+  transform: translateY(-110%);
+  transition: transform 0.25s ease-out, visibility 0.25s;
+  visibility: hidden;
+  box-shadow: 0 8px 24px rgba(44,24,16,0.25);
+  will-change: transform;
+}
+.mobile-menu.open {
+  transform: translateY(0);
+  visibility: visible;
+}
+
+/* Nav links */
+.mobile-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 16px 20px;
+  gap: 0;
+  background: #ffffff;
+}
+.mobile-nav a {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font-size: 0.97rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  padding: 15px 12px;
+  border-bottom: 1px solid var(--beige-dark);
+  font-family: 'Inter', sans-serif;
+  text-decoration: none;
+}
+.mobile-nav a i {
+  width: 22px;
+  text-align: center;
+  color: var(--terracotta);
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.mobile-nav a span { flex: 1; }
+.mobile-nav a:active { background: var(--beige); }
+
+/* Book Your Stay — last item styled as button */
+.mobile-nav a.mobile-book-btn {
+  margin-top: 12px;
+  background: var(--terracotta);
+  color: #fff;
+  border-radius: 10px;
+  border-bottom: none;
+  justify-content: center;
+  padding: 15px;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.mobile-nav a.mobile-book-btn i { color: #fff; }
+.mobile-nav a.mobile-book-btn:active { background: var(--terracotta-dark); }

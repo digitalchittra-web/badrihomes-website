@@ -1,0 +1,65 @@
+/* ===== TESTIMONIALS ===== */
+#testimonials {
+  padding: 100px 0;
+  background: var(--brown);
+  position: relative;
+  overflow: hidden;
+}
+#testimonials::before {
+  content: '"';
+  position: absolute;
+  top: -40px; left: 40px;
+  font-size: 30rem;
+  font-family: 'Playfair Display', serif;
+  color: rgba(255,255,255,0.04);
+  line-height: 1;
+}
+#testimonials .section-title { color: var(--white); }
+#testimonials .section-label { color: var(--gold); }
+
+.rv-viewport { overflow: hidden; margin-top: 48px; }
+.rv-track {
+  display: flex; gap: 24px;
+  transition: transform 0.65s cubic-bezier(0.4,0,0.2,1);
+  will-change: transform;
+}
+.testimonial-card {
+  flex: 0 0 calc(33.333% - 16px);
+  background: rgba(255,255,255,0.07);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  transition: background 0.3s, transform 0.3s;
+}
+.testimonial-card:hover { background: rgba(255,255,255,0.11); transform: translateY(-4px); }
+.stars { color: var(--gold); font-size: 0.9rem; margin-bottom: 16px; letter-spacing: 2px; }
+.testimonial-text { font-size: 0.92rem; color: rgba(255,255,255,0.82); line-height: 1.75; margin-bottom: 20px; font-style: italic; }
+.testimonial-author { display: flex; align-items: center; gap: 12px; }
+.author-avatar {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--terracotta);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem; color: var(--white); font-weight: 700;
+  flex-shrink: 0;
+}
+.author-name { font-weight: 600; color: var(--white); font-size: 0.92rem; }
+.author-country { font-size: 0.78rem; color: rgba(255,255,255,0.55); }
+
+.rv-controls { display: flex; align-items: center; justify-content: center; gap: 16px; margin-top: 36px; }
+.rv-btn {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  color: #fff; cursor: pointer; font-size: 0.9rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.3s;
+}
+.rv-btn:hover { background: rgba(255,255,255,0.2); }
+.rv-dots-row { display: flex; gap: 8px; }
+.rv-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  border: none; cursor: pointer; transition: all 0.3s;
+}
+.rv-dot.active { background: var(--gold); width: 22px; border-radius: 4px; }

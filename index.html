@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Badri Homes – Authentic Newari homestay in Patan, Nepal. Experience traditional culture, warm hospitality, and stay near Patan Durbar Square. Book your stay today." />
+  <meta name="keywords" content="homestay in Patan, Newari homestay Nepal, stay near Patan Durbar Square, Badri Homes, Nepal accommodation, cultural homestay Lalitpur" />
+  <meta name="author" content="Badri Homes" />
+  <meta property="og:title" content="Badri Homes – Authentic Newari Homestay in Patan" />
+  <meta property="og:description" content="Experience traditional Newari culture with a cozy stay at Badri Homes, Patan." />
+  <meta property="og:type" content="website" />
+  <title>Badri Homes | Authentic Newari Homestay in Patan, Nepal</title>
+
+  <!-- Google Fonts (display=swap for better performance) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- DNS Prefetch for CDN -->
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/nav.css" />
+  <link rel="stylesheet" href="assets/css/hero.css" />
+  <link rel="stylesheet" href="assets/css/about.css" />
+  <link rel="stylesheet" href="assets/css/rooms.css" />
+  <link rel="stylesheet" href="assets/css/attractions.css" />
+  <link rel="stylesheet" href="assets/css/gallery.css" />
+  <link rel="stylesheet" href="assets/css/testimonials.css" />
+  <link rel="stylesheet" href="assets/css/contact.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav id="navbar">
+    <div class="container nav-inner">
+      <a href="#hero" class="nav-logo">
+        <img src="logo (1).png" alt="Badri Homes Logo" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#rooms">Rooms</a></li>
+        <li><a href="#attractions">Explore</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+      <a href="#contact" class="btn nav-cta">Book Now</a>
+      <div class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobile()"></div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <nav class="mobile-nav">
+      <a href="#rooms" onclick="closeMobile()"><i class="fa-solid fa-bed"></i><span>Rooms</span></a>
+      <a href="#attractions" onclick="closeMobile()"><i class="fa-solid fa-map-location-dot"></i><span>Explore Patan</span></a>
+      <a href="#gallery" onclick="closeMobile()"><i class="fa-solid fa-images"></i><span>Gallery</span></a>
+      <a href="#contact" onclick="closeMobile()"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
+      <a href="#contact" class="mobile-book-btn" onclick="closeMobile()"><i class="fa-solid fa-calendar-days"></i><span>Book Your Stay</span></a>
+    </nav>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section id="hero">
+    <div class="hero-slides" id="heroSlides">
+      <div class="hero-slide active" data-caption="Badri Homes · Patan, Nepal">
+        <img src="building.jpg" alt="Badri Homes exterior – traditional Newari brick building" loading="eager" decoding="async" />
+      </div>
+      <div class="hero-slide" data-caption="Queen Bed · Newari Brick Walls">
+        <img src="Images/Rooms/bed.jpg" alt="Queen bedroom with Newari brick wall" loading="lazy" decoding="async" />
+      </div>
+      <div class="hero-slide" data-caption="Patan Durbar Square · 5 min walk">
+        <img src="Images/patan/patan durbar square.jpeg" alt="Patan Durbar Square" loading="lazy" decoding="async" />
+      </div>
+      <div class="hero-slide" data-caption="Full Studio · Private &amp; Self-Contained">
+        <img src="Images/Rooms/room.jpg" alt="Full studio room view" loading="lazy" decoding="async" />
+      </div>
+      <div class="hero-slide" data-caption="Krishna Mandir · Sacred Heritage">
+        <img src="Images/patan/krishna mandir.jpeg" alt="Krishna Mandir Temple Patan" loading="lazy" decoding="async" />
+      </div>
+      <div class="hero-slide" data-caption="Private Kitchen · Fully Equipped">
+        <img src="Images/Rooms/kitchen.jpg" alt="Private kitchen" loading="lazy" decoding="async" />
+      </div>
+      <div class="hero-slide" data-caption="Machindranath Jatra · Living Festival">
+        <img src="Images/patan/machindranath jatra.jpeg" alt="Machindranath Jatra festival" loading="lazy" decoding="async" />
+      </div>
+      <div class="hero-slide" data-caption="Cosy Rooms · Every Floor">
+        <img src="Images/Rooms/20231205_192305.jpg" alt="Room interior" loading="lazy" decoding="async" />
+      </div>
+    </div>
+
+    <div class="hero-overlay"></div>
+    <button class="hero-arrow hero-prev" id="heroPrev" aria-label="Previous"><i class="fa-solid fa-chevron-left"></i></button>
+    <button class="hero-arrow hero-next" id="heroNext" aria-label="Next"><i class="fa-solid fa-chevron-right"></i></button>
+    <div class="hero-dots" id="heroDots"></div>
+    <div class="hero-caption" id="heroCaption"></div>
+    <div class="hero-thumbs" id="heroThumbs"></div>
+    <div class="hero-progress"><div class="hero-progress-bar" id="heroProgressBar"></div></div>
+
+    <!-- Mini room preview panel -->
+    <div class="hero-room-preview" id="hrpWrap">
+      <div class="hrp-img-wrap" id="hrpSlides">
+        <div class="hrp-slide active"><img src="Images/Rooms/bed.jpg" alt="Queen Bed" loading="lazy" decoding="async" /></div>
+        <div class="hrp-slide"><img src="Images/Rooms/kitchen.jpg" alt="Private Kitchen" loading="lazy" decoding="async" /></div>
+        <div class="hrp-slide"><img src="Images/Rooms/tv.jpg" alt="TV Lounge" loading="lazy" decoding="async" /></div>
+        <div class="hrp-slide"><img src="Images/Rooms/toilet 1.jpg" alt="Bathroom" loading="lazy" decoding="async" /></div>
+        <div class="hrp-slide"><img src="Images/Rooms/room.jpg" alt="Studio View" loading="lazy" decoding="async" /></div>
+        <div class="hrp-slide"><img src="Images/Rooms/bed 1.jpg" alt="Cozy Beds" loading="lazy" decoding="async" /></div>
+        <div class="hrp-slide"><img src="Images/Rooms/image 1.jpg" alt="Room Detail" loading="lazy" decoding="async" /></div>
+      </div>
+      <div class="hrp-info">
+        <div class="hrp-label" id="hrpLabel">Queen Bed · Private Kitchen · En-suite</div>
+        <div class="hrp-dots" id="hrpDots"></div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fa-solid fa-star"></i>
+          Top-Rated Homestay in Patan
+        </div>
+        <h1 class="hero-title">
+          Experience <span>Authentic</span><br />Newari Living
+        </h1>
+        <p class="hero-desc">
+          Wake up to carved wooden windows, courtyard mornings, and the warmth of a family that's called Patan home for generations.
+        </p>
+        <div class="hero-actions">
+          <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-calendar-days"></i> Book Your Stay</a>
+          <a href="#about" class="btn btn-outline"><i class="fa-solid fa-play"></i> Discover More</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-stats">
+      <div class="hero-stats-inner">
+        <div class="stat-item">
+          <div class="stat-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <div>
+            <div class="stat-label">Location</div>
+            <div class="stat-value">Patan (Lalitpur)</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon"><i class="fa-solid fa-route"></i></div>
+          <div>
+            <div class="stat-label">To Durbar Square</div>
+            <div class="stat-value">5 min Walk</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
+          <div>
+            <div class="stat-label">Guest Rating</div>
+            <div class="stat-value">4.9 / 5.0</div>
+          </div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-icon"><i class="fa-solid fa-bed"></i></div>
+          <div>
+            <div class="stat-label">Room Options</div>
+            <div class="stat-value">3 Stay Types</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ABOUT ===== -->
+  <section id="about">
+    <div class="container">
+      <div class="about-grid">
+        <div class="about-images">
+          <div class="about-img-main">
+            <img src="building.jpg" alt="Badri Homes exterior – traditional Newari brick building in Patan" loading="lazy" decoding="async" />
+          </div>
+          <div class="about-img-secondary">
+            <img src="Images/Rooms/kitchen.jpg" alt="Private kitchen at Badri Homes" loading="lazy" decoding="async" style="object-position:center;" />
+          </div>
+          <div class="about-badge-floating">
+            <strong>Est. 2023</strong>
+            <span>Studio Apartments</span>
+          </div>
+        </div>
+        <div class="about-text fade-up">
+          <span class="section-label">About Badri Homes</span>
+          <h2 class="section-title">Studio Apartments<br />in the Heart of Patan</h2>
+          <div class="homestay-note">
+            <i class="fa-solid fa-circle-info"></i>
+            <p><strong>Named after our late grandfather Badri</strong> — the visionary behind this foundation. Founded in 2023, Badri Homes is a new studio apartment committed to making your stay delightful.</p>
+          </div>
+          <p style="color:var(--text-light);line-height:1.8;margin-bottom:16px;">
+            Nestled in the heart of Patan, Nepal, each studio is built with top-notch materials to provide utmost comfort. Enjoy a breathtaking view of a vibrant community area filled with temples — a genuine glimpse into the daily life of the Nepalese in Patan.
+          </p>
+          <p style="color:var(--text-light);line-height:1.8;margin-bottom:28px;">
+            Just a <strong>2-minute walk</strong> from the famous Patan Durbar Square. Bhatbhateni Supermarket is a 15–17 min walk, Labim Mall 17–18 min, and Jhamsikhel only a 5-minute drive away.
+          </p>
+          <div class="about-features">
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fa-solid fa-kitchen-set"></i></div>
+              <div><h4>Modular Kitchen</h4><p>Fridge, microwave &amp; full setup</p></div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fa-solid fa-wifi"></i></div>
+              <div><h4>Free High-Speed WiFi</h4><p>Throughout the property</p></div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fa-solid fa-tv"></i></div>
+              <div><h4>43" FHD Smart TV</h4><p>In every studio</p></div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fa-solid fa-shirt"></i></div>
+              <div><h4>Washing Machine</h4><p>Ideal for long stays</p></div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fa-solid fa-snowflake"></i></div>
+              <div><h4>Air Conditioner</h4><p>Stay cool year-round</p></div>
+            </div>
+            <div class="feature-item">
+              <div class="feature-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div><h4>2 min to Durbar Square</h4><p>Prime Patan location</p></div>
+            </div>
+          </div>
+          <a href="#contact" class="btn btn-primary">Plan Your Stay <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ROOMS ===== -->
+  <section id="rooms">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-label">Where You'll Stay</span>
+        <h2 class="section-title">Our Room Options</h2>
+        <p class="section-subtitle">Each room blends traditional Newari craftsmanship with modern comforts—handcrafted furniture, warm textiles, and views that feel like a painting.</p>
+      </div>
+      <div style="text-align:center; margin-bottom:40px;">
+        <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="btn btn-booking" style="display:inline-flex; align-items:center; gap:10px; padding:13px 28px; font-size:0.95rem;">
+          <i class="fa-solid fa-calendar-check"></i> Check Availability on Booking.com
+        </a>
+      </div>
+      <div class="rooms-grid">
+        <!-- Room 001 -->
+        <div class="room-card fade-up">
+          <div class="room-img">
+            <img src="Images/Rooms/bed.jpg" alt="001 First Floor Studio at Badri Homes" loading="lazy" decoding="async" />
+            <span class="room-badge">Ground Floor</span>
+          </div>
+          <div class="room-body">
+            <h3 class="room-name">001 First Floor Studio</h3>
+            <p class="room-desc">A ground-level self-contained studio with a queen bed, private kitchen, and authentic Newari brick walls. Easy access, full comfort.</p>
+            <div class="room-amenities">
+              <span class="amenity-tag"><i class="fa-solid fa-bed"></i> Queen Bed</span>
+              <span class="amenity-tag"><i class="fa-solid fa-kitchen-set"></i> Private Kitchen</span>
+              <span class="amenity-tag"><i class="fa-solid fa-bath"></i> En-suite</span>
+              <span class="amenity-tag"><i class="fa-solid fa-wifi"></i> Free WiFi</span>
+            </div>
+            <div class="room-footer">
+              <div class="room-price">
+                <div class="price">NPR 3,000</div>
+                <div class="per">per night · incl. taxes</div>
+              </div>
+              <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="room-book">Book Now</a>
+            </div>
+          </div>
+        </div>
+        <!-- Room 002 -->
+        <div class="room-card fade-up">
+          <div class="room-img">
+            <img src="Images/Rooms/room.jpg" alt="002 Second Floor Studio at Badri Homes" loading="lazy" decoding="async" />
+            <span class="room-badge">Second Floor</span>
+          </div>
+          <div class="room-body">
+            <h3 class="room-name">002 Second Floor Studio</h3>
+            <p class="room-desc">Elevated views of the courtyard and Patan rooftops. A full studio with queen bed, private kitchen, and warm Newari character throughout.</p>
+            <div class="room-amenities">
+              <span class="amenity-tag"><i class="fa-solid fa-bed"></i> Queen Bed</span>
+              <span class="amenity-tag"><i class="fa-solid fa-kitchen-set"></i> Private Kitchen</span>
+              <span class="amenity-tag"><i class="fa-solid fa-bath"></i> En-suite</span>
+              <span class="amenity-tag"><i class="fa-solid fa-wifi"></i> Free WiFi</span>
+            </div>
+            <div class="room-footer">
+              <div class="room-price">
+                <div class="price">NPR 3,000</div>
+                <div class="per">per night · incl. taxes</div>
+              </div>
+              <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="room-book">Book Now</a>
+            </div>
+          </div>
+        </div>
+        <!-- Room 003 -->
+        <div class="room-card fade-up">
+          <div class="room-img">
+            <img src="Images/Rooms/bed 1.jpg" alt="003 Third Floor Studio at Badri Homes" loading="lazy" decoding="async" />
+            <span class="room-badge">Top Floor</span>
+          </div>
+          <div class="room-body">
+            <h3 class="room-name">003 Third Floor Studio</h3>
+            <p class="room-desc">Wake up to Patan's terracotta skyline from the top floor. Queen bed, private kitchen, en-suite — the perfect perch above the city.</p>
+            <div class="room-amenities">
+              <span class="amenity-tag"><i class="fa-solid fa-bed"></i> Queen Bed</span>
+              <span class="amenity-tag"><i class="fa-solid fa-kitchen-set"></i> Private Kitchen</span>
+              <span class="amenity-tag"><i class="fa-solid fa-bath"></i> En-suite</span>
+              <span class="amenity-tag"><i class="fa-solid fa-wifi"></i> Free WiFi</span>
+            </div>
+            <div class="room-footer">
+              <div class="room-price">
+                <div class="price">NPR 3,000</div>
+                <div class="per">per night · incl. taxes</div>
+              </div>
+              <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="room-book">Book Now</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== ATTRACTIONS ===== -->
+  <section id="attractions">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-label">Step Outside</span>
+        <h2 class="section-title">Patan's Living Heritage<br />— on Your Doorstep</h2>
+        <p class="section-subtitle">The world's finest concentration of medieval art and architecture starts 5 minutes from our front door.</p>
+      </div>
+      <div class="attractions-grid">
+        <div class="attraction-card fade-up">
+          <img src="Images/patan/patan durbar square.jpeg" alt="Patan Durbar Square UNESCO World Heritage Site" loading="lazy" />
+          <div class="attraction-overlay">
+            <span class="attraction-tag">UNESCO Heritage</span>
+            <h3 class="attraction-name">Patan Durbar Square</h3>
+            <p class="attraction-desc">One of Asia's finest medieval city squares — temples, courtyards and palaces built by the Malla kings over 1,000 years.</p>
+            <div class="attraction-dist"><i class="fa-solid fa-person-walking"></i> 5-minute walk from Badri Homes</div>
+          </div>
+        </div>
+        <div class="attraction-card fade-up">
+          <img src="Images/patan/krishna mandir.jpeg" alt="Krishna Mandir Patan – stone shikhara temple" loading="lazy" />
+          <div class="attraction-overlay">
+            <span class="attraction-tag">Hindu Temple</span>
+            <h3 class="attraction-name">Krishna Mandir</h3>
+            <p class="attraction-desc">A stunning 17th-century stone shikhara temple dedicated to Lord Krishna — the architectural centrepiece of Durbar Square.</p>
+            <div class="attraction-dist"><i class="fa-solid fa-person-walking"></i> 6-minute walk</div>
+          </div>
+        </div>
+        <div class="attraction-card fade-up">
+          <img src="Images/patan/machindranath jatra.jpeg" alt="Machindranath Jatra chariot festival Patan" loading="lazy" />
+          <div class="attraction-overlay">
+            <span class="attraction-tag">Living Culture</span>
+            <h3 class="attraction-name">Machindranath Jatra</h3>
+            <p class="attraction-desc">The world's longest chariot festival — a living tradition celebrated right through Patan's streets for over a month each year.</p>
+            <div class="attraction-dist"><i class="fa-solid fa-location-dot"></i> Passes through Patan</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Hidden Gems -->
+      <div class="gems-section fade-up">
+        <div class="gems-header">
+          <span class="section-label">Local Picks</span>
+          <h2 class="section-title">Hidden Gems of Patan</h2>
+        </div>
+        <div class="gems-grid">
+          <div class="gem-card">
+            <div class="gem-img">
+              <img src="Images/patan/patan durbar square 1.jpeg" alt="Patan Durbar Square evening view" loading="lazy" />
+            </div>
+            <div class="gem-body">
+              <div class="gem-icon"><i class="fa-solid fa-sun"></i></div>
+              <div class="gem-name">Evening at Durbar Square</div>
+              <p class="gem-tip">After tourists leave at dusk, the square transforms. Locals gather, vendors set up, and the temples glow gold. Ask us for the best spot.</p>
+            </div>
+          </div>
+          <div class="gem-card">
+            <div class="gem-img">
+              <img src="Images/patan/machindranath jatra 2.jpeg" alt="Machindranath Jatra Patan festival" loading="lazy" />
+            </div>
+            <div class="gem-body">
+              <div class="gem-icon"><i class="fa-solid fa-drum"></i></div>
+              <div class="gem-name">Festival Streets</div>
+              <p class="gem-tip">Patan's festivals are lived, not performed. We'll tell you exactly when and where to go to experience them like a local.</p>
+            </div>
+          </div>
+          <div class="gem-card">
+            <div class="gem-img">
+              <img src="Images/patan/krishna mandir.jpeg" alt="Krishna Mandir Patan" loading="lazy" />
+            </div>
+            <div class="gem-body">
+              <div class="gem-icon"><i class="fa-solid fa-hammer"></i></div>
+              <div class="gem-name">Artisan Workshops</div>
+              <p class="gem-tip">Watch bronze sculptors and thangka painters at work in centuries-old workshops tucked in narrow lanes only locals know.</p>
+            </div>
+          </div>
+          <div class="gem-card">
+            <div class="gem-img">
+              <img src="Images/patan/newari-food.jpg" alt="Real Newari food Patan" loading="lazy" />
+            </div>
+            <div class="gem-body">
+              <div class="gem-icon"><i class="fa-solid fa-utensils"></i></div>
+              <div class="gem-name">Real Newari Food</div>
+              <p class="gem-tip">We'll point you to the tiny local eateries serving yomari, bara, and chatamari that no guidebook has found yet.</p>
+            </div>
+          </div>
+        </div>
+        <div style="text-align:center;margin-top:32px;">
+          <a href="https://www.tripadvisor.com/Attractions-g315764-Activities-zft12156-Patan_Lalitpur_Kathmandu_Valley_Bagmati_Zone_Central_Region.html" target="_blank" rel="noopener" class="btn btn-outline" style="background:var(--terracotta);color:#fff;border:none;display:inline-flex;align-items:center;gap:10px;">
+            <i class="fa-brands fa-tripadvisor"></i> Explore More Patan Attractions
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== GALLERY ===== -->
+  <section id="gallery">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-label">Our Home</span>
+        <h2 class="section-title">Life at Badri Homes</h2>
+        <p class="section-subtitle">A glimpse of where you'll stay and the neighbourhood you'll explore.</p>
+      </div>
+      <div class="gallery-grid">
+        <div class="gallery-item large fade-up" onclick="openLightbox(this)">
+          <img src="building.jpg" alt="Badri Homes building exterior" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up" onclick="openLightbox(this)">
+          <img src="Images/Rooms/bed.jpg" alt="Queen bedroom with Newari brick wall" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up" onclick="openLightbox(this)">
+          <img src="Images/Rooms/kitchen.jpg" alt="Private kitchen" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item tall fade-up" onclick="openLightbox(this)">
+          <img src="Images/patan/patan durbar square.jpeg" alt="Patan Durbar Square" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up" onclick="openLightbox(this)">
+          <img src="Images/Rooms/room.jpg" alt="Full studio room" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up" onclick="openLightbox(this)">
+          <img src="Images/Rooms/image 1.jpg" alt="Room detail" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up" onclick="openLightbox(this)">
+          <img src="Images/patan/krishna mandir.jpeg" alt="Krishna Mandir Patan" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up" onclick="openLightbox(this)">
+          <img src="Images/Rooms/tv.jpg" alt="TV lounge" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+        <div class="gallery-item fade-up" onclick="openLightbox(this)">
+          <img src="Images/patan/machindranath jatra 2.jpeg" alt="Festival in Patan" loading="lazy" />
+          <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section id="testimonials">
+    <div class="container">
+      <div class="section-header fade-up">
+        <span class="section-label">Guest Stories</span>
+        <h2 class="section-title">What Our Guests Say</h2>
+      </div>
+      <div class="rv-viewport">
+        <div class="rv-track" id="rvTrack">
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"Staying at Badri Homes was the highlight of our Nepal trip. The carved windows, the morning tea in the courtyard, the hosts' stories about Newari festivals — we didn't want to leave."</p>
+            <div class="testimonial-author"><div class="author-avatar">S</div><div><div class="author-name">Sophie Marchand</div><div class="author-country">France · March 2025</div></div></div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"The rooftop at sunrise over Patan's ancient skyline is something I'll carry forever. The family treats you like you've known them for years. Authentic, warm, unforgettable."</p>
+            <div class="testimonial-author"><div class="author-avatar">J</div><div><div class="author-name">James Whitfield</div><div class="author-country">Australia · February 2025</div></div></div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"A rare place where you actually experience the culture, not just observe it. Exploring hidden temples with the host, cooking local food in our private kitchen — this is why I travel."</p>
+            <div class="testimonial-author"><div class="author-avatar">A</div><div><div class="author-name">Anjali Sharma</div><div class="author-country">India · January 2025</div></div></div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"The private kitchen was a game changer — we bought produce from the local market every morning and cooked in our own studio. The brick walls, the warmth, the price… perfect."</p>
+            <div class="testimonial-author"><div class="author-avatar">M</div><div><div class="author-name">Marcus &amp; Lena</div><div class="author-country">Germany · December 2024</div></div></div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"Woke up to Patan's terracotta rooftops every morning. The top floor studio is stunning. Host gave us local tips no guidebook has — hidden temples, chai spots, everything."</p>
+            <div class="testimonial-author"><div class="author-avatar">T</div><div><div class="author-name">Takeshi &amp; Yuki</div><div class="author-country">Japan · November 2024</div></div></div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"As a solo female traveller I felt completely safe and genuinely welcomed. The family checked in without hovering — exactly the right balance. I'll be back for sure."</p>
+            <div class="testimonial-author"><div class="author-avatar">P</div><div><div class="author-name">Priya S.</div><div class="author-country">UK · October 2024</div></div></div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"Location is unbeatable. Walked to Golden Temple, Mahabouddha, and Durbar Square all in one morning. The studio is clean, quiet, and full of Newari character. Will recommend to everyone."</p>
+            <div class="testimonial-author"><div class="author-avatar">E</div><div><div class="author-name">Elena &amp; Carlos</div><div class="author-country">Spain · September 2024</div></div></div>
+          </div>
+          <div class="testimonial-card">
+            <div class="stars">★★★★★</div>
+            <p class="testimonial-text">"The Newari architecture alone is worth the stay — carved wooden windows, original brick, real family life around you. We stayed 10 nights and it still felt too short."</p>
+            <div class="testimonial-author"><div class="author-avatar">N</div><div><div class="author-name">Nora &amp; James</div><div class="author-country">Canada · August 2024</div></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="rv-controls">
+        <button class="rv-btn" id="rvPrev"><i class="fa-solid fa-chevron-left"></i></button>
+        <div class="rv-dots-row" id="rvDots"></div>
+        <button class="rv-btn" id="rvNext"><i class="fa-solid fa-chevron-right"></i></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CONTACT ===== -->
+  <section id="contact">
+    <div class="container">
+      <div class="contact-grid">
+        <div class="contact-info fade-up">
+          <span class="section-label">Get In Touch</span>
+          <h2 class="section-title">Plan Your<br />Patan Stay</h2>
+          <p>Ready to experience authentic Newari hospitality? Reach out to book a room or ask any questions—we're always happy to help you plan the perfect stay.</p>
+          <div class="contact-details">
+            <div class="contact-detail">
+              <div class="contact-icon"><i class="fa-solid fa-phone"></i></div>
+              <div>
+                <h4>Phone / WhatsApp / Viber</h4>
+                <p>
+                  <a href="tel:+9779851047861" style="color:var(--text-light);">+977 9851047861</a>
+                  &nbsp;|&nbsp;
+                  <a href="tel:+9779849076394" style="color:var(--text-light);">+977 9849076394</a>
+                </p>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div>
+                <h4>Email</h4>
+                <p><a href="mailto:homesbadri@gmail.com" style="color:var(--text-light);">homesbadri@gmail.com</a></p>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-icon"><i class="fa-solid fa-location-dot"></i></div>
+              <div>
+                <h4>Address</h4>
+                <p><a href="https://maps.app.goo.gl/cqF1LvkuEV4uMsrr8" target="_blank" rel="noopener" style="color:var(--text-light);">Saugal Tole, Patan, Lalitpur, Nepal <i class="fa-solid fa-arrow-up-right-from-square" style="font-size:0.7rem;"></i></a></p>
+              </div>
+            </div>
+            <div class="contact-detail">
+              <div class="contact-icon"><i class="fa-solid fa-clock"></i></div>
+              <div>
+                <h4>Check-in / Check-out</h4>
+                <p>Check-in: 1:30 PM &nbsp;|&nbsp; Check-out: 12:00 PM</p>
+              </div>
+            </div>
+          </div>
+          <div class="map-embed">
+            <div class="map-placeholder">
+              <i class="fa-solid fa-map-location-dot"></i>
+              <strong style="color: var(--text-dark); font-family: 'Playfair Display', serif;">Badri Homes, Patan</strong>
+              <span style="font-size:0.8rem;">Saugal Tole, Lalitpur, Nepal</span>
+              <a href="https://maps.app.goo.gl/cqF1LvkuEV4uMsrr8" target="_blank" rel="noopener" class="btn btn-primary" style="margin-top:8px; padding:10px 22px; font-size:0.85rem;">
+                <i class="fa-brands fa-google"></i> Open in Google Maps
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="contact-form fade-up" id="bookingForm">
+          <h3>Reserve Your Room</h3>
+          <p>Book directly via Booking.com, or send us a message and we'll confirm within 24 hours.</p>
+          <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="btn-booking" style="display:flex; align-items:center; justify-content:center; gap:10px; padding:14px 20px; border-radius:12px; font-size:0.95rem; font-weight:700; margin-bottom:20px; text-decoration:none;">
+            <i class="fa-solid fa-calendar-check"></i> Book on Booking.com
+          </a>
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
+            <div style="flex:1; height:1px; background:var(--beige-dark);"></div>
+            <span style="font-size:0.8rem; color:var(--text-light); white-space:nowrap;">or send a direct enquiry</span>
+            <div style="flex:1; height:1px; background:var(--beige-dark);"></div>
+          </div>
+          <form id="contactForm" onsubmit="handleSubmit(event)" novalidate>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fname">First Name *</label>
+                <input type="text" id="fname" name="fname" placeholder="Your first name" required />
+              </div>
+              <div class="form-group">
+                <label for="lname">Last Name *</label>
+                <input type="text" id="lname" name="lname" placeholder="Your last name" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address *</label>
+              <input type="email" id="email" name="email" placeholder="you@example.com" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone / WhatsApp</label>
+              <input type="tel" id="phone" name="phone" placeholder="+977 or international" />
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="checkin">Check-in Date *</label>
+                <input type="date" id="checkin" name="checkin" required />
+              </div>
+              <div class="form-group">
+                <label for="checkout">Check-out Date *</label>
+                <input type="date" id="checkout" name="checkout" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="room">Room Type *</label>
+              <select id="room" name="room" required>
+                <option value="" disabled selected>Select a room…</option>
+                <option value="001">001 First Floor Studio – NPR 3,000/night</option>
+                <option value="002">002 Second Floor Studio – NPR 3,000/night</option>
+                <option value="003">003 Third Floor Studio – NPR 3,000/night</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="guests">Number of Guests</label>
+              <select id="guests" name="guests">
+                <option value="1">1 Guest</option>
+                <option value="2" selected>2 Guests</option>
+                <option value="3">3 Guests</option>
+                <option value="4">4 Guests</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="message">Message / Special Requests</label>
+              <textarea id="message" name="message" placeholder="Any dietary needs, arrival time, questions…"></textarea>
+            </div>
+            <button type="submit" class="form-submit">
+              <i class="fa-solid fa-paper-plane"></i> Send Booking Request
+            </button>
+          </form>
+          <div class="form-success" id="formSuccess">
+            <i class="fa-solid fa-circle-check" style="color: var(--terracotta);"></i>
+            <h3 style="font-size:1.3rem; margin-bottom:8px;">Booking Request Sent!</h3>
+            <p style="color:var(--text-light); font-size:0.9rem;">Thank you! We'll confirm your reservation within 24 hours. <br />Check your email for a response from us.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom:16px; max-width:200px;">
+            <img src="logo (1).png" alt="Badri Homes Logo" style="height:64px; width:auto; filter:brightness(0) invert(1); opacity:0.88;" />
+          </div>
+          <p class="footer-desc">A family-run Newari homestay in the heart of Patan — where ancient traditions meet genuine hospitality. Your home in the City of Fine Arts.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="social-link" aria-label="TripAdvisor"><i class="fa-brands fa-tripadvisor"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="#about">About Us</a></li>
+            <li><a href="#rooms">Our Rooms</a></li>
+            <li><a href="#attractions">Attractions</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Patan Highlights</h4>
+          <ul class="footer-links">
+            <li><a href="#attractions">Durbar Square</a></li>
+            <li><a href="#attractions">Golden Temple</a></li>
+            <li><a href="#attractions">Mahabouddha</a></li>
+            <li><a href="#attractions">Patan Museum</a></li>
+            <li><a href="#attractions">Hidden Gems</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li><a href="tel:+9779851047861"><i class="fa-solid fa-phone" style="width:16px;"></i> +977 9851047861</a></li>
+            <li><a href="tel:+9779849076394"><i class="fa-solid fa-phone" style="width:16px;"></i> +977 9849076394</a></li>
+            <li><a href="mailto:homesbadri@gmail.com"><i class="fa-solid fa-envelope" style="width:16px;"></i> homesbadri@gmail.com</a></li>
+            <li><a href="https://maps.app.goo.gl/cqF1LvkuEV4uMsrr8" target="_blank" style="color:rgba(255,255,255,0.5);font-size:0.88rem;"><i class="fa-solid fa-location-dot" style="width:16px; color:var(--terracotta);"></i> Saugal Tole, Patan, Lalitpur</a></li>
+            <li style="color:rgba(255,255,255,0.5);font-size:0.88rem;margin-top:8px;">
+              <i class="fa-solid fa-clock" style="width:16px; color:var(--terracotta);"></i> Check-in: 1:30 PM &nbsp;|&nbsp; Out: 12:00 PM
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Badri Homes, Patan. All rights reserved.</span>
+        <span>Made with <i class="fa-solid fa-heart" style="color:var(--terracotta);"></i> in Nepal &nbsp;|&nbsp; <a href="#contact">Privacy Policy</a></span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating Contact Widget -->
+  <div class="fc-wrap">
+    <div class="fc-panel" id="fcPanel">
+      <div class="fc-panel-title">Call, WhatsApp or Viber</div>
+      <div class="fc-number">
+        <div class="fc-num-label"><i class="fa-solid fa-phone" style="color:var(--terracotta);font-size:0.75rem;"></i> &nbsp;+977 9851047861</div>
+        <div class="fc-actions">
+          <a href="tel:+9779851047861" class="fc-action call"><i class="fa-solid fa-phone"></i>Call</a>
+          <a href="https://wa.me/9779851047861" target="_blank" class="fc-action whatsapp"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+          <a href="viber://chat?number=%2B9779851047861" class="fc-action viber"><i class="fa-brands fa-viber"></i>Viber</a>
+        </div>
+      </div>
+      <hr class="fc-divider" />
+      <div class="fc-number">
+        <div class="fc-num-label"><i class="fa-solid fa-phone" style="color:var(--terracotta);font-size:0.75rem;"></i> &nbsp;+977 9849076394</div>
+        <div class="fc-actions">
+          <a href="tel:+9779849076394" class="fc-action call"><i class="fa-solid fa-phone"></i>Call</a>
+          <a href="https://wa.me/9779849076394" target="_blank" class="fc-action whatsapp"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+          <a href="viber://chat?number=%2B9779849076394" class="fc-action viber"><i class="fa-brands fa-viber"></i>Viber</a>
+        </div>
+      </div>
+    </div>
+    <button class="fc-btn" id="fcBtn" aria-label="Contact us" onclick="toggleFC()">
+      <i class="fa-solid fa-phone" id="fcIcon"></i>
+    </button>
+  </div>
+
+  <!-- Scroll to Top -->
+  <div id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})" aria-label="Scroll to top">
+    <i class="fa-solid fa-arrow-up"></i>
+  </div>
+
+  <!-- Lightbox -->
+  <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <span class="lightbox-close"><i class="fa-solid fa-xmark"></i></span>
+    <img class="lightbox-img" id="lightboxImg" src="" alt="" />
+  </div>
+
+  <!-- Scripts -->
+  <script defer src="assets/js/nav.js"></script>
+  <script defer src="assets/js/hero-slider.js"></script>
+  <script defer src="assets/js/room-preview.js"></script>
+  <script defer src="assets/js/reviews.js"></script>
+  <script defer src="assets/js/animations.js"></script>
+  <script defer src="assets/js/gallery.js"></script>
+  <script defer src="assets/js/contact.js"></script>
+
+</body>
+</html>
