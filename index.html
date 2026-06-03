@@ -33,6 +33,7 @@
   <link rel="stylesheet" href="assets/css/testimonials.css" />
   <link rel="stylesheet" href="assets/css/contact.css" />
   <link rel="stylesheet" href="assets/css/footer.css" />
+  <link rel="stylesheet" href="assets/css/availability.css" />
   <link rel="stylesheet" href="assets/css/responsive.css" />
 </head>
 <body>
@@ -50,7 +51,7 @@
         <li><a href="#gallery">Gallery</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <a href="#contact" class="btn nav-cta">Book Now</a>
+      <a href="#availability" class="btn nav-cta">Book Now</a>
       <div class="hamburger" id="hamburger" aria-label="Open menu">
         <span></span><span></span><span></span>
       </div>
@@ -67,7 +68,7 @@
       <a href="#attractions" onclick="closeMobile()"><i class="fa-solid fa-map-location-dot"></i><span>Explore Patan</span></a>
       <a href="#gallery" onclick="closeMobile()"><i class="fa-solid fa-images"></i><span>Gallery</span></a>
       <a href="#contact" onclick="closeMobile()"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
-      <a href="#contact" class="mobile-book-btn" onclick="closeMobile()"><i class="fa-solid fa-calendar-days"></i><span>Book Your Stay</span></a>
+      <a href="#availability" class="mobile-book-btn" onclick="closeMobile()"><i class="fa-solid fa-calendar-days"></i><span>Book Your Stay</span></a>
     </nav>
   </div>
 
@@ -138,7 +139,7 @@
           Wake up to carved wooden windows, courtyard mornings, and the warmth of a family that's called Patan home for generations.
         </p>
         <div class="hero-actions">
-          <a href="#contact" class="btn btn-primary"><i class="fa-solid fa-calendar-days"></i> Book Your Stay</a>
+          <a href="#availability" class="btn btn-primary"><i class="fa-solid fa-calendar-days"></i> Book Your Stay</a>
           <a href="#about" class="btn btn-outline"><i class="fa-solid fa-play"></i> Discover More</a>
         </div>
       </div>
@@ -174,6 +175,42 @@
             <div class="stat-value">3 Stay Types</div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== AVAILABILITY / BOOKING BAR ===== -->
+  <section id="availability">
+    <div class="container">
+      <div class="avail-card fade-up">
+        <div class="avail-header">
+          <span class="section-label">Check Availability</span>
+          <h2 class="avail-title">Find Your Dates</h2>
+        </div>
+        <form class="avail-form" id="availForm">
+          <div class="avail-field">
+            <label for="checkin"><i class="fa-solid fa-calendar-check"></i> Check-in</label>
+            <input type="date" id="checkin" name="checkin" required />
+          </div>
+          <div class="avail-divider"><i class="fa-solid fa-arrow-right"></i></div>
+          <div class="avail-field">
+            <label for="checkout"><i class="fa-solid fa-calendar-xmark"></i> Check-out</label>
+            <input type="date" id="checkout" name="checkout" required />
+          </div>
+          <div class="avail-field avail-guests">
+            <label for="guests"><i class="fa-solid fa-user-group"></i> Guests</label>
+            <select id="guests" name="guests">
+              <option value="1">1 Guest</option>
+              <option value="2" selected>2 Guests</option>
+              <option value="3">3 Guests</option>
+              <option value="4">4 Guests</option>
+            </select>
+          </div>
+          <button type="submit" class="btn btn-primary avail-btn">
+            <i class="fa-solid fa-magnifying-glass"></i> Check Availability
+          </button>
+        </form>
+        <p class="avail-note"><i class="fa-brands fa-booking"></i> Availability verified via Booking.com — no account needed</p>
       </div>
     </div>
   </section>
@@ -765,6 +802,7 @@
   <script defer src="assets/js/animations.js"></script>
   <script defer src="assets/js/gallery.js"></script>
   <script defer src="assets/js/contact.js"></script>
+  <script defer src="assets/js/availability.js"></script>
 
 </body>
 </html>

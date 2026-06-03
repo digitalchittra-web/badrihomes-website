@@ -1,0 +1,144 @@
+/* ===== AVAILABILITY SECTION ===== */
+#availability {
+  background: var(--beige);
+  padding: 64px 0 56px;
+}
+
+.avail-card {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  box-shadow: 0 8px 40px var(--shadow);
+  border: 1px solid var(--beige-dark);
+}
+
+.avail-header {
+  text-align: center;
+  margin-bottom: 36px;
+}
+
+.avail-title {
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  color: var(--text-dark);
+  margin-top: 8px;
+}
+
+.avail-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.avail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  min-width: 160px;
+}
+
+.avail-field label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-mid);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.avail-field label i {
+  color: var(--terracotta);
+  font-size: 0.85rem;
+}
+
+.avail-field input[type="date"],
+.avail-field select {
+  padding: 14px 16px;
+  border: 1.5px solid var(--beige-dark);
+  border-radius: var(--radius);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  background: var(--white);
+  cursor: pointer;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  width: 100%;
+  appearance: auto;
+}
+
+.avail-field input[type="date"]:focus,
+.avail-field select:focus {
+  outline: none;
+  border-color: var(--terracotta);
+  box-shadow: 0 0 0 3px rgba(196, 112, 79, 0.15);
+}
+
+.avail-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-light);
+  font-size: 1rem;
+  padding-bottom: 14px;
+  flex: 0;
+}
+
+.avail-guests {
+  max-width: 160px;
+}
+
+.avail-btn {
+  flex-shrink: 0;
+  padding: 14px 28px;
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+
+.avail-note {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.82rem;
+  color: var(--text-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+}
+
+.avail-note i {
+  color: #003580;
+  font-size: 1rem;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .avail-card {
+    padding: 32px 24px;
+  }
+
+  .avail-form {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .avail-field {
+    min-width: 100%;
+  }
+
+  .avail-guests {
+    max-width: 100%;
+  }
+
+  .avail-divider {
+    display: none;
+  }
+
+  .avail-btn {
+    width: 100%;
+    justify-content: center;
+    padding: 16px;
+  }
+}
