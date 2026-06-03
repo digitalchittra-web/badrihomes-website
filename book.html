@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Book your stay at Badri Homes – Authentic Newari homestay in Patan, Nepal." />
+  <title>Book Your Stay | Badri Homes</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/nav.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+
+  <style>
+    /* ===== PAGE HEADER ===== */
+    .book-header {
+      background: linear-gradient(135deg, var(--brown) 0%, var(--terracotta) 100%);
+      padding: 120px 0 60px;
+      text-align: center;
+      color: var(--white);
+    }
+    .book-header .section-label { color: rgba(255,255,255,0.75); }
+    .book-header h1 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      color: var(--white);
+      margin: 12px 0 16px;
+    }
+    .book-header p {
+      color: rgba(255,255,255,0.8);
+      font-size: 1.05rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ===== MAIN LAYOUT ===== */
+    .book-main {
+      background: var(--beige);
+      padding: 60px 0 80px;
+    }
+    .book-grid {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 32px;
+      align-items: start;
+    }
+
+    /* ===== FORM CARD ===== */
+    .book-form-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 40px var(--shadow);
+      overflow: hidden;
+    }
+    .form-section {
+      padding: 36px 40px;
+      border-bottom: 1px solid var(--beige-dark);
+    }
+    .form-section:last-child { border-bottom: none; }
+    .form-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: var(--text-dark);
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-section-title i {
+      color: var(--terracotta);
+      font-size: 1rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .form-row.single { grid-template-columns: 1fr; }
+    .form-row.three  { grid-template-columns: 1fr 1fr 1fr; }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+    }
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      padding: 12px 14px;
+      border: 1.5px solid var(--beige-dark);
+      border-radius: var(--radius);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      background: var(--white);
+      transition: border-color 0.3s, box-shadow 0.3s;
+      width: 100%;
+    }
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 3px rgba(196,112,79,0.15);
+    }
+    .form-group textarea {
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    /* ===== PAYMENT OPTIONS ===== */
+    .payment-options {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .payment-card {
+      border: 2px solid var(--beige-dark);
+      border-radius: var(--radius);
+      padding: 20px;
+      cursor: pointer;
+      transition: border-color 0.3s, background 0.3s;
+      position: relative;
+    }
+    .payment-card.selected {
+      border-color: var(--terracotta);
+      background: rgba(196,112,79,0.05);
+    }
+    .payment-card input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .payment-card-icon {
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+      color: var(--terracotta);
+    }
+    .payment-card-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .payment-card-desc {
+      font-size: 0.8rem;
+      color: var(--text-light);
+      line-height: 1.5;
+    }
+    .payment-apps {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+    .app-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: var(--beige);
+      color: var(--text-mid);
+      border: 1px solid var(--beige-dark);
+    }
+
+    .bank-details {
+      background: var(--beige);
+      border-radius: var(--radius);
+      padding: 16px;
+      margin-top: 8px;
+      font-size: 0.85rem;
+      color: var(--text-mid);
+      line-height: 1.8;
+      display: none;
+    }
+    .bank-details.visible { display: block; }
+    .bank-details strong { color: var(--text-dark); }
+
+    /* ===== HOUSE RULES ===== */
+    .rules-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+    .rule-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.88rem;
+      color: var(--text-mid);
+    }
+    .rule-item i {
+      width: 20px;
+      text-align: center;
+      color: var(--terracotta);
+      font-size: 0.9rem;
+    }
+
+    /* ===== SUBMIT ===== */
+    .submit-section {
+      padding: 32px 40px;
+    }
+    .submit-btn {
+      width: 100%;
+      justify-content: center;
+      padding: 16px;
+      font-size: 1rem;
+      border-radius: var(--radius);
+    }
+    .submit-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--text-light);
+      margin-top: 12px;
+    }
+
+    /* ===== SUMMARY PANEL ===== */
+    .book-summary {
+      position: sticky;
+      top: 100px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .summary-card {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 40px var(--shadow);
+      overflow: hidden;
+    }
+    .summary-img {
+      height: 200px;
+      overflow: hidden;
+    }
+    .summary-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .summary-body {
+      padding: 24px;
+    }
+    .summary-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: var(--text-dark);
+      margin-bottom: 4px;
+    }
+    .summary-location {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-bottom: 20px;
+    }
+    .summary-location i { color: var(--terracotta); }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--beige-dark);
+      font-size: 0.9rem;
+    }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row .label { color: var(--text-light); }
+    .summary-row .value { font-weight: 600; color: var(--text-dark); }
+    .summary-row.total .label { font-weight: 700; color: var(--text-dark); font-size: 1rem; }
+    .summary-row.total .value { color: var(--terracotta); font-size: 1.1rem; }
+
+    .summary-amenities {
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 40px var(--shadow);
+      padding: 24px;
+    }
+    .summary-amenities h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      color: var(--text-dark);
+      margin-bottom: 16px;
+    }
+    .amenity-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .amenity-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.87rem;
+      color: var(--text-mid);
+    }
+    .amenity-item i {
+      width: 18px;
+      color: var(--terracotta);
+      font-size: 0.85rem;
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 900px) {
+      .book-grid {
+        grid-template-columns: 1fr;
+      }
+      .book-summary {
+        position: static;
+        order: -1;
+      }
+      .summary-img { height: 160px; }
+    }
+    @media (max-width: 600px) {
+      .form-section { padding: 24px 20px; }
+      .form-row { grid-template-columns: 1fr; }
+      .form-row.three { grid-template-columns: 1fr 1fr; }
+      .payment-options { grid-template-columns: 1fr; }
+      .rules-grid { grid-template-columns: 1fr; }
+      .submit-section { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <nav id="navbar">
+    <div class="container nav-inner">
+      <a href="index.html" class="nav-logo">
+        <img src="logo (1).png" alt="Badri Homes Logo" />
+      </a>
+      <ul class="nav-links">
+        <li><a href="index.html#about">About</a></li>
+        <li><a href="index.html#rooms">Rooms</a></li>
+        <li><a href="index.html#attractions">Explore</a></li>
+        <li><a href="index.html#gallery">Gallery</a></li>
+        <li><a href="index.html#contact">Contact</a></li>
+      </ul>
+      <a href="book.html" class="btn nav-cta">Book Now</a>
+      <div class="hamburger" id="hamburger" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Overlay -->
+  <div class="mobile-overlay" id="mobileOverlay" onclick="closeMobile()"></div>
+
+  <!-- Mobile Menu -->
+  <div class="mobile-menu" id="mobileMenu">
+    <nav class="mobile-nav">
+      <a href="index.html#rooms" onclick="closeMobile()"><i class="fa-solid fa-bed"></i><span>Rooms</span></a>
+      <a href="index.html#attractions" onclick="closeMobile()"><i class="fa-solid fa-map-location-dot"></i><span>Explore Patan</span></a>
+      <a href="index.html#gallery" onclick="closeMobile()"><i class="fa-solid fa-images"></i><span>Gallery</span></a>
+      <a href="index.html#contact" onclick="closeMobile()"><i class="fa-solid fa-envelope"></i><span>Contact</span></a>
+      <a href="book.html" class="mobile-book-btn" onclick="closeMobile()"><i class="fa-solid fa-calendar-days"></i><span>Book Your Stay</span></a>
+    </nav>
+  </div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="book-header">
+    <div class="container">
+      <span class="section-label">Badri Homes · Patan, Nepal</span>
+      <h1>Book Your Stay</h1>
+      <p>Fill in your details and we'll confirm your reservation within a few hours.</p>
+    </div>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <div class="book-main">
+    <div class="container">
+      <div class="book-grid">
+
+        <!-- LEFT: FORM -->
+        <div class="book-form-card">
+          <form id="bookingForm">
+
+            <!-- Guest Details -->
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa-solid fa-user"></i> Guest Details</div>
+              <div style="display:flex; flex-direction:column; gap:16px;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>First Name *</label>
+                    <input type="text" name="firstName" placeholder="e.g. Anita" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Last Name *</label>
+                    <input type="text" name="lastName" placeholder="e.g. Sharma" required />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Email Address *</label>
+                    <input type="email" name="email" placeholder="you@example.com" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Phone / WhatsApp *</label>
+                    <input type="tel" name="phone" placeholder="+977 98XXXXXXXX" required />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Nationality</label>
+                    <input type="text" name="nationality" placeholder="e.g. Nepali, British…" />
+                  </div>
+                  <div class="form-group">
+                    <label>Number of Guests *</label>
+                    <select name="guests" required>
+                      <option value="">Select guests</option>
+                      <option value="1">1 Guest</option>
+                      <option value="2">2 Guests</option>
+                      <option value="3">3 Guests</option>
+                      <option value="4">4 Guests</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Stay Details -->
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa-solid fa-calendar-days"></i> Stay Details</div>
+              <div style="display:flex; flex-direction:column; gap:16px;">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Check-in Date *</label>
+                    <input type="date" id="checkin" name="checkin" required />
+                  </div>
+                  <div class="form-group">
+                    <label>Check-out Date *</label>
+                    <input type="date" id="checkout" name="checkout" required />
+                  </div>
+                </div>
+                <div class="form-row">
+                  <div class="form-group">
+                    <label>Room Type *</label>
+                    <select name="roomType" id="roomType" required>
+                      <option value="">Select a room</option>
+                      <option value="studio-full" data-rate="2500">Full Studio (Entire floor)</option>
+                      <option value="studio-queen" data-rate="1800">Queen Room (En-suite)</option>
+                      <option value="twin" data-rate="1500">Twin Room</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Approx. Arrival Time</label>
+                    <select name="arrivalTime">
+                      <option value="">Select time</option>
+                      <option>Before 12:00 PM</option>
+                      <option>12:00 PM – 2:00 PM</option>
+                      <option>2:00 PM – 5:00 PM</option>
+                      <option>5:00 PM – 8:00 PM</option>
+                      <option>After 8:00 PM</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Special Requests -->
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa-solid fa-comment-dots"></i> Special Requests</div>
+              <div class="form-group">
+                <label>Any requests or notes?</label>
+                <textarea name="requests" placeholder="Dietary preferences, early check-in, airport pickup, etc."></textarea>
+              </div>
+            </div>
+
+            <!-- Payment -->
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa-solid fa-credit-card"></i> Payment Method</div>
+              <div class="payment-options">
+                <label class="payment-card selected" id="payArrivalCard">
+                  <input type="radio" name="payment" value="arrival" checked />
+                  <div class="payment-card-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
+                  <div class="payment-card-title">Pay on Arrival</div>
+                  <div class="payment-card-desc">No prepayment needed. Pay when you arrive.</div>
+                  <div class="payment-apps">
+                    <span class="app-badge">Cash</span>
+                    <span class="app-badge">eSewa</span>
+                    <span class="app-badge">Khalti</span>
+                    <span class="app-badge">IME Pay</span>
+                  </div>
+                </label>
+                <label class="payment-card" id="payBankCard">
+                  <input type="radio" name="payment" value="bank" />
+                  <div class="payment-card-icon"><i class="fa-solid fa-building-columns"></i></div>
+                  <div class="payment-card-title">Bank Transfer</div>
+                  <div class="payment-card-desc">Transfer in advance to secure your booking.</div>
+                  <div class="payment-apps">
+                    <span class="app-badge">Rastriya Banijya</span>
+                  </div>
+                </label>
+              </div>
+              <div class="bank-details" id="bankDetails">
+                <strong>Bank:</strong> Rastriya Banijya Bank<br />
+                <strong>Account Name:</strong> Badri Homes<br />
+                <strong>Account Number:</strong> XXXX-XXXX-XXXX<br />
+                <strong>Branch:</strong> Patan, Lalitpur<br /><br />
+                Please send a screenshot of your transfer to <strong>homesbadri@gmail.com</strong> or WhatsApp.
+              </div>
+            </div>
+
+            <!-- House Rules -->
+            <div class="form-section">
+              <div class="form-section-title"><i class="fa-solid fa-house-circle-check"></i> House Rules</div>
+              <div class="rules-grid">
+                <div class="rule-item"><i class="fa-solid fa-right-to-bracket"></i> Check-in from 1:30 PM</div>
+                <div class="rule-item"><i class="fa-solid fa-right-from-bracket"></i> Check-out by 12:00 PM</div>
+                <div class="rule-item"><i class="fa-solid fa-ban-smoking"></i> No smoking indoors</div>
+                <div class="rule-item"><i class="fa-solid fa-champagne-glasses" style="text-decoration:line-through; opacity:0.5;"></i> No parties / events</div>
+                <div class="rule-item"><i class="fa-solid fa-paw" style="text-decoration:line-through; opacity:0.5;"></i> No pets allowed</div>
+                <div class="rule-item"><i class="fa-solid fa-id-card"></i> ID required on arrival</div>
+              </div>
+            </div>
+
+            <!-- Submit -->
+            <div class="submit-section">
+              <button type="submit" class="btn btn-primary submit-btn">
+                <i class="fa-solid fa-paper-plane"></i> Send Booking Request
+              </button>
+              <p class="submit-note">
+                <i class="fa-solid fa-shield-halved"></i>
+                We'll confirm your reservation via email or WhatsApp within a few hours. No payment charged until arrival.
+              </p>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- RIGHT: SUMMARY -->
+        <div class="book-summary">
+          <div class="summary-card">
+            <div class="summary-img">
+              <img src="Images/Rooms/bed.jpg" alt="Badri Homes Room" />
+            </div>
+            <div class="summary-body">
+              <div class="summary-title">Badri Homes</div>
+              <div class="summary-location"><i class="fa-solid fa-location-dot"></i> Saugal Tole, Patan · 5 min to Durbar Square</div>
+              <div class="summary-row">
+                <span class="label">Room</span>
+                <span class="value" id="sumRoom">—</span>
+              </div>
+              <div class="summary-row">
+                <span class="label">Check-in</span>
+                <span class="value" id="sumCheckin">—</span>
+              </div>
+              <div class="summary-row">
+                <span class="label">Check-out</span>
+                <span class="value" id="sumCheckout">—</span>
+              </div>
+              <div class="summary-row">
+                <span class="label">Nights</span>
+                <span class="value" id="sumNights">—</span>
+              </div>
+              <div class="summary-row">
+                <span class="label">Rate / night</span>
+                <span class="value" id="sumRate">—</span>
+              </div>
+              <div class="summary-row total">
+                <span class="label">Estimated Total</span>
+                <span class="value" id="sumTotal">—</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="summary-amenities">
+            <h4>What's Included</h4>
+            <div class="amenity-list">
+              <div class="amenity-item"><i class="fa-solid fa-wifi"></i> Free Wi-Fi</div>
+              <div class="amenity-item"><i class="fa-solid fa-utensils"></i> Private kitchen access</div>
+              <div class="amenity-item"><i class="fa-solid fa-shower"></i> En-suite bathroom</div>
+              <div class="amenity-item"><i class="fa-solid fa-tv"></i> Smart TV</div>
+              <div class="amenity-item"><i class="fa-solid fa-temperature-half"></i> Hot water 24/7</div>
+              <div class="amenity-item"><i class="fa-solid fa-mug-hot"></i> Welcome tea on arrival</div>
+              <div class="amenity-item"><i class="fa-solid fa-broom"></i> Daily housekeeping</div>
+              <div class="amenity-item"><i class="fa-solid fa-map"></i> Local tips & guided walks</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="nav-logo" style="margin-bottom:16px; max-width:200px;">
+            <img src="logo (1).png" alt="Badri Homes Logo" style="height:64px; width:auto; filter:brightness(0) invert(1); opacity:0.88;" />
+          </div>
+          <p class="footer-desc">A family-run Newari homestay in the heart of Patan — where ancient traditions meet genuine hospitality. Your home in the City of Fine Arts.</p>
+          <div class="social-links">
+            <a href="#" class="social-link" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+            <a href="#" class="social-link" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            <a href="#" class="social-link" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
+            <a href="#" class="social-link" aria-label="TripAdvisor"><i class="fa-brands fa-tripadvisor"></i></a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#about">About Us</a></li>
+            <li><a href="index.html#rooms">Our Rooms</a></li>
+            <li><a href="index.html#attractions">Attractions</a></li>
+            <li><a href="index.html#gallery">Gallery</a></li>
+            <li><a href="index.html#contact">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Patan Highlights</h4>
+          <ul class="footer-links">
+            <li><a href="index.html#attractions">Durbar Square</a></li>
+            <li><a href="index.html#attractions">Golden Temple</a></li>
+            <li><a href="index.html#attractions">Mahabouddha</a></li>
+            <li><a href="index.html#attractions">Patan Museum</a></li>
+            <li><a href="index.html#attractions">Hidden Gems</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <ul class="footer-links">
+            <li><a href="tel:+9779851047861"><i class="fa-solid fa-phone" style="width:16px;"></i> +977 9851047861</a></li>
+            <li><a href="tel:+9779849076394"><i class="fa-solid fa-phone" style="width:16px;"></i> +977 9849076394</a></li>
+            <li><a href="mailto:homesbadri@gmail.com"><i class="fa-solid fa-envelope" style="width:16px;"></i> homesbadri@gmail.com</a></li>
+            <li><a href="https://maps.app.goo.gl/cqF1LvkuEV4uMsrr8" target="_blank" style="color:rgba(255,255,255,0.5);font-size:0.88rem;"><i class="fa-solid fa-location-dot" style="width:16px; color:var(--terracotta);"></i> Saugal Tole, Patan, Lalitpur</a></li>
+            <li style="color:rgba(255,255,255,0.5);font-size:0.88rem;margin-top:8px;">
+              <i class="fa-solid fa-clock" style="width:16px; color:var(--terracotta);"></i> Check-in: 1:30 PM &nbsp;|&nbsp; Out: 12:00 PM
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>&copy; 2026 Badri Homes, Patan. All rights reserved.</span>
+        <span>Made with <i class="fa-solid fa-heart" style="color:var(--terracotta);"></i> in Nepal</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/nav.js"></script>
+  <script>
+    // ===== DATE SETUP =====
+    const today = new Date().toISOString().split('T')[0];
+    document.getElementById('checkin').min  = today;
+    document.getElementById('checkout').min = today;
+
+    document.getElementById('checkin').addEventListener('change', function () {
+      const next = new Date(this.value);
+      next.setDate(next.getDate() + 1);
+      const nextStr = next.toISOString().split('T')[0];
+      document.getElementById('checkout').min = nextStr;
+      if (!document.getElementById('checkout').value || document.getElementById('checkout').value <= this.value) {
+        document.getElementById('checkout').value = nextStr;
+      }
+      updateSummary();
+    });
+    document.getElementById('checkout').addEventListener('change', updateSummary);
+    document.getElementById('roomType').addEventListener('change', updateSummary);
+
+    // ===== SUMMARY UPDATE =====
+    function updateSummary() {
+      const ci       = document.getElementById('checkin').value;
+      const co       = document.getElementById('checkout').value;
+      const roomSel  = document.getElementById('roomType');
+      const roomOpt  = roomSel.options[roomSel.selectedIndex];
+      const rate     = roomOpt ? parseInt(roomOpt.dataset.rate) : 0;
+      const roomName = roomOpt && roomOpt.value ? roomOpt.text : '—';
+
+      document.getElementById('sumRoom').textContent = roomName !== '—' ? roomName : '—';
+      document.getElementById('sumRate').textContent = rate ? 'NPR ' + rate.toLocaleString() : '—';
+
+      if (ci && co) {
+        const nights = Math.max(0, (new Date(co) - new Date(ci)) / 86400000);
+        document.getElementById('sumCheckin').textContent  = formatDate(ci);
+        document.getElementById('sumCheckout').textContent = formatDate(co);
+        document.getElementById('sumNights').textContent   = nights + (nights === 1 ? ' night' : ' nights');
+        document.getElementById('sumTotal').textContent    = rate && nights ? 'NPR ' + (rate * nights).toLocaleString() : '—';
+      }
+    }
+
+    function formatDate(str) {
+      const d = new Date(str + 'T00:00:00');
+      return d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+    }
+
+    // ===== PAYMENT TOGGLE =====
+    document.querySelectorAll('input[name="payment"]').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        document.getElementById('payArrivalCard').classList.toggle('selected', this.value === 'arrival');
+        document.getElementById('payBankCard').classList.toggle('selected', this.value === 'bank');
+        document.getElementById('bankDetails').classList.toggle('visible', this.value === 'bank');
+      });
+    });
+
+    // ===== FORM SUBMIT =====
+    document.getElementById('bookingForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const data    = new FormData(this);
+      const name    = data.get('firstName') + ' ' + data.get('lastName');
+      const email   = data.get('email');
+      const phone   = data.get('phone');
+      const ci      = data.get('checkin');
+      const co      = data.get('checkout');
+      const room    = document.getElementById('roomType').options[document.getElementById('roomType').selectedIndex].text;
+      const guests  = data.get('guests');
+      const payment = data.get('payment') === 'bank' ? 'Bank Transfer' : 'Pay on Arrival';
+      const notes   = data.get('requests') || 'None';
+
+      const subject = encodeURIComponent('Booking Request – Badri Homes');
+      const body    = encodeURIComponent(
+        'Hi,\n\nI would like to book a stay at Badri Homes.\n\n' +
+        '---\n' +
+        'Name: '     + name    + '\n' +
+        'Email: '    + email   + '\n' +
+        'Phone: '    + phone   + '\n' +
+        'Room: '     + room    + '\n' +
+        'Check-in: ' + ci      + '\n' +
+        'Check-out: '+ co      + '\n' +
+        'Guests: '   + guests  + '\n' +
+        'Payment: '  + payment + '\n' +
+        'Notes: '    + notes   + '\n' +
+        '---\n\nThank you!'
+      );
+
+      window.location.href = 'mailto:homesbadri@gmail.com?subject=' + subject + '&body=' + body;
+    });
+  </script>
+</body>
+</html>
