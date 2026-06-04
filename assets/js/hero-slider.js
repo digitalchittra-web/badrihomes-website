@@ -6,7 +6,7 @@
   const caption   = document.getElementById('heroCaption');
   const bar       = document.getElementById('heroProgressBar');
   const TOTAL     = slides.length;
-  const INTERVAL  = 9000;
+  const INTERVAL  = 5000;
   let cur = 0, timer, busy = false;
 
   // Build dots & thumbnails
@@ -28,7 +28,7 @@
     bar.style.transition = 'none';
     bar.style.width = '0%';
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      bar.style.transition = 'width ' + INTERVAL + 'ms linear';
+      bar.style.transition = 'width ' + (INTERVAL - 500) + 'ms linear';
       bar.style.width = '100%';
     }));
   }
@@ -88,6 +88,13 @@
   document.addEventListener('keydown', e => {
     if (e.key === 'ArrowLeft')  goTo((cur - 1 + TOTAL) % TOTAL);
     if (e.key === 'ArrowRight') goTo((cur + 1) % TOTAL);
+  });
+
+  // Pause on hover
+  const hero = document.getElementById('hero');
+  hero.addEventListener('mouseenter', () => clearInterval(timer));
+  hero.addEventListener('mouseleave', () => {
+    timer = setInterval(() => goTo((cur + 1) % TOTAL), INTERVAL);
   });
 
   // Parallax on scroll
