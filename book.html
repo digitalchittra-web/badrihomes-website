@@ -32,6 +32,57 @@
   <link rel="stylesheet" href="assets/css/footer.css" />
 
   <style>
+    /* ===== BRICK PATTERN ===== */
+    .brick-bg {
+      position: relative;
+      overflow: hidden;
+    }
+    .brick-bg::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        /* mortar horizontal lines */
+        repeating-linear-gradient(
+          180deg,
+          transparent,
+          transparent 28px,
+          rgba(0,0,0,0.18) 28px,
+          rgba(0,0,0,0.18) 32px
+        ),
+        /* odd-row brick vertical lines */
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 59px,
+          rgba(0,0,0,0.18) 59px,
+          rgba(0,0,0,0.18) 63px
+        );
+      background-size: 63px 32px, 63px 64px;
+      background-position: 0 0, 0 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    /* offset every other row */
+    .brick-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 59px,
+          rgba(0,0,0,0.18) 59px,
+          rgba(0,0,0,0.18) 63px
+        );
+      background-size: 63px 64px;
+      background-position: 31px 32px;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .brick-bg > * { position: relative; z-index: 1; }
+
     /* ===== PAGE HEADER ===== */
     .book-header {
       background: linear-gradient(135deg, var(--brown) 0%, var(--terracotta) 100%);
@@ -50,6 +101,27 @@
       font-size: 1.05rem;
       max-width: 500px;
       margin: 0 auto;
+    }
+    /* Brick divider strip between header and form */
+    .brick-divider {
+      height: 48px;
+      background:
+        repeating-linear-gradient(
+          180deg,
+          transparent,
+          transparent 22px,
+          rgba(0,0,0,0.15) 22px,
+          rgba(0,0,0,0.15) 25px
+        ),
+        repeating-linear-gradient(
+          90deg,
+          transparent,
+          transparent 59px,
+          rgba(0,0,0,0.15) 59px,
+          rgba(0,0,0,0.15) 63px
+        );
+      background-color: var(--terracotta-dark);
+      background-size: 63px 25px;
     }
 
     /* ===== MAIN LAYOUT ===== */
@@ -74,8 +146,21 @@
     .form-section {
       padding: 36px 40px;
       border-bottom: 1px solid var(--beige-dark);
+      border-left: 4px solid transparent;
+      background-image: repeating-linear-gradient(
+        180deg,
+        transparent, transparent 9px,
+        rgba(196,112,79,0.08) 9px, rgba(196,112,79,0.08) 10px
+      );
+      background-size: 4px 10px;
+      background-repeat: repeat-y;
+      background-position: left top;
     }
     .form-section:last-child { border-bottom: none; }
+    .form-section:hover {
+      border-left-color: var(--terracotta);
+      transition: border-left-color 0.3s;
+    }
     .form-section-title {
       font-family: 'Playfair Display', serif;
       font-size: 1.2rem;
@@ -460,13 +545,14 @@
   </div>
 
   <!-- ===== PAGE HEADER ===== -->
-  <div class="book-header">
+  <div class="book-header brick-bg">
     <div class="container">
       <span class="section-label">Badri Homes · Patan, Nepal</span>
       <h1>Book Your Stay</h1>
       <p>Fill in your details and we'll confirm your reservation within a few hours.</p>
     </div>
   </div>
+  <div class="brick-divider"></div>
 
   <!-- ===== MAIN ===== -->
   <div class="book-main">
@@ -739,6 +825,8 @@
       </div>
     </div>
   </div>
+
+  <div class="brick-divider"></div>
 
   <!-- ===== FOOTER ===== -->
   <footer>
