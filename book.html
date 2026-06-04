@@ -325,6 +325,19 @@
       transition: background 0.2s;
     }
     .slider-dot.active { background: #fff; }
+    .slide-placeholder {
+      width: 100%; height: 100%;
+      background: linear-gradient(135deg, var(--brown) 0%, var(--terracotta) 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      color: #fff;
+    }
+    .slide-placeholder i { font-size: 3rem; opacity: 0.9; }
+    .slide-placeholder span { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; }
+    .slide-placeholder p { font-size: 0.85rem; opacity: 0.8; margin: 0; }
 
     .summary-body {
       padding: 24px;
@@ -655,6 +668,22 @@
               <div class="room-slide">
                 <picture><source srcset="assets/img/room.webp" type="image/webp" /><img src="assets/img/room.jpg" alt="Studio Room" /></picture>
                 <div class="slider-caption"><i class="fa-solid fa-home" style="margin-right:6px;"></i>Full Studio – Private &amp; Self-Contained</div>
+              </div>
+              <div class="room-slide">
+                <div class="slide-placeholder">
+                  <i class="fa-solid fa-wind"></i>
+                  <span>Air Conditioning</span>
+                  <p>Split A/C in every room</p>
+                </div>
+                <div class="slider-caption"><i class="fa-solid fa-wind" style="margin-right:6px;"></i>Air Conditioning – All Rooms</div>
+              </div>
+              <div class="room-slide">
+                <div class="slide-placeholder">
+                  <i class="fa-solid fa-shirt"></i>
+                  <span>Washing Machine</span>
+                  <p>Shared laundry available</p>
+                </div>
+                <div class="slider-caption"><i class="fa-solid fa-shirt" style="margin-right:6px;"></i>Washing Machine – On Site</div>
               </div>
               <div class="slider-arrows">
                 <button class="slider-arrow" id="slidePrev"><i class="fa-solid fa-chevron-left"></i></button>
