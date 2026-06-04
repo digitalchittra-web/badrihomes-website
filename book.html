@@ -32,97 +32,64 @@
   <link rel="stylesheet" href="assets/css/footer.css" />
 
   <style>
-    /* ===== BRICK PATTERN ===== */
-    .brick-bg {
-      position: relative;
-      overflow: hidden;
-    }
-    .brick-bg::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        /* mortar horizontal lines */
-        repeating-linear-gradient(
-          180deg,
-          transparent,
-          transparent 22px,
-          rgba(0,0,0,0.22) 22px,
-          rgba(0,0,0,0.22) 24px
-        ),
-        /* odd-row brick vertical lines */
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 78px,
-          rgba(0,0,0,0.22) 78px,
-          rgba(0,0,0,0.22) 80px
-        );
-      background-size: 80px 24px, 80px 48px;
-      background-position: 0 0, 0 0;
-      pointer-events: none;
-      z-index: 0;
-    }
-    /* offset every other row */
-    .brick-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background-image:
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 78px,
-          rgba(0,0,0,0.22) 78px,
-          rgba(0,0,0,0.22) 80px
-        );
-      background-size: 80px 48px;
-      background-position: 40px 24px;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .brick-bg > * { position: relative; z-index: 1; }
-
     /* ===== PAGE HEADER ===== */
     .book-header {
-      background: linear-gradient(135deg, var(--brown) 0%, var(--terracotta) 100%);
-      padding: 120px 0 60px;
+      position: relative;
+      background: linear-gradient(160deg, #2C1810 0%, #6B4226 45%, #C4704F 100%);
+      padding: 130px 0 90px;
       text-align: center;
       color: var(--white);
+      overflow: hidden;
     }
-    .book-header .section-label { color: rgba(255,255,255,0.75); }
+    /* Subtle dot-grid pattern */
+    .book-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    /* Decorative corner ornaments */
+    .book-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px; left: 0; right: 0;
+      height: 60px;
+      background: var(--beige);
+      clip-path: ellipse(55% 100% at 50% 100%);
+    }
+    .book-header .container { position: relative; z-index: 1; }
+    .book-header .section-label {
+      color: var(--gold);
+      letter-spacing: 0.2em;
+    }
     .book-header h1 {
-      font-size: clamp(2rem, 5vw, 3rem);
+      font-size: clamp(2rem, 5vw, 3.2rem);
       color: var(--white);
       margin: 12px 0 16px;
     }
     .book-header p {
-      color: rgba(255,255,255,0.8);
+      color: rgba(255,255,255,0.75);
       font-size: 1.05rem;
       max-width: 500px;
       margin: 0 auto;
     }
-    /* Brick divider strip between header and form */
-    .brick-divider {
-      height: 48px;
-      background-color: var(--terracotta-dark);
-      background-image:
-        repeating-linear-gradient(
-          180deg,
-          transparent,
-          transparent 22px,
-          rgba(0,0,0,0.2) 22px,
-          rgba(0,0,0,0.2) 24px
-        ),
-        repeating-linear-gradient(
-          90deg,
-          transparent,
-          transparent 78px,
-          rgba(0,0,0,0.2) 78px,
-          rgba(0,0,0,0.2) 80px
-        );
-      background-size: 80px 24px;
+    /* Gold decorative line under title */
+    .book-header-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px auto 0;
+      max-width: 280px;
     }
+    .book-header-line span {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .book-header-line i { color: var(--gold); font-size: 0.7rem; }
 
     /* ===== MAIN LAYOUT ===== */
     .book-main {
@@ -545,14 +512,18 @@
   </div>
 
   <!-- ===== PAGE HEADER ===== -->
-  <div class="book-header brick-bg">
+  <div class="book-header">
     <div class="container">
       <span class="section-label">Badri Homes · Patan, Nepal</span>
       <h1>Book Your Stay</h1>
       <p>Fill in your details and we'll confirm your reservation within a few hours.</p>
+      <div class="book-header-line">
+        <span></span>
+        <i class="fa-solid fa-diamond"></i>
+        <span></span>
+      </div>
     </div>
   </div>
-  <div class="brick-divider"></div>
 
   <!-- ===== MAIN ===== -->
   <div class="book-main">
@@ -825,8 +796,6 @@
       </div>
     </div>
   </div>
-
-  <div class="brick-divider"></div>
 
   <!-- ===== FOOTER ===== -->
   <footer>
