@@ -13,7 +13,7 @@
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   gap: 64px;
-  align-items: start;
+  align-items: stretch;
 }
 .contact-info h2 { margin-bottom: 16px; }
 .contact-info p { color: var(--text-light); margin-bottom: 36px; line-height: 1.75; }
