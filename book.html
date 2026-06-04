@@ -257,15 +257,75 @@
       box-shadow: 0 8px 40px var(--shadow);
       overflow: hidden;
     }
-    .summary-img {
-      height: 200px;
+
+    /* Photo Slider */
+    .room-slider {
+      position: relative;
+      height: 260px;
       overflow: hidden;
+      background: var(--text-dark);
     }
-    .summary-img img {
-      width: 100%;
-      height: 100%;
+    .room-slide {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.7s ease;
+    }
+    .room-slide.active { opacity: 1; }
+    .room-slide img {
+      width: 100%; height: 100%;
       object-fit: cover;
     }
+    .room-slide picture { display: block; width: 100%; height: 100%; }
+    .slider-caption {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      background: linear-gradient(transparent, rgba(0,0,0,0.6));
+      color: #fff;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 20px 14px 10px;
+      letter-spacing: 0.04em;
+    }
+    .slider-arrows {
+      position: absolute;
+      top: 50%; transform: translateY(-50%);
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 8px;
+      pointer-events: none;
+    }
+    .slider-arrow {
+      pointer-events: all;
+      background: rgba(255,255,255,0.2);
+      border: none;
+      color: #fff;
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.8rem;
+      backdrop-filter: blur(4px);
+      transition: background 0.2s;
+    }
+    .slider-arrow:hover { background: rgba(255,255,255,0.4); }
+    .slider-dots {
+      position: absolute;
+      bottom: 10px; right: 12px;
+      display: flex; gap: 5px;
+    }
+    .slider-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.5);
+      cursor: pointer;
+      border: none;
+      padding: 0;
+      transition: background 0.2s;
+    }
+    .slider-dot.active { background: #fff; }
+
     .summary-body {
       padding: 24px;
     }
@@ -466,9 +526,9 @@
                     <label>Room Type *</label>
                     <select name="roomType" id="roomType" required>
                       <option value="">Select a room</option>
-                      <option value="studio-full" data-rate="2500">Full Studio (Entire floor)</option>
-                      <option value="studio-queen" data-rate="1800">Queen Room (En-suite)</option>
-                      <option value="twin" data-rate="1500">Twin Room</option>
+                      <option value="001" data-rate="3000">001 Studio Apartment (Ground Floor)</option>
+                      <option value="002" data-rate="3000">002 Studio Apartment (First Floor)</option>
+                      <option value="003" data-rate="3000">003 Studio Apartment (Second Floor)</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -502,8 +562,8 @@
                 <label class="payment-card selected" id="payArrivalCard">
                   <input type="radio" name="payment" value="arrival" checked />
                   <div class="payment-card-icon"><i class="fa-solid fa-hand-holding-dollar"></i></div>
-                  <div class="payment-card-title">Pay on Arrival</div>
-                  <div class="payment-card-desc">No prepayment needed. Pay when you arrive.</div>
+                  <div class="payment-card-title">Payment on Arrival</div>
+                  <div class="payment-card-desc">No prepayment needed. Pay when you check in.</div>
                   <div class="payment-apps">
                     <span class="app-badge">Cash</span>
                     <span class="app-badge">eSewa</span>
@@ -511,13 +571,15 @@
                     <span class="app-badge">IME Pay</span>
                   </div>
                 </label>
-                <label class="payment-card" id="payBankCard">
-                  <input type="radio" name="payment" value="bank" />
+                <label class="payment-card" id="payPreCard">
+                  <input type="radio" name="payment" value="prepayment" />
                   <div class="payment-card-icon"><i class="fa-solid fa-building-columns"></i></div>
-                  <div class="payment-card-title">Bank Transfer</div>
-                  <div class="payment-card-desc">Transfer in advance to secure your booking.</div>
+                  <div class="payment-card-title">Pre-payment</div>
+                  <div class="payment-card-desc">Pay in advance via bank transfer to secure your room.</div>
                   <div class="payment-apps">
-                    <span class="app-badge">Rastriya Banijya</span>
+                    <span class="app-badge">Bank Transfer</span>
+                    <span class="app-badge">eSewa</span>
+                    <span class="app-badge">Khalti</span>
                   </div>
                 </label>
               </div>
@@ -526,7 +588,7 @@
                 <strong>Account Name:</strong> Badri Homes<br />
                 <strong>Account Number:</strong> XXXX-XXXX-XXXX<br />
                 <strong>Branch:</strong> Patan, Lalitpur<br /><br />
-                Please send a screenshot of your transfer to <strong>homesbadri@gmail.com</strong> or WhatsApp.
+                Please send a screenshot of your transfer to <strong>homesbadri@gmail.com</strong> or WhatsApp to confirm your booking.
               </div>
             </div>
 
@@ -560,8 +622,45 @@
         <!-- RIGHT: SUMMARY -->
         <div class="book-summary">
           <div class="summary-card">
-            <div class="summary-img">
-              <img src="Images/Rooms/bed.jpg" alt="Badri Homes Room" />
+            <!-- Room Photo Slider -->
+            <div class="room-slider" id="roomSlider">
+              <div class="room-slide active">
+                <picture><source srcset="assets/img/bed.webp" type="image/webp" /><img src="assets/img/bed.jpg" alt="Bedroom" /></picture>
+                <div class="slider-caption"><i class="fa-solid fa-bed" style="margin-right:6px;"></i>Bedroom – Queen Bed</div>
+              </div>
+              <div class="room-slide">
+                <picture><source srcset="assets/img/bed1.webp" type="image/webp" /><img src="assets/img/bed1.jpg" alt="Bedroom" /></picture>
+                <div class="slider-caption"><i class="fa-solid fa-bed" style="margin-right:6px;"></i>Bedroom – Cozy & Warm</div>
+              </div>
+              <div class="room-slide">
+                <picture><source srcset="assets/img/kitchen.webp" type="image/webp" /><img src="assets/img/kitchen.jpg" alt="Kitchen" /></picture>
+                <div class="slider-caption"><i class="fa-solid fa-kitchen-set" style="margin-right:6px;"></i>Private Kitchen – Fully Equipped</div>
+              </div>
+              <div class="room-slide">
+                <picture><source srcset="assets/img/tv.webp" type="image/webp" /><img src="assets/img/tv.jpg" alt="TV Lounge" /></picture>
+                <div class="slider-caption"><i class="fa-solid fa-couch" style="margin-right:6px;"></i>TV Lounge – Smart TV</div>
+              </div>
+              <div class="room-slide">
+                <picture><source srcset="assets/img/lobby.webp" type="image/webp" /><img src="assets/img/lobby.jpg" alt="Lobby" /></picture>
+                <div class="slider-caption"><i class="fa-solid fa-door-open" style="margin-right:6px;"></i>Common Area</div>
+              </div>
+              <div class="room-slide">
+                <picture><source srcset="assets/img/toilet.webp" type="image/webp" /><img src="assets/img/toilet.jpg" alt="Bathroom" /></picture>
+                <div class="slider-caption"><i class="fa-solid fa-shower" style="margin-right:6px;"></i>En-suite Bathroom</div>
+              </div>
+              <div class="room-slide">
+                <picture><source srcset="assets/img/toilet2.webp" type="image/webp" /><img src="assets/img/toilet2.jpg" alt="Bathroom" /></picture>
+                <div class="slider-caption"><i class="fa-solid fa-bath" style="margin-right:6px;"></i>Bathroom – Hot Water 24/7</div>
+              </div>
+              <div class="room-slide">
+                <picture><source srcset="assets/img/room.webp" type="image/webp" /><img src="assets/img/room.jpg" alt="Studio Room" /></picture>
+                <div class="slider-caption"><i class="fa-solid fa-home" style="margin-right:6px;"></i>Full Studio – Private &amp; Self-Contained</div>
+              </div>
+              <div class="slider-arrows">
+                <button class="slider-arrow" id="slidePrev"><i class="fa-solid fa-chevron-left"></i></button>
+                <button class="slider-arrow" id="slideNext"><i class="fa-solid fa-chevron-right"></i></button>
+              </div>
+              <div class="slider-dots" id="sliderDots"></div>
             </div>
             <div class="summary-body">
               <div class="summary-title">Badri Homes</div>
@@ -718,8 +817,8 @@
     document.querySelectorAll('input[name="payment"]').forEach(function (radio) {
       radio.addEventListener('change', function () {
         document.getElementById('payArrivalCard').classList.toggle('selected', this.value === 'arrival');
-        document.getElementById('payBankCard').classList.toggle('selected', this.value === 'bank');
-        document.getElementById('bankDetails').classList.toggle('visible', this.value === 'bank');
+        document.getElementById('payPreCard').classList.toggle('selected', this.value === 'prepayment');
+        document.getElementById('bankDetails').classList.toggle('visible', this.value === 'prepayment');
       });
     });
 
@@ -734,7 +833,7 @@
       const co      = data.get('checkout');
       const room    = document.getElementById('roomType').options[document.getElementById('roomType').selectedIndex].text;
       const guests  = data.get('guests');
-      const payment = data.get('payment') === 'bank' ? 'Bank Transfer' : 'Pay on Arrival';
+      const payment = data.get('payment') === 'prepayment' ? 'Pre-payment (Bank Transfer)' : 'Payment on Arrival';
       const notes   = data.get('requests') || 'None';
 
       const subject = encodeURIComponent('Booking Request – Badri Homes');
@@ -755,6 +854,45 @@
 
       window.location.href = 'mailto:homesbadri@gmail.com?subject=' + subject + '&body=' + body;
     });
+
+    // ===== ROOM PHOTO SLIDER =====
+    (function () {
+      const slides   = Array.from(document.querySelectorAll('#roomSlider .room-slide'));
+      const dotsWrap = document.getElementById('sliderDots');
+      let cur = 0;
+      const total = slides.length;
+
+      slides.forEach((_, i) => {
+        const d = document.createElement('button');
+        d.className = 'slider-dot' + (i === 0 ? ' active' : '');
+        d.setAttribute('aria-label', 'Photo ' + (i + 1));
+        d.onclick = () => goTo(i);
+        dotsWrap.appendChild(d);
+      });
+
+      function goTo(n) {
+        slides[cur].classList.remove('active');
+        dotsWrap.children[cur].classList.remove('active');
+        cur = (n + total) % total;
+        slides[cur].classList.add('active');
+        dotsWrap.children[cur].classList.add('active');
+      }
+
+      document.getElementById('slidePrev').onclick = () => goTo(cur - 1);
+      document.getElementById('slideNext').onclick = () => goTo(cur + 1);
+
+      // Touch swipe
+      let tx = 0;
+      const slider = document.getElementById('roomSlider');
+      slider.addEventListener('touchstart', e => { tx = e.changedTouches[0].clientX; }, { passive: true });
+      slider.addEventListener('touchend', e => {
+        const dx = e.changedTouches[0].clientX - tx;
+        if (Math.abs(dx) > 40) goTo(dx < 0 ? cur + 1 : cur - 1);
+      }, { passive: true });
+
+      // Auto-advance
+      setInterval(() => goTo(cur + 1), 3500);
+    })();
   </script>
 </body>
 </html>
