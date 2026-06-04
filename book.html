@@ -91,20 +91,6 @@
     }
     .book-header-line i { color: var(--gold); font-size: 0.7rem; }
 
-    /* Nepalese temple silhouette */
-    .temple-silhouette {
-      position: absolute;
-      bottom: 58px; left: 0; right: 0;
-      width: 100%; height: 160px;
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.18;
-    }
-    .temple-silhouette svg {
-      width: 100%; height: 100%;
-      display: block;
-    }
-
     /* ===== MAIN LAYOUT ===== */
     .book-main {
       background: var(--beige);
@@ -527,100 +513,6 @@
 
   <!-- ===== PAGE HEADER ===== -->
   <div class="book-header">
-    <!-- Nepalese temple skyline silhouette -->
-    <div class="temple-silhouette" aria-hidden="true">
-      <svg viewBox="0 0 1440 160" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg" fill="rgba(255,220,140,1)">
-        <!-- Far-left small pagoda -->
-        <polygon points="60,160 60,115 65,110 70,105 75,100 80,95 85,100 90,105 95,110 100,115 100,160"/>
-        <rect x="62" y="115" width="36" height="8"/>
-        <polygon points="64,115 64,98 75,90 86,98 86,115"/>
-        <rect x="66" y="98" width="18" height="6"/>
-        <polygon points="68,98 68,88 75,82 82,88 82,98"/>
-        <polygon points="72,88 75,78 78,88"/>
-
-        <!-- Left pagoda (3-tier) -->
-        <rect x="160" y="130" width="80" height="30"/>
-        <polygon points="155,130 200,120 245,130"/>
-        <rect x="168" y="110" width="64" height="20"/>
-        <polygon points="163,110 200,100 237,110"/>
-        <rect x="176" y="90" width="48" height="20"/>
-        <polygon points="171,90 200,78 229,90"/>
-        <rect x="184" y="72" width="32" height="18"/>
-        <polygon points="179,72 200,60 221,72"/>
-        <rect x="190" y="55" width="20" height="17"/>
-        <polygon points="186,55 200,44 214,55"/>
-        <!-- Finial -->
-        <rect x="197" y="35" width="6" height="9"/>
-        <polygon points="197,35 200,28 203,35"/>
-
-        <!-- Center Shikhara spire (like Krishnamandir) -->
-        <rect x="650" y="100" width="140" height="60"/>
-        <polygon points="645,100 720,88 795,100"/>
-        <rect x="660" y="80" width="120" height="20"/>
-        <polygon points="655,80 720,68 785,80"/>
-        <rect x="670" y="62" width="100" height="18"/>
-        <polygon points="665,62 720,50 775,62"/>
-        <rect x="678" y="46" width="84" height="16"/>
-        <polygon points="673,46 720,34 767,46"/>
-        <rect x="686" y="30" width="68" height="16"/>
-        <polygon points="682,30 720,18 758,30"/>
-        <rect x="692" y="16" width="56" height="14"/>
-        <polygon points="690,16 720,4 750,16"/>
-        <!-- Shikhara curvilinear top -->
-        <path d="M704,16 Q720,0 736,16 L740,4 Q720,-8 700,4 Z"/>
-        <rect x="717" y="-2" width="6" height="6"/>
-
-        <!-- Right pagoda (3-tier) -->
-        <rect x="1200" y="130" width="80" height="30"/>
-        <polygon points="1195,130 1240,120 1285,130"/>
-        <rect x="1208" y="110" width="64" height="20"/>
-        <polygon points="1203,110 1240,100 1277,110"/>
-        <rect x="1216" y="90" width="48" height="20"/>
-        <polygon points="1211,90 1240,78 1269,90"/>
-        <rect x="1224" y="72" width="32" height="18"/>
-        <polygon points="1219,72 1240,60 1261,72"/>
-        <rect x="1230" y="55" width="20" height="17"/>
-        <polygon points="1226,55 1240,44 1254,55"/>
-        <rect x="1237" y="35" width="6" height="20"/>
-        <polygon points="1237,35 1240,28 1243,35"/>
-
-        <!-- Far-right small pagoda -->
-        <polygon points="1340,160 1340,115 1345,110 1350,105 1355,100 1360,95 1365,100 1370,105 1375,110 1380,115 1380,160"/>
-        <rect x="1342" y="115" width="36" height="8"/>
-        <polygon points="1344,115 1344,98 1355,90 1366,98 1366,115"/>
-        <rect x="1346" y="98" width="18" height="6"/>
-        <polygon points="1348,98 1348,88 1355,82 1362,88 1362,98"/>
-        <polygon points="1352,88 1355,78 1358,88"/>
-
-        <!-- Medium pagoda mid-left -->
-        <rect x="420" y="135" width="60" height="25"/>
-        <polygon points="415,135 450,126 485,135"/>
-        <rect x="426" y="118" width="48" height="17"/>
-        <polygon points="421,118 450,108 479,118"/>
-        <rect x="432" y="103" width="36" height="15"/>
-        <polygon points="427,103 450,93 473,103"/>
-        <rect x="438" y="88" width="24" height="15"/>
-        <polygon points="433,88 450,78 467,88"/>
-        <rect x="445" y="70" width="10" height="18"/>
-        <polygon points="444,70 450,62 456,70"/>
-
-        <!-- Medium pagoda mid-right -->
-        <rect x="960" y="135" width="60" height="25"/>
-        <polygon points="955,135 990,126 1025,135"/>
-        <rect x="966" y="118" width="48" height="17"/>
-        <polygon points="961,118 990,108 1019,118"/>
-        <rect x="972" y="103" width="36" height="15"/>
-        <polygon points="967,103 990,93 1013,103"/>
-        <rect x="978" y="88" width="24" height="15"/>
-        <polygon points="973,88 990,78 1007,88"/>
-        <rect x="985" y="70" width="10" height="18"/>
-        <polygon points="984,70 990,62 996,70"/>
-
-        <!-- Ground baseline -->
-        <rect x="0" y="155" width="1440" height="5"/>
-      </svg>
-    </div>
-
     <div class="container">
       <span class="section-label">Badri Homes · Patan, Nepal</span>
       <h1>Book Your Stay</h1>
