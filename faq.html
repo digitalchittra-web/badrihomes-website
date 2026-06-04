@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FAQ | Badri Homes – Newari Homestay in Patan, Nepal</title>
+  <meta name="description" content="Frequently asked questions about Badri Homes. Find answers about booking, rooms, amenities, location, and more." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://badrihomes.com/faq.html" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://badrihomes.com/faq.html" />
+  <meta property="og:title" content="FAQ | Badri Homes – Patan, Nepal" />
+  <meta property="og:description" content="Get answers to common questions about booking, rooms, amenities, and your stay at Badri Homes." />
+  <meta property="og:image" content="https://badrihomes.com/building.jpg" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "name": "FAQ – Badri Homes",
+    "url": "https://badrihomes.com/faq.html",
+    "description": "Frequently asked questions about Badri Homes",
+    "isPartOf": { "@type": "WebSite", "url": "https://badrihomes.com" }
+  }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="assets/css/base.css" />
+  <link rel="stylesheet" href="assets/css/nav.css" />
+  <link rel="stylesheet" href="assets/css/footer.css" />
+
+  <style>
+    /* ===== FAQ PAGE HEADER ===== */
+    .faq-header {
+      position: relative;
+      background: linear-gradient(135deg, #2C1810 0%, #6B4226 50%, #C4704F 100%);
+      padding: 80px 0 60px;
+      text-align: center;
+      color: var(--white);
+      overflow: hidden;
+    }
+    .faq-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.06) 1px, transparent 1px);
+      background-size: 28px 28px;
+      pointer-events: none;
+    }
+    .faq-header .container { position: relative; z-index: 1; }
+    .faq-header .section-label {
+      color: var(--gold);
+      letter-spacing: 0.2em;
+      font-size: 0.85rem;
+    }
+    .faq-header h1 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: var(--white);
+      margin: 12px 0 16px;
+      font-family: var(--font-display);
+    }
+    .faq-header p {
+      color: rgba(255,255,255,0.75);
+      font-size: 1.05rem;
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    /* ===== FAQ MAIN ===== */
+    .faq-main {
+      background: var(--beige);
+      padding: 80px 0;
+    }
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* ===== FAQ CATEGORIES ===== */
+    .faq-categories {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 60px;
+    }
+    .faq-category-btn {
+      padding: 10px 20px;
+      border: 2px solid var(--terracotta);
+      background: transparent;
+      color: var(--terracotta);
+      border-radius: 25px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+      font-size: 0.9rem;
+    }
+    .faq-category-btn:hover,
+    .faq-category-btn.active {
+      background: var(--terracotta);
+      color: var(--white);
+    }
+
+    /* ===== FAQ ITEM ===== */
+    .faq-item {
+      background: var(--white);
+      border-radius: var(--radius-md);
+      margin-bottom: 16px;
+      box-shadow: 0 2px 12px var(--shadow);
+      overflow: hidden;
+      transition: box-shadow 0.3s;
+    }
+    .faq-item:hover {
+      box-shadow: 0 4px 20px var(--shadow);
+    }
+    .faq-item.hidden {
+      display: none;
+    }
+
+    .faq-question {
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+      background: var(--white);
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      transition: background 0.3s;
+    }
+    .faq-question:hover {
+      background: rgba(196,112,79,0.04);
+    }
+    .faq-question .icon {
+      font-size: 1.2rem;
+      color: var(--terracotta);
+      transition: transform 0.3s;
+      margin-left: 16px;
+      flex-shrink: 0;
+    }
+    .faq-item.open .faq-question {
+      background: linear-gradient(90deg, rgba(196,112,79,0.08) 0%, transparent 100%);
+    }
+    .faq-item.open .faq-question .icon {
+      transform: rotate(180deg);
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease;
+      background: rgba(196,112,79,0.02);
+    }
+    .faq-item.open .faq-answer {
+      max-height: 500px;
+      padding: 0 24px 24px;
+    }
+    .faq-answer-text {
+      color: var(--text);
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+    .faq-answer-text a {
+      color: var(--terracotta);
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid var(--terracotta);
+    }
+    .faq-answer-text a:hover {
+      color: var(--gold);
+      border-bottom-color: var(--gold);
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .faq-header {
+        padding: 60px 0 50px;
+      }
+      .faq-header h1 {
+        font-size: 2rem;
+      }
+      .faq-main {
+        padding: 60px 0;
+      }
+      .faq-container {
+        padding: 0 20px;
+      }
+      .faq-question {
+        font-size: 0.95rem;
+        padding: 18px 20px;
+      }
+      .faq-categories {
+        margin-bottom: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- ===== NAV ===== -->
+  <div class="nav-wrapper">
+    <nav class="navbar">
+      <div class="nav-brand">
+        <a href="index.html" class="logo">Badri Homes</a>
+        <button class="mobile-menu-btn" onclick="toggleMobile()">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+      <ul class="nav-menu">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="book.html" class="nav-book-btn">Book Now</a></li>
+        <li><a href="faq.html" class="active">FAQ</a></li>
+      </ul>
+      <a href="book.html" class="mobile-book-btn" onclick="closeMobile()"><i class="fa-solid fa-calendar-days"></i><span>Book Your Stay</span></a>
+    </nav>
+  </div>
+
+  <!-- ===== PAGE HEADER ===== -->
+  <div class="faq-header">
+    <div class="container">
+      <span class="section-label">Badri Homes · Patan, Nepal</span>
+      <h1>Frequently Asked Questions</h1>
+      <p>Find answers to common questions about our homestay, booking, rooms, and your stay.</p>
+    </div>
+  </div>
+
+  <!-- ===== MAIN ===== -->
+  <div class="faq-main">
+    <div class="faq-container">
+      <!-- Category Filter -->
+      <div class="faq-categories">
+        <button class="faq-category-btn active" data-category="all">All</button>
+        <button class="faq-category-btn" data-category="booking">Booking</button>
+        <button class="faq-category-btn" data-category="rooms">Rooms</button>
+        <button class="faq-category-btn" data-category="amenities">Amenities</button>
+        <button class="faq-category-btn" data-category="location">Location</button>
+        <button class="faq-category-btn" data-category="policies">Policies</button>
+      </div>
+
+      <!-- BOOKING -->
+      <div class="faq-item" data-category="booking">
+        <button class="faq-question">
+          <span>How do I make a booking?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">You can book directly on our <a href="book.html">booking page</a>. Simply fill in your details, select your room and dates, choose your payment method, and submit. We'll confirm your reservation within a few hours via email or WhatsApp.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="booking">
+        <button class="faq-question">
+          <span>What payment methods do you accept?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">We offer two flexible payment options:</p>
+          <p class="faq-answer-text"><strong>Payment on Arrival:</strong> Pay in cash (NPR), eSewa, Khalti, or IME Pay when you arrive.</p>
+          <p class="faq-answer-text"><strong>Pre-payment:</strong> Bank transfer, eSewa, or Khalti before arrival.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="booking">
+        <button class="faq-question">
+          <span>Can I cancel or modify my booking?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes, you can cancel or modify your booking up to 48 hours before check-in without any penalty. For cancellations within 48 hours, 50% of the booking amount will be retained. Contact us at <a href="mailto:homesbadri@gmail.com">homesbadri@gmail.com</a> or WhatsApp for changes.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="booking">
+        <button class="faq-question">
+          <span>How will I receive my booking confirmation?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">You'll receive a confirmation email and WhatsApp message with your booking details, payment instructions (if applicable), and check-in information within a few hours of submitting your booking form.</p>
+        </div>
+      </div>
+
+      <!-- ROOMS -->
+      <div class="faq-item" data-category="rooms">
+        <button class="faq-question">
+          <span>What types of rooms do you offer?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">We offer three private studio apartments:</p>
+          <p class="faq-answer-text"><strong>Room 001 (Ground Floor):</strong> Queen bed, private kitchen, en-suite bathroom</p>
+          <p class="faq-answer-text"><strong>Room 002 (First Floor):</strong> Queen bed, private kitchen, en-suite bathroom, TV lounge access</p>
+          <p class="faq-answer-text"><strong>Room 003 (Second Floor):</strong> Queen bed, private kitchen, en-suite bathroom, best views of Patan</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="rooms">
+        <button class="faq-question">
+          <span>What amenities are included in each room?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Every room includes:</p>
+          <p class="faq-answer-text">• Queen bed with premium linens</p>
+          <p class="faq-answer-text">• Fully equipped private kitchen (stove, refrigerator, utensils)</p>
+          <p class="faq-answer-text">• En-suite bathroom with hot water shower</p>
+          <p class="faq-answer-text">• Free high-speed Wi-Fi</p>
+          <p class="faq-answer-text">• Air-conditioning</p>
+          <p class="faq-answer-text">• Washing machine</p>
+          <p class="faq-answer-text">• Work desk and seating area</p>
+          <p class="faq-answer-text">• Heater (winter months)</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="rooms">
+        <button class="faq-question">
+          <span>Can I upgrade or downgrade my room?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes, room upgrades and downgrades are available based on availability. Contact us at <a href="mailto:homesbadri@gmail.com">homesbadri@gmail.com</a> or WhatsApp, and we'll help you adjust your booking.</p>
+        </div>
+      </div>
+
+      <!-- AMENITIES -->
+      <div class="faq-item" data-category="amenities">
+        <button class="faq-question">
+          <span>Is Wi-Fi available?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes, high-speed Wi-Fi is included free of charge in all rooms. Perfect for remote work or staying connected with family and friends.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="amenities">
+        <button class="faq-question">
+          <span>Can I cook in my room?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes, each room has a fully equipped private kitchen with a gas stove, refrigerator, cookware, and utensils. You're welcome to cook your own meals anytime.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="amenities">
+        <button class="faq-question">
+          <span>Is there air conditioning?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes, all rooms have air-conditioning. During winter months, heating is also available to keep you comfortable.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="amenities">
+        <button class="faq-question">
+          <span>Is there a washing machine?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes, each room has its own washing machine for your convenience. Detergent can be purchased locally or provided upon request.</p>
+        </div>
+      </div>
+
+      <!-- LOCATION -->
+      <div class="faq-item" data-category="location">
+        <button class="faq-question">
+          <span>How far is Badri Homes from Patan Durbar Square?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Badri Homes is only a 5-minute walk from Patan Durbar Square, one of Nepal's UNESCO World Heritage Sites. Perfect for exploring the historic temple complex and surrounding markets.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="location">
+        <button class="faq-question">
+          <span>How do I reach Badri Homes from the airport?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">From Tribhuvan International Airport in Kathmandu (about 20 km away):</p>
+          <p class="faq-answer-text"><strong>By Taxi:</strong> ~45-60 minutes, approximately NPR 600-800</p>
+          <p class="faq-answer-text"><strong>By Local Bus:</strong> ~1.5 hours, inexpensive but slower</p>
+          <p class="faq-answer-text"><strong>By Uber/Ride-hailing:</strong> Available from the airport</p>
+          <p class="faq-answer-text">We can help arrange pickup on request.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="location">
+        <button class="faq-question">
+          <span>What's nearby Badri Homes?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Nearby attractions include:</p>
+          <p class="faq-answer-text">• Patan Durbar Square (5 min walk) - UNESCO World Heritage Site</p>
+          <p class="faq-answer-text">• Krishna Mandir Temple (2 min walk)</p>
+          <p class="faq-answer-text">• Newari traditional shops and restaurants</p>
+          <p class="faq-answer-text">• Local markets for authentic Nepalese crafts</p>
+          <p class="faq-answer-text">• Astamangal Stupa (15 min walk)</p>
+          <p class="faq-answer-text">• Machhindranath Temple (walking distance)</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="location">
+        <button class="faq-question">
+          <span>Is the location safe?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Yes, Patan is a safe, tourist-friendly area with a strong community presence. The neighborhood around Patan Durbar Square is well-lit, populated, and secure. We recommend the usual travel precautions (secure valuables, avoid walking alone late at night), but our guests consistently report feeling safe.</p>
+        </div>
+      </div>
+
+      <!-- POLICIES -->
+      <div class="faq-item" data-category="policies">
+        <button class="faq-question">
+          <span>What's your check-in and check-out time?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text"><strong>Check-in:</strong> 2:00 PM onwards</p>
+          <p class="faq-answer-text"><strong>Check-out:</strong> 11:00 AM</p>
+          <p class="faq-answer-text">Early check-in and late checkout are available upon request (subject to availability and possible surcharge).</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="policies">
+        <button class="faq-question">
+          <span>Are pets allowed?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">Pets are not allowed at Badri Homes due to the shared nature of the property. However, contact us to discuss your specific situation.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="policies">
+        <button class="faq-question">
+          <span>Are there any house rules?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">We ask guests to:</p>
+          <p class="faq-answer-text">• Respect quiet hours (10 PM - 8 AM)</p>
+          <p class="faq-answer-text">• Keep rooms and shared areas clean</p>
+          <p class="faq-answer-text">• Don't smoke inside rooms</p>
+          <p class="faq-answer-text">• Lock doors when away</p>
+          <p class="faq-answer-text">• Report any damage immediately</p>
+          <p class="faq-answer-text">We're flexible and understanding of guests' needs.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="policies">
+        <button class="faq-question">
+          <span>What happens if there's a problem during my stay?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">We're here to help! Contact us immediately via:</p>
+          <p class="faq-answer-text">• WhatsApp: <a href="https://wa.me/9779851047861">+977 9851047861</a></p>
+          <p class="faq-answer-text">• Phone: +977 9851047861 or +977 9849076394</p>
+          <p class="faq-answer-text">• Email: <a href="mailto:homesbadri@gmail.com">homesbadri@gmail.com</a></p>
+          <p class="faq-answer-text">We'll respond as quickly as possible to resolve any issues.</p>
+        </div>
+      </div>
+
+      <div class="faq-item" data-category="policies">
+        <button class="faq-question">
+          <span>Is there a minimum or maximum stay requirement?</span>
+          <i class="fa-solid fa-chevron-down icon"></i>
+        </button>
+        <div class="faq-answer">
+          <p class="faq-answer-text">No minimum or maximum stay required. We welcome guests for single nights, weeks, or longer-term stays. Discounts may be available for extended bookings — contact us directly for details.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== FOOTER ===== -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h3>Badri Homes</h3>
+          <p>A family-run Newari homestay in the heart of historic Patan, Lalitpur, Nepal.</p>
+        </div>
+        <div class="footer-links">
+          <h4>Quick Links</h4>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="book.html">Book Now</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+          </ul>
+        </div>
+        <div class="footer-contact">
+          <h4>Contact Us</h4>
+          <p><i class="fa-solid fa-phone"></i> <a href="tel:+9779851047861">+977 9851047861</a></p>
+          <p><i class="fa-solid fa-envelope"></i> <a href="mailto:homesbadri@gmail.com">homesbadri@gmail.com</a></p>
+          <p><i class="fa-solid fa-location-dot"></i> Saugal Tole, Patan, Nepal</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2026 Badri Homes. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // FAQ Accordion Toggle
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        item.classList.toggle('open');
+      });
+    });
+
+    // Category Filter
+    document.querySelectorAll('.faq-category-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        // Update active button
+        document.querySelectorAll('.faq-category-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        // Filter items
+        const category = btn.dataset.category;
+        document.querySelectorAll('.faq-item').forEach(item => {
+          if (category === 'all' || item.dataset.category === category) {
+            item.classList.remove('hidden');
+          } else {
+            item.classList.add('hidden');
+          }
+        });
+      });
+    });
+
+    // Mobile menu toggle
+    function toggleMobile() {
+      const menu = document.querySelector('.nav-menu');
+      menu.classList.toggle('active');
+    }
+
+    function closeMobile() {
+      const menu = document.querySelector('.nav-menu');
+      menu.classList.remove('active');
+    }
+  </script>
+</body>
+</html>
