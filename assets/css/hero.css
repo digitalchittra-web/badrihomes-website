@@ -24,14 +24,98 @@
   display: block;
   width: 100%; height: 100%;
 }
+/* Ken Burns animations for each slide */
+@keyframes zoom-in {
+  from { transform: scale(1); object-position: center; }
+  to { transform: scale(1.15); object-position: center; }
+}
+
+@keyframes zoom-out {
+  from { transform: scale(1.15); }
+  to { transform: scale(1); }
+}
+
+@keyframes pan-right {
+  from { transform: scale(1.08); object-position: left center; }
+  to { transform: scale(1.08); object-position: right center; }
+}
+
+@keyframes pan-left {
+  from { transform: scale(1.08); object-position: right center; }
+  to { transform: scale(1.08); object-position: left center; }
+}
+
+@keyframes pan-down {
+  from { transform: scale(1.08); object-position: center top; }
+  to { transform: scale(1.08); object-position: center bottom; }
+}
+
+@keyframes pan-up {
+  from { transform: scale(1.08); object-position: center bottom; }
+  to { transform: scale(1.08); object-position: center top; }
+}
+
+@keyframes pan-diagonal-tl {
+  from { transform: scale(1.08); object-position: right bottom; }
+  to { transform: scale(1.08); object-position: left top; }
+}
+
+@keyframes pan-diagonal-br {
+  from { transform: scale(1.08); object-position: left top; }
+  to { transform: scale(1.08); object-position: right bottom; }
+}
+
 .hero-slide img {
   width: 100%; height: 100%;
   object-fit: cover; object-position: center;
-  transform: scale(1.08);
-  transition: transform 5s ease-out;
   will-change: transform;
 }
-.hero-slide.active img { transform: scale(1); }
+
+/* Default state (idle) */
+.hero-slide img {
+  transform: scale(1.08);
+  animation: none;
+}
+
+/* Slide 1: Zoom in */
+.hero-slide:nth-child(1).active img {
+  animation: zoom-in 8s ease-out forwards;
+}
+
+/* Slide 2: Zoom out */
+.hero-slide:nth-child(2).active img {
+  animation: zoom-out 8s ease-out forwards;
+}
+
+/* Slide 3: Pan right */
+.hero-slide:nth-child(3).active img {
+  animation: pan-right 8s ease-out forwards;
+}
+
+/* Slide 4: Pan left */
+.hero-slide:nth-child(4).active img {
+  animation: pan-left 8s ease-out forwards;
+}
+
+/* Slide 5: Pan down */
+.hero-slide:nth-child(5).active img {
+  animation: pan-down 8s ease-out forwards;
+}
+
+/* Slide 6: Pan up */
+.hero-slide:nth-child(6).active img {
+  animation: pan-up 8s ease-out forwards;
+}
+
+/* Slide 7: Diagonal top-left */
+.hero-slide:nth-child(7).active img {
+  animation: pan-diagonal-tl 8s ease-out forwards;
+}
+
+/* Slide 8: Diagonal bottom-right */
+.hero-slide:nth-child(8).active img {
+  animation: pan-diagonal-br 8s ease-out forwards;
+}
 
 .hero-overlay {
   position: absolute; inset: 0; z-index: 4;

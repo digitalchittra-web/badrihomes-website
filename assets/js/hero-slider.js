@@ -68,17 +68,11 @@
 
       caption.textContent = slides[cur].dataset.caption || '';
 
-      // Reset Ken Burns on outgoing slide after transition ends
+      // Reset after transition ends
       setTimeout(() => {
         slides[prev].classList.remove('leaving');
         slides[prev].style.zIndex = '';
         slides[cur].style.zIndex  = '';
-        const oldImg = slides[prev].querySelector('img');
-        oldImg.style.transition = 'none';
-        oldImg.style.transform  = 'scale(1.08)';
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          oldImg.style.transition = '';
-        }));
         busy = false;
       }, INTERVAL);
 
