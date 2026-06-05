@@ -96,8 +96,20 @@
   <link rel="stylesheet" href="assets/css/footer.css" />
   <link rel="stylesheet" href="assets/css/availability.css" />
   <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/css/loader.css" />
 </head>
 <body>
+
+  <!-- ===== LOADING SCREEN ===== -->
+  <div id="pageLoader">
+    <div class="loader-inner">
+      <img src="logo (1).png" alt="Badri Homes" class="loader-logo" />
+      <div class="loader-homes">
+        <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <p class="loader-text">Loading your stay…</p>
+    </div>
+  </div>
 
   <!-- ===== NAV ===== -->
   <nav id="navbar">
@@ -901,6 +913,23 @@
   <script defer src="assets/js/gallery.js"></script>
   <script defer src="assets/js/contact.js"></script>
   <script defer src="assets/js/availability.js"></script>
+
+  <!-- ===== LOADER DISMISS ===== -->
+  <script>
+    (function () {
+      function hideLoader() {
+        var loader = document.getElementById('pageLoader');
+        if (loader) loader.classList.add('hidden');
+      }
+      // Hide after all images and resources are loaded
+      window.addEventListener('load', function () {
+        // Small extra delay so the first hero image is visible
+        setTimeout(hideLoader, 400);
+      });
+      // Safety fallback – never block the page longer than 5s
+      setTimeout(hideLoader, 5000);
+    })();
+  </script>
 
 </body>
 </html>
