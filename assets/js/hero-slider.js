@@ -67,7 +67,7 @@
         oldImg.style.transition = '';
       }));
       busy = false;
-    }, 1800);
+    }, 1500);
 
     startBar();
     timer = setInterval(() => goTo((cur + 1) % TOTAL), INTERVAL);
