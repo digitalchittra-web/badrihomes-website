@@ -1,4 +1,18 @@
+# Search engine crawling directives
 User-agent: *
 Allow: /
+Disallow: /admin.html
+Disallow: /admin/
 
+# Slow crawlers get delayed
+User-agent: AhrefsBot
+Crawl-delay: 10
+
+User-agent: SemrushBot
+Crawl-delay: 10
+
+# Sitemaps for discovery
 Sitemap: https://badrihomes.com/sitemap.xml
+
+# Crawl delay for all bots (1 second = friendly)
+Crawl-delay: 1
