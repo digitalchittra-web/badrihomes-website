@@ -5,6 +5,7 @@
   const thumbWrap = document.getElementById('heroThumbs');
   const caption   = document.getElementById('heroCaption');
   const bar       = document.getElementById('heroProgressBar');
+  const hero      = document.getElementById('hero');
   const TOTAL     = slides.length;
   const INTERVAL  = 5000;
   let cur = 0, timer, busy = false;
@@ -77,7 +78,6 @@
 
   // Touch swipe
   let touchStartX = 0;
-  const hero = document.getElementById('hero');
   hero.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].clientX; }, { passive: true });
   hero.addEventListener('touchend', e => {
     const dx = e.changedTouches[0].clientX - touchStartX;
@@ -91,7 +91,6 @@
   });
 
   // Pause on hover
-  const hero = document.getElementById('hero');
   hero.addEventListener('mouseenter', () => clearInterval(timer));
   hero.addEventListener('mouseleave', () => {
     timer = setInterval(() => goTo((cur + 1) % TOTAL), INTERVAL);
