@@ -931,7 +931,37 @@
         '---\n\nThank you!'
       );
 
-      window.location.href = 'mailto:homesbadri@gmail.com?subject=' + subject + '&body=' + body;
+      // Show popup with WhatsApp and Email options
+      const choice = confirm('Send via:\n✓ OK = WhatsApp\n✗ Cancel = Email\n\nOr send to both?');
+
+      if (choice === null) {
+        // User clicked Cancel - send via email only
+        window.location.href = 'mailto:homesbadri@gmail.com?subject=' + subject + '&body=' + body;
+      } else {
+        // Send via both WhatsApp and Email
+        // WhatsApp
+        const whatsappPhone = '9779851047861';
+        const whatsappMsg = encodeURIComponent(
+          'Hi,\n\nI would like to book a stay at Badri Homes.\n\n' +
+          '---\n' +
+          'Name: '     + name    + '\n' +
+          'Email: '    + email   + '\n' +
+          'Phone: '    + phone   + '\n' +
+          'Room: '     + room    + '\n' +
+          'Check-in: ' + ci      + '\n' +
+          'Check-out: '+ co      + '\n' +
+          'Guests: '   + guests  + '\n' +
+          'Payment: '  + payment + '\n' +
+          'Notes: '    + notes   + '\n' +
+          '---\n\nThank you!'
+        );
+        window.open('https://wa.me/' + whatsappPhone + '?text=' + whatsappMsg, '_blank');
+
+        // Email
+        setTimeout(() => {
+          window.location.href = 'mailto:homesbadri@gmail.com?subject=' + subject + '&body=' + body;
+        }, 500);
+      }
     });
 
     // ===== ROOM PHOTO SLIDER =====
