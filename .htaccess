@@ -58,6 +58,10 @@
   RewriteCond %{HTTPS} off
   RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+  # Remove index.html from URLs (hide default document)
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP
+  RewriteRule ^index\.html$ / [R=301,L]
+
   # Remove trailing slashes (consistency for canonical URLs)
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.*)/$ /$1 [L,R=301]
