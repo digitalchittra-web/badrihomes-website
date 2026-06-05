@@ -246,9 +246,15 @@
   <!-- DNS Prefetch for CDN -->
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
-  <!-- Preload critical hero images for faster loading -->
-  <link rel="preload" as="image" href="assets/img/building.webp" type="image/webp" />
-  <link rel="preload" as="image" href="assets/img/building.jpg" type="image/jpeg" />
+  <!-- Preload ALL hero images so they are ready when loader hides -->
+  <link rel="preload" as="image" href="assets/img/building.webp" type="image/webp" fetchpriority="high" />
+  <link rel="preload" as="image" href="assets/img/bed.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/img/patan-durbar.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/img/room.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/img/krishna-mandir.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/img/kitchen.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/img/machindranath.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/img/room2.webp" type="image/webp" />
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -329,43 +335,43 @@
       <div class="hero-slide" data-caption="Queen Bed · Newari Brick Walls">
         <picture>
           <source srcset="assets/img/bed.webp" type="image/webp" />
-          <img src="assets/img/bed.jpg" alt="Queen bedroom with Newari brick wall at Badri Homes" loading="lazy" decoding="async" />
+          <img src="assets/img/bed.jpg" alt="Queen bedroom with Newari brick wall at Badri Homes" loading="eager" decoding="async" />
         </picture>
       </div>
       <div class="hero-slide" data-caption="Patan Durbar Square · 5 min walk">
         <picture>
           <source srcset="assets/img/patan-durbar.webp" type="image/webp" />
-          <img src="assets/img/patan-durbar.jpg" alt="Patan Durbar Square UNESCO World Heritage Site" loading="lazy" decoding="async" />
+          <img src="assets/img/patan-durbar.jpg" alt="Patan Durbar Square UNESCO World Heritage Site" loading="eager" decoding="async" />
         </picture>
       </div>
       <div class="hero-slide" data-caption="Full Studio · Private &amp; Self-Contained">
         <picture>
           <source srcset="assets/img/room.webp" type="image/webp" />
-          <img src="assets/img/room.jpg" alt="Full studio room at Badri Homes Patan" loading="lazy" decoding="async" />
+          <img src="assets/img/room.jpg" alt="Full studio room at Badri Homes Patan" loading="eager" decoding="async" />
         </picture>
       </div>
       <div class="hero-slide" data-caption="Krishna Mandir · Sacred Heritage">
         <picture>
           <source srcset="assets/img/krishna-mandir.webp" type="image/webp" />
-          <img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Temple Patan" loading="lazy" decoding="async" />
+          <img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Temple Patan" loading="eager" decoding="async" />
         </picture>
       </div>
       <div class="hero-slide" data-caption="Private Kitchen · Fully Equipped">
         <picture>
           <source srcset="assets/img/kitchen.webp" type="image/webp" />
-          <img src="assets/img/kitchen.jpg" alt="Private kitchen at Badri Homes" loading="lazy" decoding="async" />
+          <img src="assets/img/kitchen.jpg" alt="Private kitchen at Badri Homes" loading="eager" decoding="async" />
         </picture>
       </div>
       <div class="hero-slide" data-caption="Machindranath Jatra · Living Festival">
         <picture>
           <source srcset="assets/img/machindranath.webp" type="image/webp" />
-          <img src="assets/img/machindranath.jpg" alt="Machindranath Jatra chariot festival Patan" loading="lazy" decoding="async" />
+          <img src="assets/img/machindranath.jpg" alt="Machindranath Jatra chariot festival Patan" loading="eager" decoding="async" />
         </picture>
       </div>
       <div class="hero-slide" data-caption="Cosy Rooms · Every Floor">
         <picture>
           <source srcset="assets/img/room2.webp" type="image/webp" />
-          <img src="assets/img/room2.jpg" alt="Cozy room interior at Badri Homes" loading="lazy" decoding="async" />
+          <img src="assets/img/room2.jpg" alt="Cozy room interior at Badri Homes" loading="eager" decoding="async" />
         </picture>
       </div>
     </div>
@@ -1163,28 +1169,48 @@
   <!-- ===== LOADER DISMISS ===== -->
   <script>
     (function () {
+      var done = false;
+
       function hideLoader() {
+        if (done) return;
+        done = true;
         var loader = document.getElementById('pageLoader');
         if (loader) loader.classList.add('hidden');
       }
-      var loaderHidden = false;
 
-      // Hide after all images and resources are loaded
-      window.addEventListener('load', function () {
-        if (!loaderHidden) {
-          loaderHidden = true;
-          // Wait a bit longer for all hero images to fully render
-          setTimeout(hideLoader, 800);
+      // Wait for the first hero image to fully decode before hiding loader
+      function waitForHeroImage() {
+        var firstImg = document.querySelector('.hero-slide.active img');
+        if (!firstImg) {
+          // DOM not ready yet, try again shortly
+          setTimeout(waitForHeroImage, 50);
+          return;
         }
-      });
 
-      // Safety fallback – never block the page longer than 8s
-      setTimeout(function () {
-        if (!loaderHidden) {
-          loaderHidden = true;
-          hideLoader();
+        if (firstImg.complete && firstImg.naturalWidth > 0) {
+          // Image already in cache — still give a tiny moment to paint
+          setTimeout(hideLoader, 300);
+        } else {
+          // Wait for it to actually finish loading
+          firstImg.addEventListener('load', function () {
+            setTimeout(hideLoader, 300);
+          });
+          firstImg.addEventListener('error', function () {
+            // Image failed — don't block the user
+            hideLoader();
+          });
         }
-      }, 8000);
+      }
+
+      // Start checking once DOM is ready
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForHeroImage);
+      } else {
+        waitForHeroImage();
+      }
+
+      // Hard fallback — never block longer than 10s
+      setTimeout(hideLoader, 10000);
     })();
   </script>
 
