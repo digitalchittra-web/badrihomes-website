@@ -16,6 +16,7 @@
     const hero      = document.getElementById('hero');
     const TOTAL     = slides.length;
     const INTERVAL  = 8000;
+    const FADE_MS   = 2000; // must match CSS transition duration
     let cur = 0, timer, busy = false;
 
     if (!slides.length || !dotsWrap || !thumbWrap || !caption || !bar || !hero) {
@@ -68,13 +69,13 @@
 
       caption.textContent = slides[cur].dataset.caption || '';
 
-      // Reset after transition ends
+      // Reset after fade transition ends (matches CSS 2s duration)
       setTimeout(() => {
         slides[prev].classList.remove('leaving');
         slides[prev].style.zIndex = '';
         slides[cur].style.zIndex  = '';
         busy = false;
-      }, INTERVAL);
+      }, FADE_MS);
 
       startBar();
       timer = setInterval(() => goTo((cur + 1) % TOTAL), INTERVAL);
@@ -103,18 +104,6 @@
       timer = setInterval(() => goTo((cur + 1) % TOTAL), INTERVAL);
     });
 
-    // Parallax on scroll
-    window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      slides.forEach(s => {
-        if (s.classList.contains('active')) {
-          const img = s.querySelector('img');
-          if (img.style.transition !== 'none') {
-            img.style.transform = `scale(1) translateY(${y * 0.18}px)`;
-          }
-        }
-      });
-    }, { passive: true });
 
     // Init
     caption.textContent = slides[0].dataset.caption || '';
