@@ -7,7 +7,7 @@
   const bar       = document.getElementById('heroProgressBar');
   const hero      = document.getElementById('hero');
   const TOTAL     = slides.length;
-  const INTERVAL  = 5000;
+  const INTERVAL  = 8000;
   let cur = 0, timer, busy = false;
 
   // Build dots & thumbnails
