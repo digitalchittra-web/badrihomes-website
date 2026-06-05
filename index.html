@@ -231,10 +231,10 @@
           <i class="fa-solid fa-star"></i>
           Top-Rated Homestay in Patan
         </div>
-        <h1 class="hero-title">
+        <h1 class="hero-title" id="heroTaglineEl">
           Experience <span>Authentic</span><br />Newari Living
         </h1>
-        <p class="hero-desc">
+        <p class="hero-desc" id="heroSubtitleEl">
           Wake up to carved wooden windows, courtyard mornings, and the warmth of a family that's called Patan home for generations.
         </p>
         <div class="hero-actions">
@@ -396,8 +396,8 @@
             <span class="room-badge">First Floor</span>
           </div>
           <div class="room-body">
-            <h3 class="room-name">Room 001 Studio Service Apartment</h3>
-            <p class="room-desc">A self-contained studio on the first floor with a queen bed, private kitchen, and authentic Newari brick walls. Easy access, full comfort.</p>
+            <h3 class="room-name" id="room1NameEl">Room 001 Studio Service Apartment</h3>
+            <p class="room-desc" id="room1DescEl">A self-contained studio on the first floor with a queen bed, private kitchen, and authentic Newari brick walls. Easy access, full comfort.</p>
             <div class="room-amenities">
               <span class="amenity-tag"><i class="fa-solid fa-bed"></i> Queen Bed</span>
               <span class="amenity-tag"><i class="fa-solid fa-kitchen-set"></i> Private Kitchen</span>
@@ -420,8 +420,8 @@
             <span class="room-badge">Second Floor</span>
           </div>
           <div class="room-body">
-            <h3 class="room-name">Room 002 Studio Service Apartment</h3>
-            <p class="room-desc">Elevated views of the courtyard and Patan rooftops. A full studio with queen bed, private kitchen, and warm Newari character throughout.</p>
+            <h3 class="room-name" id="room2NameEl">Room 002 Studio Service Apartment</h3>
+            <p class="room-desc" id="room2DescEl">Elevated views of the courtyard and Patan rooftops. A full studio with queen bed, private kitchen, and warm Newari character throughout.</p>
             <div class="room-amenities">
               <span class="amenity-tag"><i class="fa-solid fa-bed"></i> Queen Bed</span>
               <span class="amenity-tag"><i class="fa-solid fa-kitchen-set"></i> Private Kitchen</span>
@@ -444,8 +444,8 @@
             <span class="room-badge">Third Floor</span>
           </div>
           <div class="room-body">
-            <h3 class="room-name">Room 003 Studio Service Apartment</h3>
-            <p class="room-desc">Wake up to Patan's terracotta skyline from the third floor. Queen bed, private kitchen, en-suite — the perfect perch above the city.</p>
+            <h3 class="room-name" id="room3NameEl">Room 003 Studio Service Apartment</h3>
+            <p class="room-desc" id="room3DescEl">Wake up to Patan's terracotta skyline from the third floor. Queen bed, private kitchen, en-suite — the perfect perch above the city.</p>
             <div class="room-amenities">
               <span class="amenity-tag"><i class="fa-solid fa-bed"></i> Queen Bed</span>
               <span class="amenity-tag"><i class="fa-solid fa-kitchen-set"></i> Private Kitchen</span>
@@ -913,6 +913,82 @@
   <script defer src="assets/js/gallery.js"></script>
   <script defer src="assets/js/contact.js"></script>
   <script defer src="assets/js/availability.js"></script>
+
+  <!-- ===== FIREBASE CONTENT LOADER ===== -->
+  <script type="module">
+    import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+    import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+    const firebaseConfig = {
+      apiKey:            "REPLACE_WITH_YOUR_API_KEY",
+      authDomain:        "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+      projectId:         "REPLACE_WITH_YOUR_PROJECT_ID",
+      storageBucket:     "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+      messagingSenderId: "REPLACE_WITH_YOUR_SENDER_ID",
+      appId:             "REPLACE_WITH_YOUR_APP_ID"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db  = getFirestore(app);
+
+    function set(id, val) {
+      const el = document.getElementById(id);
+      if (el && val) el.textContent = val;
+    }
+
+    async function loadContent() {
+      try {
+        // Hero
+        const hero = await getDoc(doc(db, 'content', 'hero'));
+        if (hero.exists()) {
+          set('heroTaglineEl', hero.data().tagline);
+          set('heroSubtitleEl', hero.data().subtitle);
+        }
+
+        // Rooms
+        for (let i = 1; i <= 3; i++) {
+          const room = await getDoc(doc(db, 'content', 'room' + i));
+          if (room.exists()) {
+            const d = room.data();
+            set('room' + i + 'NameEl', d.name);
+            set('room' + i + 'DescEl', d.desc);
+            // Update price elements
+            document.querySelectorAll('[data-npr-price]').forEach((el, idx) => {
+              if (idx === i - 1 && d.price) {
+                el.dataset.nprPrice = d.price;
+                el.textContent = 'NPR ' + Number(d.price).toLocaleString();
+              }
+            });
+          }
+        }
+
+        // Contact — update all phone/email links
+        const contact = await getDoc(doc(db, 'content', 'contact'));
+        if (contact.exists()) {
+          const d = contact.data();
+          if (d.phone1) {
+            document.querySelectorAll('a[href^="tel:"]').forEach(a => {
+              a.href = 'tel:+' + d.phone1;
+            });
+            document.querySelectorAll('a[href^="https://wa.me/"]').forEach(a => {
+              a.href = a.href.replace(/wa\.me\/\d+/, 'wa.me/' + d.phone1);
+            });
+          }
+          if (d.email) {
+            document.querySelectorAll('a[href^="mailto:"]').forEach(a => {
+              a.href = 'mailto:' + d.email;
+              if (a.textContent.includes('@')) a.textContent = d.email;
+            });
+          }
+        }
+      } catch (e) {
+        // Silently fail — page shows default HTML content
+        console.warn('Firebase content load skipped:', e.message);
+      }
+    }
+
+    loadContent();
+  </script>
 
   <!-- ===== LOADER DISMISS ===== -->
   <script>

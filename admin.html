@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Panel – Badri Homes</title>
+  <link rel="icon" href="logo (1).png" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --dark:       #1a0e07;
+      --brown:      #2C1810;
+      --terracotta: #C4704F;
+      --gold:       #c9a96e;
+      --light:      #f5f0eb;
+      --white:      #ffffff;
+      --green:      #2ecc71;
+      --red:        #e74c3c;
+      --border:     #e0d6cc;
+      --text:       #3a2a1a;
+      --muted:      #888;
+    }
+
+    body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      background: #f0ebe5;
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── LOGIN SCREEN ── */
+    #loginScreen {
+      position: fixed; inset: 0;
+      background: var(--dark);
+      display: flex; align-items: center; justify-content: center;
+      z-index: 999;
+    }
+    #loginScreen.hidden { display: none; }
+
+    .login-box {
+      background: #2a1a0f;
+      border: 1px solid rgba(201,169,110,0.25);
+      border-radius: 16px;
+      padding: 48px 40px;
+      width: 100%; max-width: 400px;
+      text-align: center;
+    }
+    .login-box img { height: 64px; margin-bottom: 24px; }
+    .login-box h2 {
+      color: var(--gold);
+      font-size: 1.4rem;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+    .login-box p { color: rgba(255,255,255,0.45); font-size: 0.85rem; margin-bottom: 32px; }
+    .login-box input {
+      width: 100%;
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 8px;
+      padding: 13px 16px;
+      color: #fff;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+      outline: none;
+      transition: border 0.2s;
+    }
+    .login-box input:focus { border-color: var(--gold); }
+    .login-box button {
+      width: 100%;
+      background: var(--terracotta);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 13px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin-top: 4px;
+      transition: background 0.2s;
+    }
+    .login-box button:hover { background: #b5603f; }
+    .login-error {
+      color: var(--red);
+      font-size: 0.85rem;
+      margin-top: 12px;
+      min-height: 20px;
+    }
+
+    /* ── ADMIN LAYOUT ── */
+    #adminApp { display: none; }
+    #adminApp.visible { display: block; }
+
+    .admin-header {
+      background: var(--brown);
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+      position: sticky; top: 0; z-index: 100;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+    }
+    .admin-header .brand {
+      display: flex; align-items: center; gap: 12px;
+    }
+    .admin-header img { height: 36px; }
+    .admin-header .brand span {
+      color: var(--gold);
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .admin-header .user-info {
+      display: flex; align-items: center; gap: 16px;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+    }
+    .btn-logout {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      color: #fff;
+      padding: 7px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: background 0.2s;
+    }
+    .btn-logout:hover { background: rgba(255,255,255,0.2); }
+
+    .admin-body {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: calc(100vh - 64px);
+    }
+
+    /* ── SIDEBAR ── */
+    .admin-sidebar {
+      background: var(--dark);
+      padding: 24px 0;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .sidebar-label {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.7rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0 20px 8px;
+      margin-top: 16px;
+    }
+    .sidebar-label:first-child { margin-top: 0; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 11px 20px;
+      color: rgba(255,255,255,0.55);
+      cursor: pointer;
+      font-size: 0.9rem;
+      border-left: 3px solid transparent;
+      transition: all 0.2s;
+    }
+    .nav-item:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .nav-item.active {
+      color: var(--gold);
+      border-left-color: var(--gold);
+      background: rgba(201,169,110,0.08);
+    }
+    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+    /* ── CONTENT AREA ── */
+    .admin-content {
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .section-panel { display: none; }
+    .section-panel.active { display: block; }
+
+    .panel-header {
+      margin-bottom: 28px;
+      padding-bottom: 20px;
+      border-bottom: 2px solid var(--border);
+    }
+    .panel-header h2 { font-size: 1.5rem; color: var(--brown); margin-bottom: 4px; }
+    .panel-header p { color: var(--muted); font-size: 0.88rem; }
+
+    /* ── CARDS ── */
+    .card {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .card h3 {
+      font-size: 1rem;
+      color: var(--brown);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card h3::before {
+      content: '';
+      display: block; width: 4px; height: 16px;
+      background: var(--terracotta);
+      border-radius: 2px;
+    }
+
+    /* ── FORM ELEMENTS ── */
+    .field { margin-bottom: 18px; }
+    .field label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: 0.02em;
+    }
+    .field input, .field textarea {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 0.93rem;
+      color: var(--text);
+      background: #faf8f5;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+      font-family: inherit;
+    }
+    .field input:focus, .field textarea:focus {
+      border-color: var(--terracotta);
+      box-shadow: 0 0 0 3px rgba(196,112,79,0.12);
+      background: #fff;
+    }
+    .field textarea { resize: vertical; min-height: 80px; }
+    .field .hint { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .field-row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    /* ── SAVE BUTTON ── */
+    .btn-save {
+      background: var(--terracotta);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 11px 28px;
+      font-size: 0.93rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex; align-items: center; gap: 8px;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-save:hover { background: #b5603f; }
+    .btn-save:active { transform: scale(0.98); }
+    .btn-save:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ── TOAST ── */
+    #toast {
+      position: fixed; bottom: 28px; right: 28px;
+      background: var(--green);
+      color: #fff;
+      padding: 13px 22px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+      transform: translateY(80px);
+      opacity: 0;
+      transition: all 0.35s ease;
+      z-index: 9999;
+    }
+    #toast.show { transform: translateY(0); opacity: 1; }
+    #toast.error { background: var(--red); }
+
+    /* ── FAQ ITEMS ── */
+    .faq-admin-item {
+      background: #faf8f5;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    .faq-admin-item .field { margin-bottom: 12px; }
+    .faq-admin-item .field:last-of-type { margin-bottom: 0; }
+    .btn-remove-faq {
+      position: absolute; top: 12px; right: 12px;
+      background: none; border: none;
+      color: var(--red); cursor: pointer;
+      font-size: 1.1rem; padding: 4px;
+      line-height: 1;
+    }
+    .btn-add-faq {
+      background: none;
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      width: 100%;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 0.9rem;
+      margin-top: 8px;
+      transition: all 0.2s;
+    }
+    .btn-add-faq:hover { border-color: var(--terracotta); color: var(--terracotta); }
+
+    /* ── STATUS BADGE ── */
+    .status-bar {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; color: var(--muted);
+      margin-top: 12px;
+    }
+    .status-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--green);
+    }
+
+    @media (max-width: 768px) {
+      .admin-body { grid-template-columns: 1fr; }
+      .admin-sidebar { display: none; }
+      .admin-content { padding: 20px 16px; }
+      .field-row, .field-row-3 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div id="loginScreen">
+  <div class="login-box">
+    <img src="logo (1).png" alt="Badri Homes" />
+    <h2>Admin Panel</h2>
+    <p>Sign in to manage your website content</p>
+    <input type="email" id="loginEmail" placeholder="Email address" autocomplete="email" />
+    <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" />
+    <button onclick="doLogin()">Sign In</button>
+    <div class="login-error" id="loginError"></div>
+  </div>
+</div>
+
+<!-- ===== ADMIN APP ===== -->
+<div id="adminApp">
+
+  <!-- Header -->
+  <header class="admin-header">
+    <div class="brand">
+      <img src="logo (1).png" alt="Badri Homes" />
+      <span>Badri Homes Admin</span>
+    </div>
+    <div class="user-info">
+      <span id="userEmail"></span>
+      <button class="btn-logout" onclick="doLogout()">Sign out</button>
+    </div>
+  </header>
+
+  <div class="admin-body">
+
+    <!-- Sidebar -->
+    <nav class="admin-sidebar">
+      <div class="sidebar-label">Content</div>
+      <div class="nav-item active" onclick="showSection('hero')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg>
+        Hero Banner
+      </div>
+      <div class="nav-item" onclick="showSection('rooms')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg>
+        Rooms
+      </div>
+      <div class="nav-item" onclick="showSection('contact')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 014.68 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 013.59 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Contact Details
+      </div>
+      <div class="nav-item" onclick="showSection('faqs')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        FAQs
+      </div>
+    </nav>
+
+    <!-- Content -->
+    <main class="admin-content">
+
+      <!-- HERO SECTION -->
+      <div class="section-panel active" id="panel-hero">
+        <div class="panel-header">
+          <h2>Hero Banner</h2>
+          <p>Edit the main headline and subtitle shown on the homepage banner</p>
+        </div>
+        <div class="card">
+          <h3>Headline &amp; Subtitle</h3>
+          <div class="field">
+            <label>Main Tagline</label>
+            <input type="text" id="heroTagline" placeholder="e.g. Experience Authentic Newari Living" />
+            <div class="hint">This is the large heading displayed on the hero banner</div>
+          </div>
+          <div class="field">
+            <label>Subtitle / Description</label>
+            <textarea id="heroSubtitle" rows="3" placeholder="Short description under the heading…"></textarea>
+          </div>
+          <button class="btn-save" onclick="saveHero()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save Hero Content
+          </button>
+          <div class="status-bar"><div class="status-dot"></div><span id="heroStatus">Ready</span></div>
+        </div>
+      </div>
+
+      <!-- ROOMS SECTION -->
+      <div class="section-panel" id="panel-rooms">
+        <div class="panel-header">
+          <h2>Rooms</h2>
+          <p>Edit room names, descriptions and nightly prices (NPR)</p>
+        </div>
+
+        <!-- Room 001 -->
+        <div class="card">
+          <h3>Room 001 – First Floor</h3>
+          <div class="field">
+            <label>Room Name</label>
+            <input type="text" id="room1Name" placeholder="Room 001 Studio Service Apartment" />
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea id="room1Desc" rows="3"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Price per Night (NPR)</label>
+              <input type="number" id="room1Price" placeholder="3000" />
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveRoom(1)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save Room 001
+          </button>
+        </div>
+
+        <!-- Room 002 -->
+        <div class="card">
+          <h3>Room 002 – Second Floor</h3>
+          <div class="field">
+            <label>Room Name</label>
+            <input type="text" id="room2Name" placeholder="Room 002 Studio Service Apartment" />
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea id="room2Desc" rows="3"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Price per Night (NPR)</label>
+              <input type="number" id="room2Price" placeholder="3000" />
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveRoom(2)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save Room 002
+          </button>
+        </div>
+
+        <!-- Room 003 -->
+        <div class="card">
+          <h3>Room 003 – Third Floor</h3>
+          <div class="field">
+            <label>Room Name</label>
+            <input type="text" id="room3Name" placeholder="Room 003 Studio Service Apartment" />
+          </div>
+          <div class="field">
+            <label>Description</label>
+            <textarea id="room3Desc" rows="3"></textarea>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Price per Night (NPR)</label>
+              <input type="number" id="room3Price" placeholder="3000" />
+            </div>
+          </div>
+          <button class="btn-save" onclick="saveRoom(3)">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save Room 003
+          </button>
+        </div>
+      </div>
+
+      <!-- CONTACT SECTION -->
+      <div class="section-panel" id="panel-contact">
+        <div class="panel-header">
+          <h2>Contact Details</h2>
+          <p>Update phone numbers and email shown across the website</p>
+        </div>
+        <div class="card">
+          <h3>Phone &amp; WhatsApp</h3>
+          <div class="field-row">
+            <div class="field">
+              <label>Primary Phone (with country code)</label>
+              <input type="text" id="phone1" placeholder="9779851047861" />
+              <div class="hint">Used for calls, WhatsApp and Viber links</div>
+            </div>
+            <div class="field">
+              <label>Secondary Phone (optional)</label>
+              <input type="text" id="phone2" placeholder="9779849076394" />
+            </div>
+          </div>
+          <div class="field">
+            <label>Email Address</label>
+            <input type="email" id="contactEmail" placeholder="homesbadri@gmail.com" />
+          </div>
+          <button class="btn-save" onclick="saveContact()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save Contact Details
+          </button>
+          <div class="status-bar"><div class="status-dot"></div><span id="contactStatus">Ready</span></div>
+        </div>
+      </div>
+
+      <!-- FAQ SECTION -->
+      <div class="section-panel" id="panel-faqs">
+        <div class="panel-header">
+          <h2>FAQs</h2>
+          <p>Add, edit or remove frequently asked questions</p>
+        </div>
+        <div class="card">
+          <h3>Questions &amp; Answers</h3>
+          <div id="faqList"></div>
+          <button class="btn-add-faq" onclick="addFaqItem()">+ Add New Question</button>
+          <br /><br />
+          <button class="btn-save" onclick="saveFaqs()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Save All FAQs
+          </button>
+          <div class="status-bar"><div class="status-dot"></div><span id="faqStatus">Ready</span></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<!-- Firebase SDKs -->
+<script type="module">
+  import { initializeApp }                           from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js';
+  import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged }
+                                                     from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js';
+  import { getFirestore, doc, getDoc, setDoc }       from 'https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js';
+
+  // Load config from firebase-config.js
+  // We inline the config here — paste your real values below
+  const firebaseConfig = {
+    apiKey:            "REPLACE_WITH_YOUR_API_KEY",
+    authDomain:        "REPLACE_WITH_YOUR_AUTH_DOMAIN",
+    projectId:         "REPLACE_WITH_YOUR_PROJECT_ID",
+    storageBucket:     "REPLACE_WITH_YOUR_STORAGE_BUCKET",
+    messagingSenderId: "REPLACE_WITH_YOUR_SENDER_ID",
+    appId:             "REPLACE_WITH_YOUR_APP_ID"
+  };
+
+  const app  = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db   = getFirestore(app);
+
+  // Expose to window so onclick handlers can reach them
+  window._db   = db;
+  window._auth = auth;
+  window._doc  = doc;
+  window._getDoc  = getDoc;
+  window._setDoc  = setDoc;
+  window._signOut = signOut;
+  window._signInWithEmailAndPassword = signInWithEmailAndPassword;
+
+  // ── AUTH STATE ──
+  onAuthStateChanged(auth, async user => {
+    if (user) {
+      document.getElementById('loginScreen').classList.add('hidden');
+      document.getElementById('adminApp').classList.add('visible');
+      document.getElementById('userEmail').textContent = user.email;
+      await loadAllData();
+    } else {
+      document.getElementById('loginScreen').classList.remove('hidden');
+      document.getElementById('adminApp').classList.remove('visible');
+    }
+  });
+
+  // ── LOAD ALL DATA ──
+  async function loadAllData() {
+    await Promise.all([loadHero(), loadRooms(), loadContact(), loadFaqs()]);
+  }
+
+  async function loadHero() {
+    const snap = await getDoc(doc(db, 'content', 'hero'));
+    if (snap.exists()) {
+      const d = snap.data();
+      document.getElementById('heroTagline').value  = d.tagline  || '';
+      document.getElementById('heroSubtitle').value = d.subtitle || '';
+    }
+  }
+
+  async function loadRooms() {
+    for (let i = 1; i <= 3; i++) {
+      const snap = await getDoc(doc(db, 'content', 'room' + i));
+      if (snap.exists()) {
+        const d = snap.data();
+        document.getElementById('room' + i + 'Name').value  = d.name  || '';
+        document.getElementById('room' + i + 'Desc').value  = d.desc  || '';
+        document.getElementById('room' + i + 'Price').value = d.price || '';
+      }
+    }
+  }
+
+  async function loadContact() {
+    const snap = await getDoc(doc(db, 'content', 'contact'));
+    if (snap.exists()) {
+      const d = snap.data();
+      document.getElementById('phone1').value        = d.phone1 || '';
+      document.getElementById('phone2').value        = d.phone2 || '';
+      document.getElementById('contactEmail').value  = d.email  || '';
+    }
+  }
+
+  async function loadFaqs() {
+    const snap = await getDoc(doc(db, 'content', 'faqs'));
+    const list = snap.exists() ? (snap.data().items || []) : defaultFaqs();
+    renderFaqList(list);
+  }
+
+  function defaultFaqs() {
+    return [
+      { q: 'What is the check-in and check-out time?', a: 'Check-in is from 2:00 PM and check-out is by 11:00 AM.' },
+      { q: 'Is breakfast included?', a: 'Breakfast is not included, but a fully equipped private kitchen is available.' },
+      { q: 'How far is Patan Durbar Square?', a: 'Just a 5-minute walk from Badri Homes.' },
+    ];
+  }
+
+  function renderFaqList(items) {
+    const list = document.getElementById('faqList');
+    list.innerHTML = '';
+    items.forEach((item, i) => {
+      list.appendChild(createFaqItem(item.q, item.a, i));
+    });
+    window._faqItems = items;
+  }
+
+  window.addFaqItem = function () {
+    if (!window._faqItems) window._faqItems = [];
+    window._faqItems.push({ q: '', a: '' });
+    renderFaqList(window._faqItems);
+  };
+
+  window.removeFaqItem = function (i) {
+    window._faqItems.splice(i, 1);
+    renderFaqList(window._faqItems);
+  };
+
+  function createFaqItem(q, a, i) {
+    const div = document.createElement('div');
+    div.className = 'faq-admin-item';
+    div.innerHTML = `
+      <button class="btn-remove-faq" onclick="removeFaqItem(${i})" title="Remove">✕</button>
+      <div class="field">
+        <label>Question</label>
+        <input type="text" id="faqQ_${i}" value="${escHtml(q)}" placeholder="Enter question…" oninput="syncFaq(${i},'q',this.value)" />
+      </div>
+      <div class="field">
+        <label>Answer</label>
+        <textarea id="faqA_${i}" rows="2" placeholder="Enter answer…" oninput="syncFaq(${i},'a',this.value)">${escHtml(a)}</textarea>
+      </div>`;
+    return div;
+  }
+
+  window.syncFaq = function (i, field, val) {
+    if (window._faqItems && window._faqItems[i]) {
+      window._faqItems[i][field] = val;
+    }
+  };
+
+  function escHtml(str) {
+    return (str || '').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  // ── SAVE FUNCTIONS ──
+  window.doLogin = async function () {
+    const email = document.getElementById('loginEmail').value.trim();
+    const pass  = document.getElementById('loginPassword').value;
+    const errEl = document.getElementById('loginError');
+    errEl.textContent = '';
+    try {
+      await signInWithEmailAndPassword(auth, email, pass);
+    } catch (e) {
+      errEl.textContent = 'Incorrect email or password.';
+    }
+  };
+
+  window.doLogout = async function () {
+    await signOut(auth);
+  };
+
+  window.saveHero = async function () {
+    const tagline  = document.getElementById('heroTagline').value.trim();
+    const subtitle = document.getElementById('heroSubtitle').value.trim();
+    try {
+      await setDoc(doc(db, 'content', 'hero'), { tagline, subtitle });
+      showToast('Hero content saved!');
+      document.getElementById('heroStatus').textContent = 'Saved ✓';
+    } catch (e) {
+      showToast('Error saving – ' + e.message, true);
+    }
+  };
+
+  window.saveRoom = async function (n) {
+    const name  = document.getElementById('room' + n + 'Name').value.trim();
+    const desc  = document.getElementById('room' + n + 'Desc').value.trim();
+    const price = parseInt(document.getElementById('room' + n + 'Price').value) || 0;
+    try {
+      await setDoc(doc(db, 'content', 'room' + n), { name, desc, price });
+      showToast('Room 00' + n + ' saved!');
+    } catch (e) {
+      showToast('Error saving – ' + e.message, true);
+    }
+  };
+
+  window.saveContact = async function () {
+    const phone1 = document.getElementById('phone1').value.trim();
+    const phone2 = document.getElementById('phone2').value.trim();
+    const email  = document.getElementById('contactEmail').value.trim();
+    try {
+      await setDoc(doc(db, 'content', 'contact'), { phone1, phone2, email });
+      showToast('Contact details saved!');
+      document.getElementById('contactStatus').textContent = 'Saved ✓';
+    } catch (e) {
+      showToast('Error saving – ' + e.message, true);
+    }
+  };
+
+  window.saveFaqs = async function () {
+    const items = window._faqItems || [];
+    const clean = items.filter(f => f.q.trim() || f.a.trim());
+    try {
+      await setDoc(doc(db, 'content', 'faqs'), { items: clean });
+      showToast('FAQs saved!');
+      document.getElementById('faqStatus').textContent = 'Saved ✓';
+    } catch (e) {
+      showToast('Error saving – ' + e.message, true);
+    }
+  };
+
+  // ── TOAST ──
+  function showToast(msg, isError = false) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = isError ? 'error' : '';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  // ── NAV ──
+  window.showSection = function (name) {
+    document.querySelectorAll('.section-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.currentTarget.classList.add('active');
+  };
+
+  // Enter key on login
+  document.getElementById('loginPassword').addEventListener('keydown', e => {
+    if (e.key === 'Enter') window.doLogin();
+  });
+</script>
+
+</body>
+</html>
