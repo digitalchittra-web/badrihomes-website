@@ -246,6 +246,10 @@
   <!-- DNS Prefetch for CDN -->
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
+  <!-- Preload critical hero images for faster loading -->
+  <link rel="preload" as="image" href="assets/img/building.webp" type="image/webp" />
+  <link rel="preload" as="image" href="assets/img/building.jpg" type="image/jpeg" />
+
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
 
@@ -1163,13 +1167,24 @@
         var loader = document.getElementById('pageLoader');
         if (loader) loader.classList.add('hidden');
       }
+      var loaderHidden = false;
+
       // Hide after all images and resources are loaded
       window.addEventListener('load', function () {
-        // Small extra delay so the first hero image is visible
-        setTimeout(hideLoader, 400);
+        if (!loaderHidden) {
+          loaderHidden = true;
+          // Wait a bit longer for all hero images to fully render
+          setTimeout(hideLoader, 800);
+        }
       });
-      // Safety fallback – never block the page longer than 5s
-      setTimeout(hideLoader, 5000);
+
+      // Safety fallback – never block the page longer than 8s
+      setTimeout(function () {
+        if (!loaderHidden) {
+          loaderHidden = true;
+          hideLoader();
+        }
+      }, 8000);
     })();
   </script>
 
