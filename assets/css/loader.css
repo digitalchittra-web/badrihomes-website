@@ -89,6 +89,24 @@
   }
 }
 
+/* Progress bar */
+.loader-progress-wrap {
+  width: 180px;
+  height: 2px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+  opacity: 0;
+  animation: loaderFadeIn 0.5s ease 0.8s forwards;
+}
+.loader-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: #C4704F;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
 /* Loading text */
 .loader-text {
   font-family: 'Cormorant Garamond', Georgia, serif;
