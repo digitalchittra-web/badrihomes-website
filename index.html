@@ -1195,10 +1195,10 @@
           var p = img.decode ? img.decode() : Promise.resolve();
           p.then(function () {
             decoded++;
-            if (decoded === total) setTimeout(hideLoader, 300);
+            if (decoded === total) setTimeout(hideLoader, 1200);
           }).catch(function () {
             decoded++;
-            if (decoded === total) setTimeout(hideLoader, 300);
+            if (decoded === total) setTimeout(hideLoader, 1200);
           });
         });
       }
