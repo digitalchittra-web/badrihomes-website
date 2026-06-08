@@ -1166,6 +1166,12 @@
     loadContent();
   </script>
 
+  <!-- ===== SCROLL TO TOP ON REFRESH ===== -->
+  <script>
+    if (history.scrollRestoration) history.scrollRestoration = 'manual';
+    window.scrollTo(0, 0);
+  </script>
+
   <!-- ===== LOADER DISMISS ===== -->
   <script>
     (function () {
@@ -1178,39 +1184,40 @@
         if (loader) loader.classList.add('hidden');
       }
 
-      // Wait for the first hero image to fully decode before hiding loader
-      function waitForHeroImage() {
-        var firstImg = document.querySelector('.hero-slide.active img');
-        if (!firstImg) {
-          // DOM not ready yet, try again shortly
-          setTimeout(waitForHeroImage, 50);
-          return;
+      // Wait for ALL hero images to finish loading before hiding loader
+      function waitForAllHeroImages() {
+        var imgs = Array.from(document.querySelectorAll('.hero-slide img'));
+        if (!imgs.length) { setTimeout(waitForAllHeroImages, 50); return; }
+
+        var total = imgs.length;
+        var loaded = 0;
+
+        function onDone() {
+          loaded++;
+          if (loaded >= total) {
+            // Small buffer to let browser paint the first frame
+            setTimeout(hideLoader, 200);
+          }
         }
 
-        if (firstImg.complete && firstImg.naturalWidth > 0) {
-          // Image already in cache — still give a tiny moment to paint
-          setTimeout(hideLoader, 300);
-        } else {
-          // Wait for it to actually finish loading
-          firstImg.addEventListener('load', function () {
-            setTimeout(hideLoader, 300);
-          });
-          firstImg.addEventListener('error', function () {
-            // Image failed — don't block the user
-            hideLoader();
-          });
-        }
+        imgs.forEach(function (img) {
+          if (img.complete && img.naturalWidth > 0) {
+            onDone();
+          } else {
+            img.addEventListener('load',  onDone);
+            img.addEventListener('error', onDone); // count errors too, don't block forever
+          }
+        });
       }
 
-      // Start checking once DOM is ready
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', waitForHeroImage);
+        document.addEventListener('DOMContentLoaded', waitForAllHeroImages);
       } else {
-        waitForHeroImage();
+        waitForAllHeroImages();
       }
 
-      // Hard fallback — never block longer than 10s
-      setTimeout(hideLoader, 10000);
+      // Hard fallback — never block longer than 15s on very slow connections
+      setTimeout(hideLoader, 15000);
     })();
   </script>
 
