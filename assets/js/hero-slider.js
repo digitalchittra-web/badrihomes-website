@@ -34,7 +34,9 @@
 
       const t = document.createElement('div');
       t.className = 'hero-thumb' + (i === 0 ? ' active' : '');
-      t.innerHTML = '<img src="' + s.querySelector('img').src + '" alt="" />';
+      const fullSrc = s.querySelector('img').getAttribute('src');
+      const thumbSrc = fullSrc.replace(/assets\/img\/([^/]+)\.\w+$/, 'assets/img/thumbs/$1.webp');
+      t.innerHTML = '<img src="' + thumbSrc + '" alt="" />';
       t.onclick = () => goTo(i);
       thumbWrap.appendChild(t);
     });
