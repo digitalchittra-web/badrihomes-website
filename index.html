@@ -283,10 +283,7 @@
       <div class="loader-homes">
         <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
       </div>
-      <div class="loader-progress-wrap">
-        <div class="loader-progress-bar" id="loaderBar"></div>
-      </div>
-      <p class="loader-text" id="loaderText">Preparing your stay…</p>
+      <p class="loader-text">Loading your stay…</p>
     </div>
   </div>
 
@@ -1175,64 +1172,33 @@
     window.scrollTo(0, 0);
   </script>
 
-  <!-- ===== LOADER: ACTIVE IMAGE DECODE + PROGRESS ===== -->
+  <!-- ===== LOADER DISMISS ===== -->
   <script>
     (function () {
       var done = false;
-      var bar  = document.getElementById('loaderBar');
-      var txt  = document.getElementById('loaderText');
-
-      function setProgress(pct) {
-        if (bar) bar.style.width = pct + '%';
-      }
-
-      function setText(msg) {
-        if (txt) txt.textContent = msg;
-      }
 
       function hideLoader() {
         if (done) return;
         done = true;
-        // Step 1: fill bar to 100%
-        setProgress(100);
-        setText('Ready');
-        // Step 2: wait for bar animation to visually complete (600ms)
-        // Step 3: then fade the loader out
-        setTimeout(function () {
-          var loader = document.getElementById('pageLoader');
-          if (loader) loader.classList.add('hidden');
-        }, 700);
+        var loader = document.getElementById('pageLoader');
+        if (loader) loader.classList.add('hidden');
       }
 
-      // Actively decode ALL hero images using img.decode() so the browser
-      // fully prepares pixel data while the loader is visible — not after.
+      // Decode all hero images while loader is visible, then hide
       function decodeAllImages() {
-        var imgs  = Array.from(document.querySelectorAll('.hero-slide img'));
+        var imgs = Array.from(document.querySelectorAll('.hero-slide img'));
         if (!imgs.length) { setTimeout(decodeAllImages, 50); return; }
 
-        var total   = imgs.length;
-        var decoded = 0;
-
-        setText('Loading images…');
-        setProgress(5);
+        var total = imgs.length, decoded = 0;
 
         imgs.forEach(function (img) {
           var p = img.decode ? img.decode() : Promise.resolve();
           p.then(function () {
             decoded++;
-            var pct = Math.round(5 + (decoded / total) * 90);
-            setProgress(pct);
-            if (decoded === total) {
-              // All decoded — fill bar then open site
-              hideLoader();
-            }
+            if (decoded === total) setTimeout(hideLoader, 300);
           }).catch(function () {
             decoded++;
-            var pct = Math.round(5 + (decoded / total) * 90);
-            setProgress(pct);
-            if (decoded === total) {
-              hideLoader();
-            }
+            if (decoded === total) setTimeout(hideLoader, 300);
           });
         });
       }
