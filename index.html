@@ -1193,11 +1193,15 @@
       function hideLoader() {
         if (done) return;
         done = true;
+        // Step 1: fill bar to 100%
         setProgress(100);
+        setText('Ready');
+        // Step 2: wait for bar animation to visually complete (600ms)
+        // Step 3: then fade the loader out
         setTimeout(function () {
           var loader = document.getElementById('pageLoader');
           if (loader) loader.classList.add('hidden');
-        }, 300);
+        }, 700);
       }
 
       // Actively decode ALL hero images using img.decode() so the browser
@@ -1213,24 +1217,21 @@
         setProgress(5);
 
         imgs.forEach(function (img) {
-          // img.decode() forces the browser to fully decode the image into GPU memory
           var p = img.decode ? img.decode() : Promise.resolve();
           p.then(function () {
             decoded++;
             var pct = Math.round(5 + (decoded / total) * 90);
             setProgress(pct);
             if (decoded === total) {
-              setText('Ready');
-              setProgress(100);
-              setTimeout(hideLoader, 250);
+              // All decoded — fill bar then open site
+              hideLoader();
             }
           }).catch(function () {
-            // Image failed to decode — still count it so we don't block
             decoded++;
             var pct = Math.round(5 + (decoded / total) * 90);
             setProgress(pct);
             if (decoded === total) {
-              setTimeout(hideLoader, 250);
+              hideLoader();
             }
           });
         });
