@@ -62,6 +62,9 @@
   RewriteCond %{THE_REQUEST} ^[A-Z]{3,9}\ /index\.html\ HTTP
   RewriteRule ^index\.html$ / [R=301,L]
 
+  # Redirect old local-guide.html to new localguide.html
+  RewriteRule ^local-guide\.html$ /localguide.html [R=301,L]
+
   # Remove trailing slashes (consistency for canonical URLs)
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule ^(.*)/$ /$1 [L,R=301]
