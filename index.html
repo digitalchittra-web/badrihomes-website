@@ -13,13 +13,19 @@
   <link rel="canonical" href="https://badrihomes.com/" />
   <link rel="icon" type="image/x-icon" href="/favicon.ico" />
   <link rel="icon" type="image/png" sizes="48x48" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+  <meta name="theme-color" content="#F5EFE6" />
 
   <!-- Open Graph (Facebook, WhatsApp, LinkedIn) -->
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://badrihomes.com/" />
   <meta property="og:title" content="Badri Homes – Authentic Newari Homestay in Patan, Nepal" />
   <meta property="og:description" content="Family-run Newari homestay 5 minutes walk from Patan Durbar Square. Private studios with kitchens, AC, Wi-Fi. Rated 9.5/10 on Booking.com. Book direct and save." />
-  <meta property="og:image" content="https://badrihomes.com/building.jpg" />
+  <meta property="og:image" content="https://badrihomes.com/og-image.jpg" />
+  <meta property="og:site_name" content="Badri Homes" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Badri Homes traditional Newari brick building in Patan, Nepal" />
   <meta property="og:locale" content="en_US" />
 
   <!-- LinkedIn -->
@@ -31,7 +37,7 @@
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="Badri Homes – Authentic Newari Homestay in Patan, Nepal" />
   <meta name="twitter:description" content="Family-run Newari homestay 5 min from Patan Durbar Square. Private studios, free Wi-Fi, fully equipped kitchen. Rated 9.5/10." />
-  <meta name="twitter:image" content="https://badrihomes.com/building.jpg" />
+  <meta name="twitter:image" content="https://badrihomes.com/og-image.jpg" />
 
   <!-- Geo tags -->
   <meta name="geo.region" content="NP-BA" />
@@ -111,8 +117,8 @@
         "price": "3000"
       }
     ],
-    "checkInTime": "14:00",
-    "checkOutTime": "11:00",
+    "checkInTime": "13:30",
+    "checkOutTime": "12:00",
     "image": [
       "https://badrihomes.com/assets/img/building.webp",
       "https://badrihomes.com/assets/img/room.webp",
@@ -172,7 +178,7 @@
         "name": "What is the check-in and check-out time?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Check-in is from 2:00 PM and check-out is by 11:00 AM."
+          "text": "Check-in is from 1:30 PM and check-out is by 12:00 PM."
         }
       },
       {
@@ -247,15 +253,8 @@
   <!-- DNS Prefetch for CDN -->
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com" />
 
-  <!-- Preload ALL hero images so they are ready when loader hides -->
-  <link rel="preload" as="image" href="assets/img/building.jpg" fetchpriority="high" />
-  <link rel="preload" as="image" href="assets/img/bed.jpg" />
-  <link rel="preload" as="image" href="assets/img/patan-durbar.jpg" />
-  <link rel="preload" as="image" href="assets/img/room.jpg" />
-  <link rel="preload" as="image" href="assets/img/krishna-mandir.jpg" />
-  <link rel="preload" as="image" href="assets/img/kitchen.jpg" />
-  <link rel="preload" as="image" href="assets/img/machindranath.jpg" />
-  <link rel="preload" as="image" href="assets/img/room2.jpg" />
+  <!-- Preload only the first hero image (webp) -->
+  <link rel="preload" as="image" href="assets/img/building.webp" type="image/webp" fetchpriority="high" />
 
   <!-- Font Awesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -274,13 +273,14 @@
   <link rel="stylesheet" href="assets/css/availability.css" />
   <link rel="stylesheet" href="assets/css/responsive.css" />
   <link rel="stylesheet" href="assets/css/loader.css" />
+  <link rel="stylesheet" href="assets/css/enhancements.css" />
 </head>
 <body>
 
   <!-- ===== LOADING SCREEN ===== -->
   <div id="pageLoader">
     <div class="loader-inner">
-      <img src="logo (1).png" alt="Badri Homes" class="loader-logo" />
+      <img src="logo.png" alt="Badri Homes" class="loader-logo" width="320" height="320" />
       <div class="loader-homes">
         <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
       </div>
@@ -292,7 +292,7 @@
   <nav id="navbar">
     <div class="container nav-inner">
       <a href="#hero" class="nav-logo">
-        <img src="logo (1).png" alt="Badri Homes Logo" />
+        <img src="logo.png" alt="Badri Homes Logo" width="320" height="320" />
       </a>
       <ul class="nav-links">
         <li><a href="#about">About</a></li>
@@ -303,9 +303,9 @@
         <li><a href="#contact">Contact</a></li>
       </ul>
       <a href="book.html" class="btn nav-cta">Book Now</a>
-      <div class="hamburger" id="hamburger" aria-label="Open menu">
+      <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
         <span></span><span></span><span></span>
-      </div>
+      </button>
     </div>
   </nav>
 
@@ -328,28 +328,28 @@
   <section id="hero">
     <div class="hero-slides" id="heroSlides">
       <div class="hero-slide active" data-caption="Badri Homes · Patan, Nepal">
-        <img src="assets/img/building.jpg" alt="Badri Homes exterior – traditional Newari brick building in Patan, Nepal" loading="eager" decoding="async" fetchpriority="high" />
+        <picture><source srcset="assets/img/building.webp" type="image/webp" /><img src="assets/img/building.jpg" alt="Badri Homes exterior – traditional Newari brick building in Patan, Nepal" loading="eager" decoding="async" fetchpriority="high" width="1920" height="3410" /></picture>
       </div>
       <div class="hero-slide" data-caption="Queen Bed · Newari Brick Walls">
-        <img src="assets/img/bed.jpg" alt="Queen bedroom with Newari brick wall at Badri Homes" loading="eager" decoding="async" />
+        <picture><source srcset="assets/img/bed.webp" type="image/webp" /><img src="assets/img/bed.jpg" alt="Queen bedroom with Newari brick wall at Badri Homes" loading="lazy" decoding="async" width="1920" height="1126" /></picture>
       </div>
       <div class="hero-slide" data-caption="Patan Durbar Square · 5 min walk">
-        <img src="assets/img/patan-durbar.jpg" alt="Patan Durbar Square UNESCO World Heritage Site" loading="eager" decoding="async" />
+        <picture><source srcset="assets/img/patan-durbar.webp" type="image/webp" /><img src="assets/img/patan-durbar.jpg" alt="Patan Durbar Square UNESCO World Heritage Site" loading="lazy" decoding="async" width="1920" height="2560" /></picture>
       </div>
       <div class="hero-slide" data-caption="Full Studio · Private &amp; Self-Contained">
-        <img src="assets/img/room.jpg" alt="Full studio room at Badri Homes Patan" loading="eager" decoding="async" />
+        <picture><source srcset="assets/img/room.webp" type="image/webp" /><img src="assets/img/room.jpg" alt="Full studio room at Badri Homes Patan" loading="lazy" decoding="async" width="1920" height="3410" /></picture>
       </div>
       <div class="hero-slide" data-caption="Krishna Mandir · Sacred Heritage">
-        <img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Temple Patan" loading="eager" decoding="async" />
+        <picture><source srcset="assets/img/krishna-mandir.webp" type="image/webp" /><img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Temple Patan" loading="lazy" decoding="async" width="1920" height="2560" /></picture>
       </div>
       <div class="hero-slide" data-caption="Private Kitchen · Fully Equipped">
-        <img src="assets/img/kitchen.jpg" alt="Private kitchen at Badri Homes" loading="eager" decoding="async" />
+        <picture><source srcset="assets/img/kitchen.webp" type="image/webp" /><img src="assets/img/kitchen.jpg" alt="Private kitchen at Badri Homes" loading="lazy" decoding="async" width="1920" height="1081" /></picture>
       </div>
       <div class="hero-slide" data-caption="Machindranath Jatra · Living Festival">
-        <img src="assets/img/machindranath.jpg" alt="Machindranath Jatra chariot festival Patan" loading="eager" decoding="async" />
+        <picture><source srcset="assets/img/machindranath.webp" type="image/webp" /><img src="assets/img/machindranath.jpg" alt="Machindranath Jatra chariot festival Patan" loading="lazy" decoding="async" width="1920" height="2560" /></picture>
       </div>
       <div class="hero-slide" data-caption="Cosy Rooms · Every Floor">
-        <img src="assets/img/room2.jpg" alt="Cozy room interior at Badri Homes" loading="eager" decoding="async" />
+        <picture><source srcset="assets/img/room2.webp" type="image/webp" /><img src="assets/img/room2.jpg" alt="Cozy room interior at Badri Homes" loading="lazy" decoding="async" width="1920" height="1081" /></picture>
       </div>
     </div>
 
@@ -364,13 +364,13 @@
     <!-- Mini room preview panel -->
     <div class="hero-room-preview" id="hrpWrap">
       <div class="hrp-img-wrap" id="hrpSlides">
-        <div class="hrp-slide active"><img src="Images/Rooms/bed.jpg" alt="Queen Bed" loading="lazy" decoding="async" /></div>
-        <div class="hrp-slide"><img src="Images/Rooms/kitchen.jpg" alt="Private Kitchen" loading="lazy" decoding="async" /></div>
-        <div class="hrp-slide"><img src="Images/Rooms/tv.jpg" alt="TV Lounge" loading="lazy" decoding="async" /></div>
-        <div class="hrp-slide"><img src="Images/Rooms/toilet 1.jpg" alt="Bathroom" loading="lazy" decoding="async" /></div>
-        <div class="hrp-slide"><img src="Images/Rooms/room.jpg" alt="Studio View" loading="lazy" decoding="async" /></div>
-        <div class="hrp-slide"><img src="Images/Rooms/bed 1.jpg" alt="Cozy Beds" loading="lazy" decoding="async" /></div>
-        <div class="hrp-slide"><img src="Images/Rooms/image 1.jpg" alt="Room Detail" loading="lazy" decoding="async" /></div>
+        <div class="hrp-slide active"><img src="assets/img/rooms/bed.webp" alt="Queen Bed" loading="lazy" decoding="async" width="1200" height="704" /></div>
+        <div class="hrp-slide"><img src="assets/img/rooms/kitchen.webp" alt="Private Kitchen" loading="lazy" decoding="async" width="1200" height="676" /></div>
+        <div class="hrp-slide"><img src="assets/img/rooms/tv.webp" alt="TV Lounge" loading="lazy" decoding="async" width="1200" height="2132" /></div>
+        <div class="hrp-slide"><img src="assets/img/rooms/bathroom.webp" alt="Bathroom" loading="lazy" decoding="async" width="1200" height="2132" /></div>
+        <div class="hrp-slide"><img src="assets/img/rooms/room.webp" alt="Studio View" loading="lazy" decoding="async" width="1200" height="2132" /></div>
+        <div class="hrp-slide"><img src="assets/img/rooms/bed2.webp" alt="Cozy Beds" loading="lazy" decoding="async" width="1200" height="768" /></div>
+        <div class="hrp-slide"><img src="assets/img/rooms/detail.webp" alt="Room Detail" loading="lazy" decoding="async" width="1126" height="2000" /></div>
       </div>
       <div class="hrp-info">
         <div class="hrp-label" id="hrpLabel">Queen Bed · Private Kitchen · En-suite</div>
@@ -385,7 +385,8 @@
           Top-Rated Homestay in Patan
         </div>
         <h1 class="hero-title" id="heroTaglineEl">
-          Experience <span>Authentic</span><br />Newari Living
+          <span class="ht-line"><span class="ht-w">Experience</span> <span class="ht-w accent">Authentic</span></span>
+          <span class="ht-line"><span class="ht-w">Newari</span> <span class="ht-w">Living</span></span>
         </h1>
         <p class="hero-desc" id="heroSubtitleEl">
           Wake up to carved wooden windows, courtyard mornings, and the warmth of a family that's called Patan home for generations.
@@ -416,8 +417,8 @@
         <div class="stat-item">
           <div class="stat-icon"><i class="fa-solid fa-star"></i></div>
           <div>
-            <div class="stat-label">Guest Rating</div>
-            <div class="stat-value">4.9 / 5.0</div>
+            <div class="stat-label">Booking.com Rating</div>
+            <div class="stat-value">9.5 / 10</div>
           </div>
         </div>
         <div class="stat-item">
@@ -473,10 +474,10 @@
       <div class="about-grid">
         <div class="about-images">
           <div class="about-img-main">
-            <picture><source srcset="assets/img/building.webp" type="image/webp" /><img src="assets/img/building.jpg" alt="Badri Homes exterior – traditional Newari brick building in Patan" loading="lazy" decoding="async" /></picture>
+            <picture><source srcset="assets/img/building.webp" type="image/webp" /><img src="assets/img/building.jpg" alt="Badri Homes exterior – traditional Newari brick building in Patan" loading="lazy" decoding="async" width="1920" height="3410" /></picture>
           </div>
           <div class="about-img-secondary">
-            <picture><source srcset="assets/img/kitchen.webp" type="image/webp" /><img src="assets/img/kitchen.jpg" alt="Private kitchen at Badri Homes" loading="lazy" decoding="async" style="object-position:center;" /></picture>
+            <picture><source srcset="assets/img/kitchen.webp" type="image/webp" /><img src="assets/img/kitchen.jpg" alt="Private kitchen at Badri Homes" loading="lazy" decoding="async" style="object-position:center;" width="1920" height="1081" /></picture>
           </div>
           <div class="about-badge-floating">
             <strong>Est. 2023</strong>
@@ -494,7 +495,7 @@
             Nestled in the heart of Patan, Nepal, each studio is built with top-notch materials to provide utmost comfort. Enjoy a breathtaking view of a vibrant community area filled with temples — a genuine glimpse into the daily life of the Nepalese in Patan.
           </p>
           <p style="color:var(--text-light);line-height:1.8;margin-bottom:28px;">
-            Just a <strong>2-minute walk</strong> from the famous Patan Durbar Square. Bhatbhateni Supermarket is a 15–17 min walk, Labim Mall 17–18 min, and Jhamsikhel only a 5-minute drive away.
+            Just a <strong>5-minute walk</strong> from the famous Patan Durbar Square. Bhatbhateni Supermarket is a 15–17 min walk, Labim Mall 17–18 min, and Jhamsikhel only a 5-minute drive away.
           </p>
           <div class="about-features">
             <div class="feature-item">
@@ -519,7 +520,7 @@
             </div>
             <div class="feature-item">
               <div class="feature-icon"><i class="fa-solid fa-location-dot"></i></div>
-              <div><h4>2 min to Durbar Square</h4><p>Prime Patan location</p></div>
+              <div><h4>5 min to Durbar Square</h4><p>Prime Patan location</p></div>
             </div>
           </div>
           <a href="#contact" class="btn btn-primary">Plan Your Stay <i class="fa-solid fa-arrow-right"></i></a>
@@ -534,7 +535,7 @@
       <div class="section-header fade-up">
         <span class="section-label">Where You'll Stay</span>
         <h2 class="section-title">Our Room Options</h2>
-        <p class="section-subtitle">Each room blends traditional Newari craftsmanship with modern comforts—handcrafted furniture, warm textiles, and views that feel like a painting.</p>
+        <p class="section-subtitle">Each room blends traditional Newari craftsmanship with modern comforts—handcrafted furniture, warm textiles, and views that feel like a painting. Book direct on WhatsApp for our best rate.</p>
       </div>
       <div style="text-align:center; margin-bottom:40px;">
         <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="btn btn-booking" style="display:inline-flex; align-items:center; gap:10px; padding:13px 28px; font-size:0.95rem;">
@@ -545,7 +546,7 @@
         <!-- Room 001 -->
         <div class="room-card fade-up">
           <div class="room-img">
-            <picture><source srcset="assets/img/small/bed.webp" type="image/webp" /><img src="assets/img/bed.jpg" alt="001 First Floor Studio at Badri Homes" loading="lazy" decoding="async" /></picture>
+            <picture><source srcset="assets/img/small/bed.webp" type="image/webp" /><img src="assets/img/bed.jpg" alt="001 First Floor Studio at Badri Homes" loading="lazy" decoding="async" width="1920" height="1126" /></picture>
             <span class="room-badge">First Floor</span>
           </div>
           <div class="room-body">
@@ -562,14 +563,17 @@
                 <div class="price" data-npr-price="3000">NPR 3,000</div>
                 <div class="per">per night · incl. taxes</div>
               </div>
-              <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="room-book">Book Now</a>
+              <div class="room-book-group">
+                <a href="https://wa.me/9779851047861?text=Hello%20Badri%20Homes%21%20I%27d%20like%20to%20book%20the%20First%20Floor%20Studio%20%28Room%20001%29.%20My%20dates%20are%3A%20" target="_blank" rel="noopener noreferrer" class="room-book room-book-wa"><i class="fa-brands fa-whatsapp"></i> Book on WhatsApp</a>
+                <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" rel="noopener noreferrer" class="room-book-alt">or via Booking.com</a>
+              </div>
             </div>
           </div>
         </div>
         <!-- Room 002 -->
         <div class="room-card fade-up">
           <div class="room-img">
-            <picture><source srcset="assets/img/small/room.webp" type="image/webp" /><img src="assets/img/room.jpg" alt="002 Second Floor Studio at Badri Homes" loading="lazy" decoding="async" /></picture>
+            <picture><source srcset="assets/img/small/room.webp" type="image/webp" /><img src="assets/img/room.jpg" alt="002 Second Floor Studio at Badri Homes" loading="lazy" decoding="async" width="1920" height="3410" /></picture>
             <span class="room-badge">Second Floor</span>
           </div>
           <div class="room-body">
@@ -586,14 +590,17 @@
                 <div class="price" data-npr-price="3000">NPR 3,000</div>
                 <div class="per">per night · incl. taxes</div>
               </div>
-              <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="room-book">Book Now</a>
+              <div class="room-book-group">
+                <a href="https://wa.me/9779851047861?text=Hello%20Badri%20Homes%21%20I%27d%20like%20to%20book%20the%20Second%20Floor%20Studio%20%28Room%20002%29.%20My%20dates%20are%3A%20" target="_blank" rel="noopener noreferrer" class="room-book room-book-wa"><i class="fa-brands fa-whatsapp"></i> Book on WhatsApp</a>
+                <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" rel="noopener noreferrer" class="room-book-alt">or via Booking.com</a>
+              </div>
             </div>
           </div>
         </div>
         <!-- Room 003 -->
         <div class="room-card fade-up">
           <div class="room-img">
-            <picture><source srcset="assets/img/small/bed1.webp" type="image/webp" /><img src="assets/img/bed1.jpg" alt="003 Third Floor Studio at Badri Homes" loading="lazy" decoding="async" /></picture>
+            <picture><source srcset="assets/img/small/bed1.webp" type="image/webp" /><img src="assets/img/bed1.jpg" alt="003 Third Floor Studio at Badri Homes" loading="lazy" decoding="async" width="1920" height="1228" /></picture>
             <span class="room-badge">Third Floor</span>
           </div>
           <div class="room-body">
@@ -610,7 +617,10 @@
                 <div class="price" data-npr-price="3000">NPR 3,000</div>
                 <div class="per">per night · incl. taxes</div>
               </div>
-              <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="room-book">Book Now</a>
+              <div class="room-book-group">
+                <a href="https://wa.me/9779851047861?text=Hello%20Badri%20Homes%21%20I%27d%20like%20to%20book%20the%20Third%20Floor%20Studio%20%28Room%20003%29.%20My%20dates%20are%3A%20" target="_blank" rel="noopener noreferrer" class="room-book room-book-wa"><i class="fa-brands fa-whatsapp"></i> Book on WhatsApp</a>
+                <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" rel="noopener noreferrer" class="room-book-alt">or via Booking.com</a>
+              </div>
             </div>
           </div>
         </div>
@@ -628,7 +638,7 @@
       </div>
       <div class="attractions-grid">
         <div class="attraction-card fade-up">
-          <picture><source srcset="assets/img/small/patan-durbar.webp" type="image/webp" /><img src="assets/img/patan-durbar.jpg" alt="Patan Durbar Square UNESCO World Heritage Site" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/patan-durbar.webp" type="image/webp" /><img src="assets/img/patan-durbar.jpg" alt="Patan Durbar Square UNESCO World Heritage Site" loading="lazy" width="1920" height="2560" /></picture>
           <div class="attraction-overlay">
             <span class="attraction-tag">UNESCO Heritage</span>
             <h3 class="attraction-name">Patan Durbar Square</h3>
@@ -637,7 +647,7 @@
           </div>
         </div>
         <div class="attraction-card fade-up">
-          <picture><source srcset="assets/img/small/krishna-mandir.webp" type="image/webp" /><img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Patan – stone shikhara temple" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/krishna-mandir.webp" type="image/webp" /><img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Patan – stone shikhara temple" loading="lazy" width="1920" height="2560" /></picture>
           <div class="attraction-overlay">
             <span class="attraction-tag">Hindu Temple</span>
             <h3 class="attraction-name">Krishna Mandir</h3>
@@ -646,7 +656,7 @@
           </div>
         </div>
         <div class="attraction-card fade-up">
-          <picture><source srcset="assets/img/small/machindranath.webp" type="image/webp" /><img src="assets/img/machindranath.jpg" alt="Machindranath Jatra chariot festival Patan" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/machindranath.webp" type="image/webp" /><img src="assets/img/machindranath.jpg" alt="Machindranath Jatra chariot festival Patan" loading="lazy" width="1920" height="2560" /></picture>
           <div class="attraction-overlay">
             <span class="attraction-tag">Living Culture</span>
             <h3 class="attraction-name">Machindranath Jatra</h3>
@@ -665,7 +675,7 @@
         <div class="gems-grid">
           <div class="gem-card">
             <div class="gem-img">
-              <picture><source srcset="assets/img/small/patan-durbar-1.webp" type="image/webp" /><img src="assets/img/patan-durbar-1.jpg" alt="Patan Durbar Square evening view" loading="lazy" /></picture>
+              <picture><source srcset="assets/img/small/patan-durbar-1.webp" type="image/webp" /><img src="assets/img/patan-durbar-1.jpg" alt="Patan Durbar Square evening view" loading="lazy" width="1920" height="2560" /></picture>
             </div>
             <div class="gem-body">
               <div class="gem-icon"><i class="fa-solid fa-sun"></i></div>
@@ -675,7 +685,7 @@
           </div>
           <div class="gem-card">
             <div class="gem-img">
-              <picture><source srcset="assets/img/small/machindranath-2.webp" type="image/webp" /><img src="assets/img/machindranath-2.jpg" alt="Machindranath Jatra Patan festival" loading="lazy" /></picture>
+              <picture><source srcset="assets/img/small/machindranath-2.webp" type="image/webp" /><img src="assets/img/machindranath-2.jpg" alt="Machindranath Jatra Patan festival" loading="lazy" width="1920" height="3413" /></picture>
             </div>
             <div class="gem-body">
               <div class="gem-icon"><i class="fa-solid fa-drum"></i></div>
@@ -685,7 +695,7 @@
           </div>
           <div class="gem-card">
             <div class="gem-img">
-              <picture><source srcset="assets/img/small/krishna-mandir.webp" type="image/webp" /><img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Patan" loading="lazy" /></picture>
+              <picture><source srcset="assets/img/small/krishna-mandir.webp" type="image/webp" /><img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Patan" loading="lazy" width="1920" height="2560" /></picture>
             </div>
             <div class="gem-body">
               <div class="gem-icon"><i class="fa-solid fa-hammer"></i></div>
@@ -695,7 +705,7 @@
           </div>
           <div class="gem-card">
             <div class="gem-img">
-              <picture><source srcset="assets/img/small/newari-food.webp" type="image/webp" /><img src="assets/img/small/newari-food.webp" alt="Real Newari food Patan" loading="lazy" /></picture>
+              <picture><source srcset="assets/img/small/newari-food.webp" type="image/webp" /><img src="assets/img/small/newari-food.webp" alt="Real Newari food Patan" loading="lazy" width="800" height="458" /></picture>
             </div>
             <div class="gem-body">
               <div class="gem-icon"><i class="fa-solid fa-utensils"></i></div>
@@ -723,39 +733,39 @@
       </div>
       <div class="gallery-grid">
         <div class="gallery-item large fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/building.webp" type="image/webp" /><img src="assets/img/building.jpg" alt="Badri Homes building exterior" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/building.webp" type="image/webp" /><img src="assets/img/building.jpg" alt="Badri Homes building exterior" loading="lazy" width="1920" height="3410" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
         <div class="gallery-item fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/bed.webp" type="image/webp" /><img src="assets/img/bed.jpg" alt="Queen bedroom with Newari brick wall" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/bed.webp" type="image/webp" /><img src="assets/img/bed.jpg" alt="Queen bedroom with Newari brick wall" loading="lazy" width="1920" height="1126" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
         <div class="gallery-item fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/kitchen.webp" type="image/webp" /><img src="assets/img/kitchen.jpg" alt="Private kitchen" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/kitchen.webp" type="image/webp" /><img src="assets/img/kitchen.jpg" alt="Private kitchen" loading="lazy" width="1920" height="1081" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
         <div class="gallery-item tall fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/patan-durbar.webp" type="image/webp" /><img src="assets/img/patan-durbar.jpg" alt="Patan Durbar Square" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/patan-durbar.webp" type="image/webp" /><img src="assets/img/patan-durbar.jpg" alt="Patan Durbar Square" loading="lazy" width="1920" height="2560" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
         <div class="gallery-item fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/room.webp" type="image/webp" /><img src="assets/img/room.jpg" alt="Full studio room" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/room.webp" type="image/webp" /><img src="assets/img/room.jpg" alt="Full studio room" loading="lazy" width="1920" height="3410" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
         <div class="gallery-item fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/image1.webp" type="image/webp" /><img src="assets/img/image1.jpg" alt="Room detail" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/image1.webp" type="image/webp" /><img src="assets/img/image1.jpg" alt="Room detail" loading="lazy" width="1920" height="3410" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
         <div class="gallery-item fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/krishna-mandir.webp" type="image/webp" /><img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Patan" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/krishna-mandir.webp" type="image/webp" /><img src="assets/img/krishna-mandir.jpg" alt="Krishna Mandir Patan" loading="lazy" width="1920" height="2560" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
         <div class="gallery-item fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/tv.webp" type="image/webp" /><img src="assets/img/tv.jpg" alt="TV lounge" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/tv.webp" type="image/webp" /><img src="assets/img/tv.jpg" alt="TV lounge" loading="lazy" width="1920" height="3410" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
         <div class="gallery-item fade-up" onclick="openLightbox(this)">
-          <picture><source srcset="assets/img/small/machindranath-2.webp" type="image/webp" /><img src="assets/img/machindranath-2.jpg" alt="Festival in Patan" loading="lazy" /></picture>
+          <picture><source srcset="assets/img/small/machindranath-2.webp" type="image/webp" /><img src="assets/img/machindranath-2.jpg" alt="Festival in Patan" loading="lazy" width="1920" height="3413" /></picture>
           <div class="gallery-overlay"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
         </div>
       </div>
@@ -888,9 +898,12 @@
         <!-- Booking Form -->
         <div class="contact-form fade-up" id="bookingForm">
           <h3>Reserve Your Room</h3>
-          <p>Book directly via Booking.com, or send us a message and we'll confirm within 24 hours.</p>
-          <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" class="btn-booking" style="display:flex; align-items:center; justify-content:center; gap:10px; padding:14px 20px; border-radius:12px; font-size:0.95rem; font-weight:700; margin-bottom:20px; text-decoration:none;">
-            <i class="fa-solid fa-calendar-check"></i> Book on Booking.com
+          <p>Book direct on WhatsApp for our best rate — no booking fees, instant reply. Or send an enquiry and we'll confirm within 24 hours.</p>
+          <a href="https://wa.me/9779851047861?text=Hello%20Badri%20Homes%21%20I%27d%20like%20to%20book%20a%20studio.%20My%20dates%20are%3A%20" target="_blank" rel="noopener noreferrer" class="btn-wa-book">
+            <i class="fa-brands fa-whatsapp"></i> Book direct on WhatsApp
+          </a>
+          <a href="https://www.booking.com/hotel/np/badri-homes.html" target="_blank" rel="noopener noreferrer" class="btn-booking-alt">
+            <i class="fa-solid fa-calendar-check"></i> or book on Booking.com
           </a>
           <div style="display:flex; align-items:center; gap:12px; margin-bottom:20px;">
             <div style="flex:1; height:1px; background:var(--beige-dark);"></div>
@@ -968,7 +981,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <div class="nav-logo" style="margin-bottom:16px; max-width:200px;">
-            <img src="logo (1).png" alt="Badri Homes Logo" style="height:64px; width:auto; filter:brightness(0) invert(1); opacity:0.88;" />
+            <img src="logo.png" alt="Badri Homes Logo" style="height:64px; width:auto; filter:brightness(0) invert(1); opacity:0.88;" width="320" height="320" />
           </div>
           <p class="footer-desc">A family-run Newari homestay in the heart of Patan — where ancient traditions meet genuine hospitality. Your home in the City of Fine Arts.</p>
           <div class="social-links">
@@ -992,10 +1005,10 @@
           <h4>Patan Highlights</h4>
           <ul class="footer-links">
             <li><a href="#attractions">Durbar Square</a></li>
-            <li><a href="#attractions">Golden Temple</a></li>
-            <li><a href="#attractions">Mahabouddha</a></li>
-            <li><a href="#attractions">Patan Museum</a></li>
-            <li><a href="#attractions">Hidden Gems</a></li>
+            <li><a href="localguide.html#hidden-temples">Golden Temple</a></li>
+            <li><a href="localguide.html#hidden-temples">Mahabouddha</a></li>
+            <li><a href="localguide.html#walking-guide">Patan Museum</a></li>
+            <li><a href="localguide.html#hidden-temples">Hidden Gems</a></li>
           </ul>
         </div>
         <div class="footer-col">
@@ -1024,7 +1037,7 @@
       </div>
       <div class="footer-bottom">
         <span>&copy; 2026 Badri Homes, Patan. All rights reserved.</span>
-        <span>Made with <i class="fa-solid fa-heart" style="color:var(--terracotta);"></i> in Nepal &nbsp;|&nbsp; <a href="#contact">Privacy Policy</a></span>
+        <span>Made with <i class="fa-solid fa-heart" style="color:var(--terracotta);"></i> in Nepal &nbsp;|&nbsp; <a href="privacy.html">Privacy Policy</a></span>
       </div>
     </div>
   </footer>
@@ -1160,6 +1173,8 @@
     window.scrollTo(0, 0);
   </script>
 
+  <script src="assets/js/enhancements.js" defer></script>
+
   <!-- ===== LOADER DISMISS ===== -->
   <script>
     (function () {
@@ -1172,33 +1187,23 @@
         if (loader) loader.classList.add('hidden');
       }
 
-      // Decode all hero images while loader is visible, then hide
-      function decodeAllImages() {
-        var imgs = Array.from(document.querySelectorAll('.hero-slide img'));
-        if (!imgs.length) { setTimeout(decodeAllImages, 50); return; }
-
-        var total = imgs.length, decoded = 0;
-
-        imgs.forEach(function (img) {
-          var p = img.decode ? img.decode() : Promise.resolve();
-          p.then(function () {
-            decoded++;
-            if (decoded === total) setTimeout(hideLoader, 1200);
-          }).catch(function () {
-            decoded++;
-            if (decoded === total) setTimeout(hideLoader, 1200);
-          });
-        });
+      // Dismiss as soon as the FIRST hero image is ready — don't block on all 8
+      function waitFirstImage() {
+        var img = document.querySelector('.hero-slide img');
+        if (!img) { setTimeout(waitFirstImage, 50); return; }
+        var p = img.decode ? img.decode() : Promise.resolve();
+        p.then(function () { setTimeout(hideLoader, 300); })
+         .catch(function () { hideLoader(); });
       }
 
       if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', decodeAllImages);
+        document.addEventListener('DOMContentLoaded', waitFirstImage);
       } else {
-        decodeAllImages();
+        waitFirstImage();
       }
 
-      // Hard fallback — never block longer than 15s
-      setTimeout(hideLoader, 15000);
+      // Hard fallback — never block longer than 4s
+      setTimeout(hideLoader, 4000);
     })();
   </script>
 

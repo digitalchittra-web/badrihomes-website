@@ -1,0 +1,278 @@
+/* ============================================================
+   ENHANCEMENTS — stylistic & interactive layer
+   Uses the existing theme tokens from base.css
+   ============================================================ */
+
+/* ---------- Scroll progress bar ---------- */
+#scrollProgress {
+  position: fixed;
+  top: 0; left: 0;
+  height: 3px;
+  width: 0%;
+  background: linear-gradient(90deg, var(--terracotta), var(--gold));
+  z-index: 10000;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+/* ---------- Navbar: frosted glass + animated link underlines ---------- */
+#navbar.scrolled {
+  background: rgba(245, 239, 230, 0.82);
+  -webkit-backdrop-filter: blur(14px) saturate(1.4);
+  backdrop-filter: blur(14px) saturate(1.4);
+  box-shadow: 0 1px 0 rgba(107, 66, 38, 0.08), 0 8px 32px rgba(44, 24, 16, 0.08);
+}
+.nav-links a {
+  position: relative;
+  padding-bottom: 4px;
+}
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0; bottom: 0;
+  width: 100%; height: 2px;
+  background: linear-gradient(90deg, var(--terracotta), var(--gold));
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.nav-links a:hover::after,
+.nav-links a:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Hamburger is now a real <button> */
+button.hamburger {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* ---------- Hero headline reveal ---------- */
+.ht-line { display: block; overflow: hidden; }
+.hero-title .ht-line, .hero-title .ht-w { color: inherit; font-style: normal; }
+.ht-w {
+  display: inline-block;
+  transform: translateY(110%);
+  opacity: 0;
+}
+body.hero-ready .ht-w {
+  animation: htRise 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+body.hero-ready .ht-w:nth-child(1) { animation-delay: 0.05s; }
+body.hero-ready .ht-w:nth-child(2) { animation-delay: 0.16s; }
+body.hero-ready .ht-line:nth-child(2) .ht-w:nth-child(1) { animation-delay: 0.27s; }
+body.hero-ready .ht-line:nth-child(2) .ht-w:nth-child(2) { animation-delay: 0.38s; }
+@keyframes htRise {
+  to { transform: translateY(0); opacity: 1; }
+}
+
+/* Gold underline draws itself beneath the accent word */
+.ht-w.accent {
+  position: relative;
+  color: var(--gold);
+  font-style: italic;
+}
+.ht-w.accent::after {
+  content: '';
+  position: absolute;
+  left: 2%; bottom: 0.04em;
+  width: 96%; height: 3px;
+  background: linear-gradient(90deg, var(--gold), rgba(201, 168, 76, 0.25));
+  border-radius: 3px;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+body.hero-ready .ht-w.accent::after {
+  animation: htUnderline 0.7s cubic-bezier(0.22, 1, 0.36, 1) 0.85s forwards;
+}
+@keyframes htUnderline { to { transform: scaleX(1); } }
+
+.hero-desc, .hero-actions, .hero-badges {
+  opacity: 0;
+  transform: translateY(18px);
+}
+body.hero-ready .hero-desc    { animation: htRise2 0.8s ease 0.55s forwards; }
+body.hero-ready .hero-actions { animation: htRise2 0.8s ease 0.75s forwards; }
+body.hero-ready .hero-badges  { animation: htRise2 0.8s ease 0.40s forwards; }
+@keyframes htRise2 { to { opacity: 1; transform: translateY(0); } }
+
+/* ---------- Signature: Newari carved-window lattice ornament ----------
+   A nod to Patan's ankhi jhya — the carved wooden lattice windows. */
+.section-header::after {
+  content: '';
+  display: block;
+  width: 148px; height: 16px;
+  margin: 22px auto 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 148 16'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='1.4'%3E%3Cpath d='M10 8l8-7 8 7-8 7zM42 8l8-7 8 7-8 7zM74 8l8-7 8 7-8 7zM106 8l8-7 8 7-8 7z' opacity='0.9'/%3E%3C/g%3E%3Cg fill='%23C4704F'%3E%3Ccircle cx='18' cy='8' r='1.8'/%3E%3Ccircle cx='50' cy='8' r='1.8'/%3E%3Ccircle cx='82' cy='8' r='1.8'/%3E%3Ccircle cx='114' cy='8' r='1.8'/%3E%3C/g%3E%3Cpath d='M0 8h6M130 8h18' stroke='%23C9A84C' stroke-width='1.2' opacity='0.6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center;
+}
+#testimonials .section-header::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 148 16'%3E%3Cg fill='none' stroke='%23C9A84C' stroke-width='1.4'%3E%3Cpath d='M10 8l8-7 8 7-8 7zM42 8l8-7 8 7-8 7zM74 8l8-7 8 7-8 7zM106 8l8-7 8 7-8 7z' opacity='0.9'/%3E%3C/g%3E%3Cg fill='%23F5EFE6'%3E%3Ccircle cx='18' cy='8' r='1.8'/%3E%3Ccircle cx='50' cy='8' r='1.8'/%3E%3Ccircle cx='82' cy='8' r='1.8'/%3E%3Ccircle cx='114' cy='8' r='1.8'/%3E%3C/g%3E%3Cpath d='M0 8h6M130 8h18' stroke='%23C9A84C' stroke-width='1.2' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* ---------- Buttons: shine sweep ---------- */
+.btn {
+  position: relative;
+  overflow: hidden;
+}
+.btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+  pointer-events: none;
+}
+.btn:hover::before { left: 130%; }
+
+/* ---------- Room & attraction cards: 3D tilt + image sheen ---------- */
+.room-card, .attraction-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.room-card.tilting, .attraction-card.tilting {
+  transition: box-shadow 0.35s ease;
+}
+.room-img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(115deg, transparent 38%, rgba(255, 255, 255, 0.22) 50%, transparent 62%);
+  transform: translateX(-120%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+.room-card:hover .room-img::after { transform: translateX(120%); }
+
+/* ---------- Gallery: caption overlays ---------- */
+.gallery-item { position: relative; }
+.gallery-item::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(44, 24, 16, 0.72) 0%, transparent 45%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.gallery-item::after {
+  content: attr(data-caption);
+  position: absolute;
+  left: 16px; right: 16px; bottom: 14px;
+  color: var(--white);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  transform: translateY(10px);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+  z-index: 2;
+}
+.gallery-item:hover::before,
+.gallery-item:focus-visible::before { opacity: 1; }
+.gallery-item:hover::after,
+.gallery-item:focus-visible::after { opacity: 1; transform: translateY(0); }
+
+/* ---------- Testimonials: grab-to-swipe ---------- */
+.rv-viewport { cursor: grab; }
+.rv-viewport.dragging { cursor: grabbing; }
+.rv-viewport.dragging .rv-track { transition: none; }
+
+/* ---------- Count-up stats ---------- */
+.stat-value { font-variant-numeric: tabular-nums; }
+
+/* ---------- Keyboard focus ---------- */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--terracotta);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Reduced motion: calm everything down ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .ht-w, .hero-desc, .hero-actions, .hero-badges { opacity: 1; transform: none; }
+  .fade-up { opacity: 1; transform: none; }
+}
+
+/* ---------- Anchored sections clear the fixed navbar ---------- */
+section[id], div[id="availability"] { scroll-margin-top: 88px; }
+
+/* ---------- WhatsApp-first booking ---------- */
+.room-book-group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+.room-book-wa {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #25D366;
+  color: #fff;
+}
+.room-book-wa i { font-size: 1rem; }
+.room-book-wa:hover {
+  background: #1eb858;
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.35);
+}
+.room-book-alt {
+  font-size: 0.74rem;
+  color: var(--text-light);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: color 0.25s ease;
+}
+.room-book-alt:hover { color: #003580; }
+
+.btn-wa-book {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 20px;
+  border-radius: 12px;
+  background: #25D366;
+  color: #fff;
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+  transition: var(--transition);
+}
+.btn-wa-book i { font-size: 1.25rem; }
+.btn-wa-book:hover {
+  background: #1eb858;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(37, 211, 102, 0.35);
+}
+.btn-booking-alt {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  border: 1.5px solid var(--beige-dark);
+  color: #003580;
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin-bottom: 20px;
+  transition: var(--transition);
+}
+.btn-booking-alt:hover { border-color: #003580; background: rgba(0, 53, 128, 0.04); }

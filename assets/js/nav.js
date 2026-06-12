@@ -27,6 +27,7 @@ hamburger.addEventListener('click', () => {
 
 
 function openMobile() {
+  hamburger.setAttribute('aria-expanded', 'true');
   mobileMenu.classList.add('open');
   mobileOverlay.classList.add('open');
   hamburger.classList.add('active');
@@ -35,6 +36,7 @@ function openMobile() {
 }
 
 function closeMobile() {
+  hamburger.setAttribute('aria-expanded', 'false');
   mobileMenu.classList.remove('open');
   mobileOverlay.classList.remove('open');
   hamburger.classList.remove('active');
