@@ -1,0 +1,1547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badri Homes - Management System</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --primary: #2563eb; --primary-dark: #1e40af; --primary-light: #eff6ff;
+            --success: #10b981; --success-light: #d1fae5;
+            --danger: #ef4444; --danger-light: #fee2e2;
+            --warning: #f59e0b; --warning-light: #fef3c7;
+            --info: #06b6d4; --info-light: #cffafe;
+            --purple: #8b5cf6; --purple-light: #f5f3ff;
+            --bg: #f8fafc; --bg-card: #ffffff;
+            --border: #e2e8f0; --text: #1e293b;
+            --text-light: #64748b; --text-lighter: #94a3b8;
+        }
+
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+
+        /* LOGIN */
+        .login-page {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            z-index: 9999; opacity: 1; transition: opacity 0.5s ease; visibility: visible;
+        }
+        .login-page.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .login-box {
+            background: var(--bg-card); padding: 40px; border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3); width: 100%; max-width: 420px;
+            animation: slideUp 0.5s ease;
+        }
+        .login-box h1 { text-align: center; margin-bottom: 8px; font-size: 32px; color: var(--primary); }
+        .login-box > p { text-align: center; color: var(--text-light); margin-bottom: 30px; font-size: 14px; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--text); font-size: 14px; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 10px 12px; border: 2px solid var(--border);
+            border-radius: 8px; font-size: 14px; transition: all 0.3s; background: var(--bg);
+        }
+        .form-group input:focus, .form-group select:focus {
+            outline: none; border-color: var(--primary); background: white;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .login-box .form-group input { font-size: 15px; padding: 12px 14px; }
+
+        .btn { width: 100%; padding: 12px; border: none; border-radius: 8px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); transform: translateY(-2px); box-shadow: 0 10px 20px rgba(37,99,235,0.3); }
+        .demo-info { margin-top: 25px; padding: 15px; background: var(--primary-light); border-radius: 8px; font-size: 13px; color: var(--primary); border: 1px solid var(--primary); text-align: center; }
+        .demo-info code { background: white; padding: 4px 8px; border-radius: 4px; font-weight: 600; }
+
+        /* SIDEBAR */
+        .sidebar {
+            width: 260px; background: var(--bg-card); border-right: 1px solid var(--border);
+            padding: 30px 20px; position: fixed; left: 0; top: 0; height: 100vh;
+            overflow-y: auto; display: flex; flex-direction: column; transition: all 0.3s;
+        }
+        .sidebar.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .sidebar-logo { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 30px; text-align: center; line-height: 1.4; }
+        .sidebar-nav { flex: 1; display: flex; flex-direction: column; gap: 6px; }
+        .nav-item {
+            padding: 11px 16px; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+            color: var(--text-light); font-weight: 500; display: flex; align-items: center;
+            gap: 12px; border: 2px solid transparent; font-size: 14px;
+        }
+        .nav-item:hover { background: var(--bg); color: var(--text); }
+        .nav-item.active { background: var(--primary-light); color: var(--primary); border-color: var(--primary); }
+        .nav-icon { font-size: 18px; min-width: 22px; }
+        .sidebar-footer { border-top: 1px solid var(--border); padding-top: 15px; margin-top: auto; }
+        .btn-logout { width: 100%; padding: 10px 16px; background: var(--danger-light); color: var(--danger); border: none; border-radius: 8px; font-weight: 600; cursor: pointer; transition: all 0.3s; }
+        .btn-logout:hover { background: var(--danger); color: white; }
+
+        /* MAIN */
+        .main { flex: 1; margin-left: 260px; padding: 28px; opacity: 0; transition: opacity 0.5s ease; visibility: hidden; pointer-events: none; min-height: 100vh; }
+        .main.active { opacity: 1; visibility: visible; pointer-events: auto; }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+        .header h1 { font-size: 26px; color: var(--text); font-weight: 700; }
+
+        /* STAT CARDS */
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-bottom: 24px; }
+        .stat-card {
+            background: var(--bg-card); padding: 20px; border-radius: 12px;
+            border: 1px solid var(--border); display: flex; justify-content: space-between;
+            align-items: flex-start; min-height: 100px;
+        }
+        .stat-content h3 { color: var(--text-light); font-size: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .stat-value { font-size: 28px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+        .stat-badge { font-size: 12px; color: var(--text-light); }
+        .stat-icon { font-size: 36px; opacity: 0.25; min-width: 44px; text-align: right; }
+        .stat-card.primary { border-color: var(--primary); background: linear-gradient(135deg, var(--primary-light), rgba(37,99,235,0.03)); }
+        .stat-card.primary .stat-icon { opacity: 0.4; color: var(--primary); }
+        .stat-card.success { border-color: var(--success); background: linear-gradient(135deg, var(--success-light), rgba(16,185,129,0.03)); }
+        .stat-card.success .stat-icon { opacity: 0.4; color: var(--success); }
+        .stat-card.danger { border-color: var(--danger); background: linear-gradient(135deg, var(--danger-light), rgba(239,68,68,0.03)); }
+        .stat-card.danger .stat-icon { opacity: 0.4; color: var(--danger); }
+        .stat-card.info { border-color: var(--info); background: linear-gradient(135deg, var(--info-light), rgba(6,182,212,0.03)); }
+        .stat-card.info .stat-icon { opacity: 0.4; color: var(--info); }
+
+        /* SECTIONS */
+        .section { background: var(--bg-card); padding: 22px; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 20px; }
+        .section-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+
+        /* UPCOMING CHECKINS */
+        .checkin-list { display: flex; flex-direction: column; gap: 10px; }
+        .checkin-day { }
+        .checkin-day-label { font-size: 13px; font-weight: 700; color: var(--text-light); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--border); }
+        .checkin-item {
+            display: flex; align-items: center; gap: 12px; padding: 10px 14px;
+            border-radius: 8px; background: var(--bg); border: 1px solid var(--border);
+        }
+        .checkin-item.today-item { background: var(--primary-light); border-color: var(--primary); }
+        .checkin-checkbox { width: 18px; height: 18px; border-radius: 4px; border: 2px solid var(--border); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .checkin-name { font-weight: 600; font-size: 14px; color: var(--text); }
+        .checkin-meta { font-size: 12px; color: var(--text-light); margin-left: auto; text-align: right; }
+        .checkin-room { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 4px; background: var(--primary-light); color: var(--primary); }
+
+        /* FORMS */
+        .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 14px; margin-bottom: 16px; }
+        .form-actions { display: flex; gap: 10px; }
+        .btn-small { padding: 10px 18px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; flex: 1; }
+        .btn-small-primary { background: var(--primary); color: white; }
+        .btn-small-primary:hover { background: var(--primary-dark); }
+        .btn-small-secondary { background: var(--bg); color: var(--text); border: 2px solid var(--border); }
+        .btn-small-secondary:hover { border-color: var(--primary); }
+        .btn-small-success { background: var(--success); color: white; }
+        .btn-small-success:hover { background: #059669; }
+        .btn-small-danger { background: var(--danger-light); color: var(--danger); border: 2px solid var(--danger); }
+
+        /* FILTERS */
+        .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 18px; align-items: center; }
+        .filter-input { flex: 1; min-width: 140px; padding: 9px 12px; border: 2px solid var(--border); border-radius: 8px; font-size: 14px; background: var(--bg); }
+        .filter-input:focus { outline: none; border-color: var(--primary); }
+        .filter-btn { padding: 9px 16px; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: all 0.3s; white-space: nowrap; }
+
+        /* REPORT TYPE TABS */
+        .report-tabs { display: flex; gap: 0; margin-bottom: 24px; border-bottom: 2px solid var(--border); flex-wrap: wrap; }
+        .report-tab { padding: 10px 20px; border: none; background: none; font-size: 14px; font-weight: 600; color: var(--text-light); cursor: pointer; border-bottom: 3px solid transparent; margin-bottom: -2px; transition: all 0.2s; white-space: nowrap; }
+        .report-tab.active { color: var(--primary); border-bottom-color: var(--primary); }
+        .report-tab:hover:not(.active) { color: var(--text); }
+        .report-panel { display: none; }
+        .report-panel.active { display: block; }
+
+        /* P&L STATEMENT */
+        .pl-statement { }
+        .pl-section-header { background: var(--bg); padding: 10px 16px; border-radius: 6px; font-weight: 700; font-size: 14px; color: var(--text); margin: 16px 0 8px; text-transform: uppercase; letter-spacing: 0.5px; }
+        .pl-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 16px; border-bottom: 1px solid var(--border); font-size: 14px; }
+        .pl-row:last-child { border-bottom: none; }
+        .pl-row.total { font-weight: 700; font-size: 15px; background: var(--bg); border-radius: 6px; padding: 10px 16px; margin-top: 4px; }
+        .pl-row.net-profit { font-weight: 700; font-size: 16px; border-radius: 8px; padding: 12px 16px; margin-top: 8px; }
+        .pl-row.net-profit.positive { background: var(--success-light); color: #065f46; }
+        .pl-row.net-profit.negative { background: var(--danger-light); color: #7f1d1d; }
+        .pl-amount { font-weight: 600; }
+        .pl-amount.positive { color: var(--success); }
+        .pl-amount.negative { color: var(--danger); }
+
+        /* TABLES */
+        .table-wrapper { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        thead { background: var(--bg); }
+        th { padding: 11px 14px; text-align: left; font-weight: 600; color: var(--text); border-bottom: 2px solid var(--border); white-space: nowrap; }
+        td { padding: 11px 14px; border-bottom: 1px solid var(--border); }
+        tr:hover { background: var(--bg); }
+        .status-badge { display: inline-block; padding: 3px 9px; border-radius: 5px; font-size: 11px; font-weight: 700; }
+        .status-paid { background: var(--success-light); color: #065f46; }
+        .status-unpaid { background: var(--danger-light); color: #7f1d1d; }
+        .status-partial { background: var(--warning-light); color: #92400e; }
+        .status-cancelled { background: #f3f4f6; color: #6b7280; }
+        .btn-action { padding: 5px 10px; border: none; border-radius: 5px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all 0.2s; margin-right: 4px; }
+        .btn-action.edit { background: var(--primary-light); color: var(--primary); }
+        .btn-action.edit:hover { background: var(--primary); color: white; }
+        .btn-action.delete { background: var(--danger-light); color: var(--danger); }
+        .btn-action.delete:hover { background: var(--danger); color: white; }
+
+        /* EMPTY STATE */
+        .empty-state { text-align: center; padding: 50px 20px; color: var(--text-light); }
+        .empty-icon { font-size: 44px; margin-bottom: 12px; }
+        .empty-state p { font-size: 15px; }
+
+        /* ALERTS */
+        .alert { padding: 12px 16px; border-radius: 8px; margin-bottom: 18px; font-size: 14px; animation: slideDown 0.3s ease; }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .alert-success { background: var(--success-light); color: #065f46; border-left: 4px solid var(--success); }
+        .alert-error { background: var(--danger-light); color: #7f1d1d; border-left: 4px solid var(--danger); }
+
+        /* MOBILE NAV */
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; height: 65px; background: var(--bg-card); border-top: 1px solid var(--border); z-index: 1000; }
+        .mobile-nav-content { display: flex; height: 100%; }
+        .mobile-nav-item { flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; cursor: pointer; color: var(--text-light); font-size: 11px; font-weight: 600; transition: all 0.2s; }
+        .mobile-nav-item.active { color: var(--primary); }
+        .mobile-nav-icon { font-size: 22px; }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .sidebar { width: 220px; }
+            .main { margin-left: 220px; padding: 20px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar { width: 100%; height: auto; position: relative; border-right: none; border-bottom: 1px solid var(--border); padding: 16px 20px; flex-direction: row; justify-content: space-between; align-items: center; }
+            .sidebar-logo { margin-bottom: 0; font-size: 18px; }
+            .sidebar-nav, .sidebar-footer { display: none; }
+            .main { margin-left: 0; margin-bottom: 70px; padding: 14px; }
+            .header h1 { font-size: 20px; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 10px; }
+            .stat-card { padding: 14px; min-height: 90px; }
+            .stat-value { font-size: 20px !important; }
+            .stat-icon { display: none; }
+            .stat-badge { font-size: 11px; }
+            .form-grid { grid-template-columns: 1fr; }
+            .form-actions { flex-direction: column; }
+            .mobile-nav { display: block; }
+            .section { padding: 14px; }
+            table { font-size: 12px; }
+            th, td { padding: 8px 10px; }
+            .filters { flex-direction: column; }
+            .filter-input { min-width: auto; width: 100%; }
+            .filter-btn { width: 100%; }
+            .form-grid input[type="date"] { font-size: 12px; padding: 6px 8px; }
+            input[type="date"] { font-size: 12px; padding: 6px 8px; }
+            .report-tabs { gap: 0; }
+            .report-tab { padding: 8px 12px; font-size: 12px; }
+            .dash-bookings-table { display: none !important; }
+            .dash-bookings-cards { display: block !important; }
+        }
+
+        @media (max-width: 480px) {
+            .stats-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 8px; }
+            .stat-card { padding: 12px; }
+            .stat-value { font-size: 18px !important; }
+            .stat-content h3 { font-size: 11px; }
+            input[type="date"] { font-size: 11px; padding: 5px 6px; min-width: 0; width: auto; }
+            .filter-input[type="date"] { width: auto; flex: 1; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login -->
+<div id="loginPage" class="login-page">
+    <div class="login-box">
+        <h1>🏡 Badri Homes</h1>
+        <p>Management System</p>
+        <form id="loginForm" onsubmit="handleLogin(event)">
+            <div class="form-group"><label>Username</label><input type="text" id="username" placeholder="Enter username" required></div>
+            <div class="form-group"><label>Password</label><input type="password" id="password" placeholder="Enter password" required></div>
+            <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <div class="demo-info"><strong>Demo Credentials</strong><br>Username: <code>admin</code> &nbsp; Password: <code>1234</code></div>
+    </div>
+</div>
+
+<!-- Sidebar -->
+<div class="sidebar hidden" id="sidebar">
+    <div class="sidebar-logo">🏡 Badri Homes</div>
+    <nav class="sidebar-nav">
+        <div class="nav-item active" onclick="switchPage('dashboard')"><span class="nav-icon">📊</span><span>Dashboard</span></div>
+        <div class="nav-item" onclick="switchPage('bookings')"><span class="nav-icon">📋</span><span>Bookings</span></div>
+        <div class="nav-item" onclick="switchPage('invoices')"><span class="nav-icon">📄</span><span>Invoices</span></div>
+        <div class="nav-item" onclick="switchPage('expenses')"><span class="nav-icon">💸</span><span>Expenses</span></div>
+        <div class="nav-item" onclick="switchPage('reports')"><span class="nav-icon">📈</span><span>Reports</span></div>
+    </nav>
+    <div class="sidebar-footer"><button class="btn-logout" onclick="logout()">Logout</button></div>
+</div>
+
+<!-- Main -->
+<div class="main" id="main">
+    <div id="alertContainer"></div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div id="page-dashboard" class="page active">
+        <div class="header"><h1>Dashboard</h1></div>
+
+        <!-- Bookings on Date - TOP -->
+        <div class="section" style="margin-bottom: 20px;">
+            <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:16px;">
+                <div class="section-title" style="margin-bottom:0;">📅 Bookings on Date</div>
+                <input type="date" id="dashDatePicker" class="filter-input" style="max-width:180px; flex:none;" onchange="renderDashDateBookings()">
+            </div>
+            <div id="dashDateBookingsContainer"></div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+            <div class="stat-card primary"><div class="stat-content"><h3>Total Bookings</h3><div class="stat-value" id="dashTotalBookings">0</div><div class="stat-badge">All time</div></div><div class="stat-icon">📋</div></div>
+            <div class="stat-card success"><div class="stat-content"><h3>Total Revenue</h3><div class="stat-value" id="dashTotalRevenue">Rs.0</div><div class="stat-badge">Collected</div></div><div class="stat-icon">💰</div></div>
+            <div class="stat-card danger"><div class="stat-content"><h3>Total Expenses</h3><div class="stat-value" id="dashTotalExpenses">Rs.0</div><div class="stat-badge">All categories</div></div><div class="stat-icon">💸</div></div>
+            <div class="stat-card info"><div class="stat-content"><h3>Net Profit</h3><div class="stat-value" id="dashNetProfit">Rs.0</div><div class="stat-badge">Revenue - Expenses</div></div><div class="stat-icon">📈</div></div>
+        </div>
+        <div class="stats-grid" style="margin-bottom:24px;">
+            <div class="stat-card"><div class="stat-content"><h3>Pending Payments</h3><div class="stat-value" id="dashPendingPayments">Rs.0</div><div class="stat-badge">Outstanding</div></div></div>
+            <div class="stat-card"><div class="stat-content"><h3>Month Revenue</h3><div class="stat-value" id="dashMonthRevenue">Rs.0</div><div class="stat-badge">Current month</div></div></div>
+            <div class="stat-card"><div class="stat-content"><h3>Month Expenses</h3><div class="stat-value" id="dashMonthExpenses">Rs.0</div><div class="stat-badge">Current month</div></div></div>
+            <div class="stat-card"><div class="stat-content"><h3>Active Bookings</h3><div class="stat-value" id="dashActiveBookings">0</div><div class="stat-badge">Currently staying</div></div></div>
+        </div>
+
+        <!-- Upcoming Check-ins -->
+        <div class="section">
+            <div class="section-title">🛎️ Upcoming Check-ins (Next 4 Days)</div>
+            <div id="upcomingCheckins"></div>
+        </div>
+    </div>
+
+    <!-- ===== BOOKINGS ===== -->
+    <div id="page-bookings" class="page">
+        <div class="header"><h1>Bookings</h1></div>
+        <div class="section">
+            <div class="section-title" id="bookingFormTitle">➕ Add New Booking</div>
+            <form id="bookingForm" onsubmit="handleBookingSubmit(event)">
+                <div class="form-grid">
+                    <div class="form-group"><label>Guest Name</label><input type="text" id="bookingGuestName" placeholder="e.g., John Doe" required></div>
+                    <div class="form-group"><label>Studio</label>
+                        <select id="bookingRoom" required>
+                            <option value="">Select Studio</option>
+                            <option value="001">001 First Floor</option>
+                            <option value="002">002 Second Floor</option>
+                            <option value="003">003 Third Floor</option>
+                            <option value="004">004 Fourth Floor</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Check-in</label><input type="date" id="bookingCheckin" required></div>
+                    <div class="form-group"><label>Check-out</label><input type="date" id="bookingCheckout" required></div>
+                    <div class="form-group"><label>Rate/Night (Rs.)</label><input type="number" id="bookingRate" placeholder="e.g., 1500" min="0" required></div>
+                    <div class="form-group"><label>Payment Status</label>
+                        <select id="bookingStatus" required onchange="togglePaymentAmount()">
+                            <option value="Unpaid">Unpaid</option>
+                            <option value="Paid">Paid</option>
+                            <option value="Partial">Partial</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="bookingAmountPaidGroup" style="display:none;"><label>Amount Paid (Rs.)</label><input type="number" id="bookingAmountPaid" placeholder="0" min="0" value="0"></div>
+                    <div class="form-group" id="bookingPaymentMethodGroup" style="display:none;"><label>Payment Method</label>
+                        <select id="bookingPaymentMethod">
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank Transfer</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-small btn-small-success">💾 Save Booking</button>
+                    <button type="button" class="btn-small btn-small-secondary" onclick="resetBookingForm()">Reset</button>
+                    <button type="button" class="btn-small btn-small-secondary" id="bookingCancelBtn" onclick="cancelBookingEdit()" style="display:none;">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <div class="section" id="paymentUpdateSection" style="display:none; margin-bottom:20px; background:var(--primary-light); border:2px solid var(--primary); padding:16px; border-radius:8px;">
+            <div class="section-title" style="margin-bottom:12px;">💳 Quick Payment Update</div>
+            <form id="paymentUpdateForm" onsubmit="handlePaymentUpdate(event)" style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+                <div style="flex:1; min-width:200px;">
+                    <label style="font-weight:600; font-size:13px; color:var(--text); display:block; margin-bottom:6px;">Guest & Room</label>
+                    <input type="text" id="paymentGuestInfo" readonly style="background:white; padding:10px; border:1px solid var(--border); border-radius:6px; font-size:13px;">
+                </div>
+                <div style="flex:1; min-width:150px;">
+                    <label style="font-weight:600; font-size:13px; color:var(--text); display:block; margin-bottom:6px;">Status</label>
+                    <select id="paymentStatus" required style="padding:10px; border:1px solid var(--border); border-radius:6px; font-size:13px; width:100%;">
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Partial">Partial</option>
+                    </select>
+                </div>
+                <div style="flex:1; min-width:150px;">
+                    <label style="font-weight:600; font-size:13px; color:var(--text); display:block; margin-bottom:6px;">Amount Paid (Rs.)</label>
+                    <input type="number" id="paymentAmount" min="0" required style="padding:10px; border:1px solid var(--border); border-radius:6px; font-size:13px; width:100%;">
+                </div>
+                <div style="flex:1; min-width:150px;">
+                    <label style="font-weight:600; font-size:13px; color:var(--text); display:block; margin-bottom:6px;">Method</label>
+                    <select id="paymentMethod" style="padding:10px; border:1px solid var(--border); border-radius:6px; font-size:13px; width:100%;">
+                        <option value="Cash">Cash</option>
+                        <option value="Bank">Bank Transfer</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-small btn-small-success" style="padding:10px 16px;">Save Payment</button>
+                <button type="button" class="btn-small btn-small-secondary" onclick="cancelPaymentUpdate()" style="padding:10px 16px;">Cancel</button>
+            </form>
+        </div>
+        <div class="section" id="cancellationSection" style="display:none; margin-bottom:20px; background:#fee2e2; border:2px solid var(--danger); padding:16px; border-radius:8px;">
+            <div class="section-title" style="margin-bottom:12px; color:var(--danger);">❌ Cancel Booking</div>
+            <form id="cancellationForm" onsubmit="handleCancelBooking(event)" style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+                <div style="flex:1; min-width:200px;">
+                    <label style="font-weight:600; font-size:13px; color:var(--text); display:block; margin-bottom:6px;">Guest & Room</label>
+                    <input type="text" id="cancelGuestInfo" readonly style="background:white; padding:10px; border:1px solid var(--border); border-radius:6px; font-size:13px;">
+                </div>
+                <div style="flex:1; min-width:200px;">
+                    <label style="font-weight:600; font-size:13px; color:var(--text); display:block; margin-bottom:6px;">Cancellation Reason</label>
+                    <input type="text" id="cancellationReason" placeholder="e.g., Guest requested cancellation" style="padding:10px; border:1px solid var(--border); border-radius:6px; font-size:13px; width:100%;">
+                </div>
+                <button type="submit" class="btn-small" style="padding:10px 16px; background:var(--danger); color:white;">Confirm Cancellation</button>
+                <button type="button" class="btn-small btn-small-secondary" onclick="closeCancellation()" style="padding:10px 16px;">Close</button>
+            </form>
+        </div>
+        <div class="section">
+            <div class="section-title">📋 Bookings List</div>
+            <div class="filters">
+                <select id="bookingFilterRoom" class="filter-input" onchange="applyBookingFilters()">
+                    <option value="">All Studios</option>
+                    <option value="001">001 First Floor</option>
+                    <option value="002">002 Second Floor</option>
+                    <option value="003">003 Third Floor</option>
+                    <option value="004">004 Fourth Floor</option>
+                </select>
+                <select id="bookingFilterStatus" class="filter-input" onchange="applyBookingFilters()">
+                    <option value="">All Status</option>
+                    <option value="Paid">Paid</option>
+                    <option value="Unpaid">Unpaid</option>
+                    <option value="Partial">Partial</option>
+                </select>
+                <input type="date" id="bookingFilterFrom" class="filter-input" placeholder="From date" onchange="applyBookingFilters()">
+                <input type="date" id="bookingFilterTo" class="filter-input" placeholder="To date" onchange="applyBookingFilters()">
+                <button class="filter-btn btn-small-secondary" onclick="clearBookingFilters()" style="flex:0 0 auto;">Clear</button>
+                <button class="filter-btn btn-small-success" onclick="exportBookingsCSV()" style="flex:0 0 auto;">📥 Export</button>
+            </div>
+            <div class="table-wrapper"><div id="bookingsTableContainer"></div></div>
+        </div>
+    </div>
+
+    <!-- ===== EXPENSES ===== -->
+    <div id="page-expenses" class="page">
+        <div class="header"><h1>Expenses</h1></div>
+        <div class="section">
+            <div class="section-title" id="expenseFormTitle">➕ Add New Expense</div>
+            <form id="expenseForm" onsubmit="handleExpenseSubmit(event)">
+                <div class="form-grid">
+                    <div class="form-group"><label>Date</label><input type="date" id="expenseDate" required></div>
+                    <div class="form-group"><label>Category</label>
+                        <select id="expenseCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="Maintenance">Maintenance</option>
+                            <option value="Utilities">Utilities</option>
+                            <option value="Supplies">Supplies</option>
+                            <option value="Staff">Staff</option>
+                            <option value="Marketing">Marketing</option>
+                            <option value="Rent">Rent</option>
+                            <option value="Tax">Tax</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Description</label><input type="text" id="expenseDescription" placeholder="e.g., Plumber repair" required></div>
+                    <div class="form-group"><label>Amount (Rs.)</label><input type="number" id="expenseAmount" placeholder="e.g., 2500" min="1" required></div>
+                    <div class="form-group"><label>Paid By</label>
+                        <select id="expensePaidBy">
+                            <option value="Cash">Cash</option>
+                            <option value="Bank">Bank Transfer</option>
+                        </select>
+                    </div>
+                    <div class="form-group"><label>Note</label><input type="text" id="expenseNote" placeholder="Optional note"></div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-small btn-small-success">💾 Save Expense</button>
+                    <button type="button" class="btn-small btn-small-secondary" onclick="resetExpenseForm()">Reset</button>
+                    <button type="button" class="btn-small btn-small-secondary" id="expenseCancelBtn" onclick="cancelExpenseEdit()" style="display:none;">Cancel</button>
+                </div>
+            </form>
+        </div>
+        <div class="section">
+            <div class="section-title">💸 Expenses List</div>
+            <div class="filters">
+                <select id="expenseFilterCategory" class="filter-input" onchange="applyExpenseFilters()">
+                    <option value="">All Categories</option>
+                    <option value="Maintenance">Maintenance</option>
+                    <option value="Utilities">Utilities</option>
+                    <option value="Supplies">Supplies</option>
+                    <option value="Staff">Staff</option>
+                    <option value="Marketing">Marketing</option>
+                    <option value="Rent">Rent</option>
+                    <option value="Tax">Tax</option>
+                    <option value="Other">Other</option>
+                </select>
+                <select id="expenseFilterPaidBy" class="filter-input" onchange="applyExpenseFilters()">
+                    <option value="">Cash & Bank</option>
+                    <option value="Cash">Cash</option>
+                    <option value="Bank">Bank</option>
+                </select>
+                <input type="date" id="expenseFilterFrom" class="filter-input" onchange="applyExpenseFilters()">
+                <input type="date" id="expenseFilterTo" class="filter-input" onchange="applyExpenseFilters()">
+                <button class="filter-btn btn-small-secondary" onclick="clearExpenseFilters()" style="flex:0 0 auto;">Clear</button>
+                <button class="filter-btn btn-small-success" onclick="exportExpensesCSV()" style="flex:0 0 auto;">📥 Export</button>
+            </div>
+            <div class="table-wrapper"><div id="expensesTableContainer"></div></div>
+        </div>
+    </div>
+
+    <!-- ===== REPORTS ===== -->
+    <div id="page-reports" class="page">
+        <div class="header"><h1>Reports & Analytics</h1></div>
+        <div class="report-tabs">
+            <button class="report-tab active" onclick="switchReport('booking')">📋 Booking Report</button>
+            <button class="report-tab" onclick="switchReport('sales')">💰 Sales Report</button>
+            <button class="report-tab" onclick="switchReport('expense')">💸 Expense Report</button>
+            <button class="report-tab" onclick="switchReport('profit')">📊 Profit Report</button>
+        </div>
+
+        <!-- Booking Report -->
+        <div id="report-booking" class="report-panel active">
+            <div class="section">
+                <div class="section-title">🔍 Filters</div>
+                <div class="filters">
+                    <input type="date" id="brFrom" class="filter-input" onchange="renderBookingReport()">
+                    <input type="date" id="brTo" class="filter-input" onchange="renderBookingReport()">
+                    <select id="brRoom" class="filter-input" onchange="renderBookingReport()">
+                        <option value="">All Studios</option>
+                        <option value="001">001 First Floor</option>
+                        <option value="002">002 Second Floor</option>
+                        <option value="003">003 Third Floor</option>
+                        <option value="004">004 Fourth Floor</option>
+                    </select>
+                    <select id="brStatus" class="filter-input" onchange="renderBookingReport()">
+                        <option value="">All Status</option>
+                        <option value="Paid">Paid</option>
+                        <option value="Unpaid">Unpaid</option>
+                        <option value="Partial">Partial</option>
+                    </select>
+                    <select id="brPayMethod" class="filter-input" onchange="renderBookingReport()">
+                        <option value="">Cash & Bank</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Bank">Bank</option>
+                    </select>
+                    <button class="filter-btn btn-small-secondary" onclick="clearReport('br')" style="flex:0 0 auto;">Clear</button>
+                    <button class="filter-btn btn-small-success" onclick="exportReport('booking')" style="flex:0 0 auto;">📥 Export</button>
+                </div>
+            </div>
+            <div class="section"><div id="bookingReportStats" style="margin-bottom:16px;"></div><div class="table-wrapper"><div id="bookingReportContainer"></div></div></div>
+        </div>
+
+        <!-- Sales Report -->
+        <div id="report-sales" class="report-panel">
+            <div class="section">
+                <div class="section-title">🔍 Filters</div>
+                <div class="filters">
+                    <input type="date" id="srFrom" class="filter-input" onchange="renderSalesReport()">
+                    <input type="date" id="srTo" class="filter-input" onchange="renderSalesReport()">
+                    <select id="srRoom" class="filter-input" onchange="renderSalesReport()">
+                        <option value="">All Studios</option>
+                        <option value="001">001 First Floor</option>
+                        <option value="002">002 Second Floor</option>
+                        <option value="003">003 Third Floor</option>
+                        <option value="004">004 Fourth Floor</option>
+                    </select>
+                    <button class="filter-btn btn-small-secondary" onclick="clearReport('sr')" style="flex:0 0 auto;">Clear</button>
+                    <button class="filter-btn btn-small-success" onclick="exportReport('sales')" style="flex:0 0 auto;">📥 Export</button>
+                </div>
+            </div>
+            <div class="section"><div id="salesReportStats" style="margin-bottom:16px;"></div><div class="table-wrapper"><div id="salesReportContainer"></div></div></div>
+        </div>
+
+        <!-- Expense Report -->
+        <div id="report-expense" class="report-panel">
+            <div class="section">
+                <div class="section-title">🔍 Filters</div>
+                <div class="filters">
+                    <input type="date" id="er From" class="filter-input" id="erFrom" onchange="renderExpenseReport()">
+                    <input type="date" id="erTo" class="filter-input" onchange="renderExpenseReport()">
+                    <select id="erCategory" class="filter-input" onchange="renderExpenseReport()">
+                        <option value="">All Categories</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Supplies">Supplies</option>
+                        <option value="Staff">Staff</option>
+                        <option value="Marketing">Marketing</option>
+                        <option value="Rent">Rent</option>
+                        <option value="Tax">Tax</option>
+                        <option value="Other">Other</option>
+                    </select>
+                    <select id="erPaidBy" class="filter-input" onchange="renderExpenseReport()">
+                        <option value="">Cash & Bank</option>
+                        <option value="Cash">Cash</option>
+                        <option value="Bank">Bank</option>
+                    </select>
+                    <button class="filter-btn btn-small-secondary" onclick="clearReport('er')" style="flex:0 0 auto;">Clear</button>
+                    <button class="filter-btn btn-small-success" onclick="exportReport('expense')" style="flex:0 0 auto;">📥 Export</button>
+                </div>
+            </div>
+            <div class="section"><div id="expenseReportStats" style="margin-bottom:16px;"></div><div class="table-wrapper"><div id="expenseReportContainer"></div></div></div>
+        </div>
+
+        <!-- Profit Report (P&L) -->
+        <div id="report-profit" class="report-panel">
+            <div class="section">
+                <div class="section-title">🔍 Period Filter</div>
+                <div class="filters">
+                    <input type="date" id="prFrom" class="filter-input" onchange="renderProfitReport()">
+                    <input type="date" id="prTo" class="filter-input" onchange="renderProfitReport()">
+                    <select id="prMonth" class="filter-input" onchange="renderProfitReport()">
+                        <option value="">All Months</option>
+                        <option value="1">January</option><option value="2">February</option><option value="3">March</option>
+                        <option value="4">April</option><option value="5">May</option><option value="6">June</option>
+                        <option value="7">July</option><option value="8">August</option><option value="9">September</option>
+                        <option value="10">October</option><option value="11">November</option><option value="12">December</option>
+                    </select>
+                    <select id="prYear" class="filter-input" onchange="renderProfitReport()">
+                        <option value="">All Years</option>
+                        <option value="2024">2024</option><option value="2025">2025</option><option value="2026">2026</option>
+                    </select>
+                    <button class="filter-btn btn-small-secondary" onclick="clearReport('pr')" style="flex:0 0 auto;">Clear</button>
+                </div>
+            </div>
+            <div class="section"><div id="profitReportContainer"></div></div>
+        </div>
+    </div>
+
+    <!-- ===== INVOICES ===== -->
+    <div id="page-invoices" class="page">
+        <div class="header"><h1>Invoices</h1></div>
+
+        <!-- Generate Invoice Section -->
+        <div class="section">
+            <div class="section-title">📄 Generate Invoice from Booking</div>
+            <div id="invoiceAlert"></div>
+
+            <div class="filters">
+                <select id="invoiceBookingSelect" class="filter-input" style="flex: 1; min-width: 200px;">
+                    <option value="">Select a booking (Paid status only)...</option>
+                </select>
+                <button class="filter-btn btn-small-primary" onclick="showInvoicePreview()" style="flex: 0 0 auto;">👁️ Preview</button>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 14px;">
+                <button class="btn-small btn-small-success" onclick="createInvoice()" style="width: 100%;">➕ Create Invoice</button>
+                <button class="btn-small btn-small-secondary" onclick="clearInvoiceForm()" style="width: 100%;">Clear</button>
+            </div>
+        </div>
+
+        <!-- Generated Invoices List -->
+        <div class="section">
+            <div class="section-title">📋 Generated Invoices</div>
+            <div class="table-wrapper"><div id="invoicesTableContainer"></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- Invoice Preview Modal -->
+<div id="invoiceModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 9999; overflow-y: auto;">
+    <div style="background: white; margin: 20px auto; max-width: 900px; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);">
+        <div style="padding: 20px; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center;">
+            <h2 style="margin: 0;">Invoice Preview</h2>
+            <button onclick="closeInvoiceModal()" style="background: none; border: none; font-size: 24px; cursor: pointer;">✕</button>
+        </div>
+        <div id="invoicePreviewContent" style="padding: 40px; min-height: 500px;"></div>
+        <div style="padding: 20px; border-top: 1px solid #e2e8f0; display: flex; gap: 10px; justify-content: center;">
+            <button class="btn-small btn-small-primary" onclick="downloadInvoicePDF()" style="flex: 0 0 auto;">⬇️ Download PDF</button>
+            <button class="btn-small btn-small-primary" onclick="printInvoice()" style="flex: 0 0 auto;">🖨️ Print</button>
+            <button class="btn-small btn-small-secondary" onclick="closeInvoiceModal()" style="flex: 0 0 auto;">Close</button>
+        </div>
+    </div>
+</div>
+
+<!-- Mobile Nav -->
+<div class="mobile-nav" id="mobileNav">
+    <div class="mobile-nav-content">
+        <div class="mobile-nav-item active" onclick="switchPage('dashboard')"><div class="mobile-nav-icon">📊</div><div>Dashboard</div></div>
+        <div class="mobile-nav-item" onclick="switchPage('bookings')"><div class="mobile-nav-icon">📋</div><div>Bookings</div></div>
+        <div class="mobile-nav-item" onclick="switchPage('invoices')"><div class="mobile-nav-icon">📄</div><div>Invoices</div></div>
+        <div class="mobile-nav-item" onclick="switchPage('expenses')"><div class="mobile-nav-icon">💸</div><div>Expenses</div></div>
+        <div class="mobile-nav-item" onclick="switchPage('reports')"><div class="mobile-nav-icon">📈</div><div>Reports</div></div>
+    </div>
+</div>
+
+<script>
+    const DEMO_USERNAME = 'admin', DEMO_PASSWORD = '1234';
+    const SESSION_KEY = 'badriSession', BOOKINGS_KEY = 'badriBookings', EXPENSES_KEY = 'badriExpenses', DASH_DATE_KEY = 'badriDashDate', INVOICES_KEY = 'badriInvoices';
+
+    let allBookings = [], filteredBookings = [], editingBookingId = null;
+    let allExpenses = [], filteredExpenses = [], editingExpenseId = null;
+    let allInvoices = [], selectedBookingForInvoice = null, currentInvoicePreview = null;
+    let activeReport = 'booking';
+
+    // ========== INIT ==========
+    window.addEventListener('DOMContentLoaded', () => {
+        if (sessionStorage.getItem(SESSION_KEY)) showDashboard();
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+        const today = new Date().toISOString().split('T')[0];
+        // Allow past dates for both check-in and check-out
+        document.getElementById('expenseDate').value = today;
+        // Restore saved dashboard date or use today
+        const savedDate = localStorage.getItem(DASH_DATE_KEY);
+        document.getElementById('dashDatePicker').value = savedDate || today;
+        loadBookings(); loadExpenses(); loadInvoices();
+    });
+
+    // ========== LOGIN ==========
+    function handleLogin(e) {
+        e.preventDefault();
+        if (document.getElementById('username').value === DEMO_USERNAME && document.getElementById('password').value === DEMO_PASSWORD) {
+            sessionStorage.setItem(SESSION_KEY, 'true');
+            showDashboard();
+        } else { showAlert('Invalid credentials', 'error'); }
+    }
+
+    function showDashboard() {
+        document.getElementById('loginPage').classList.add('hidden');
+        document.getElementById('sidebar').classList.remove('hidden');
+        document.getElementById('main').classList.add('active');
+        loadBookings(); loadExpenses(); loadInvoices();
+        updateDashboard(); renderDashDateBookings(); renderUpcomingCheckins();
+    }
+
+    function logout() {
+        if (confirm('Logout?')) {
+            sessionStorage.removeItem(SESSION_KEY);
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('sidebar').classList.add('hidden');
+            document.getElementById('main').classList.remove('active');
+            document.getElementById('loginForm').reset();
+        }
+    }
+
+    // ========== NAVIGATION ==========
+    function switchPage(page) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        document.querySelectorAll('.mobile-nav-item').forEach(m => m.classList.remove('active'));
+        document.getElementById('page-' + page).classList.add('active');
+        document.querySelector(`.nav-item[onclick="switchPage('${page}')"]`)?.classList.add('active');
+        document.querySelector(`.mobile-nav-item[onclick="switchPage('${page}')"]`)?.classList.add('active');
+        if (page === 'dashboard') { updateDashboard(); renderDashDateBookings(); renderUpcomingCheckins(); }
+        else if (page === 'bookings') renderBookings();
+        else if (page === 'invoices') renderInvoices();
+        else if (page === 'expenses') renderExpenses();
+        else if (page === 'reports') switchReport(activeReport);
+    }
+
+    function switchReport(type) {
+        activeReport = type;
+        document.querySelectorAll('.report-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.report-tab').forEach(t => t.classList.remove('active'));
+        document.getElementById('report-' + type).classList.add('active');
+        document.querySelector(`.report-tab[onclick="switchReport('${type}')"]`)?.classList.add('active');
+        if (type === 'booking') renderBookingReport();
+        else if (type === 'sales') renderSalesReport();
+        else if (type === 'expense') renderExpenseReport();
+        else if (type === 'profit') renderProfitReport();
+    }
+
+    // ========== ALERTS ==========
+    function showAlert(msg, type = 'success') {
+        const el = document.createElement('div');
+        el.className = `alert alert-${type}`; el.textContent = msg;
+        document.getElementById('alertContainer').appendChild(el);
+        setTimeout(() => el.remove(), 4000);
+    }
+
+    // ========== DATA ==========
+    function loadBookings() { allBookings = JSON.parse(localStorage.getItem(BOOKINGS_KEY) || '[]'); filteredBookings = [...allBookings]; }
+    function saveBookings() { localStorage.setItem(BOOKINGS_KEY, JSON.stringify(allBookings)); }
+    function loadExpenses() { allExpenses = JSON.parse(localStorage.getItem(EXPENSES_KEY) || '[]'); filteredExpenses = [...allExpenses]; }
+    function saveExpenses() { localStorage.setItem(EXPENSES_KEY, JSON.stringify(allExpenses)); }
+    function loadInvoices() { allInvoices = JSON.parse(localStorage.getItem(INVOICES_KEY) || '[]'); }
+    function saveInvoices() { localStorage.setItem(INVOICES_KEY, JSON.stringify(allInvoices)); }
+
+    // ========== BOOKINGS ==========
+    function handleBookingSubmit(e) {
+        e.preventDefault();
+        const guestName = document.getElementById('bookingGuestName').value.trim();
+        const room = document.getElementById('bookingRoom').value;
+        const checkin = document.getElementById('bookingCheckin').value;
+        const checkout = document.getElementById('bookingCheckout').value;
+        const rate = parseFloat(document.getElementById('bookingRate').value);
+        const status = document.getElementById('bookingStatus').value;
+        const amountPaid = parseFloat(document.getElementById('bookingAmountPaid').value) || 0;
+        const paymentMethod = document.getElementById('bookingPaymentMethod').value;
+
+        if (!guestName || !room || !checkin || !checkout || !rate) { showAlert('Fill all required fields', 'error'); return; }
+        const checkinDate = new Date(checkin), checkoutDate = new Date(checkout);
+        if (checkoutDate <= checkinDate) { showAlert('Check-out must be after check-in', 'error'); return; }
+
+        const days = Math.ceil((checkoutDate - checkinDate) / 86400000);
+        const totalAmount = days * rate;
+
+        const conflict = allBookings.some(b => {
+            if (editingBookingId && b.id === editingBookingId) return false;
+            if (b.room !== room) return false;
+            return checkinDate < new Date(b.checkout) && checkoutDate > new Date(b.checkin);
+        });
+        if (conflict) { showAlert('Room already booked for these dates', 'error'); return; }
+
+        const existingBooking = editingBookingId ? allBookings.find(b => b.id === editingBookingId) : null;
+        const booking = {
+            id: editingBookingId || Date.now().toString(), guestName, room, checkin, checkout,
+            days, rate, totalAmount, amountPaid, remainingBalance: totalAmount - amountPaid,
+            paymentStatus: status, paymentMethod: status === 'Unpaid' ? '' : paymentMethod,
+            bookingStatus: existingBooking?.bookingStatus || 'Active', cancellationReason: existingBooking?.cancellationReason || '', cancelledAt: existingBooking?.cancelledAt || '',
+            createdAt: editingBookingId ? existingBooking.createdAt : new Date().toISOString()
+        };
+
+        if (editingBookingId) { allBookings[allBookings.findIndex(b => b.id === editingBookingId)] = booking; showAlert('Booking updated', 'success'); cancelBookingEdit(); }
+        else { allBookings.push(booking); showAlert('Booking added', 'success'); }
+
+        saveBookings(); loadBookings(); resetBookingForm(); renderBookings(); updateDashboard();
+    }
+
+    function resetBookingForm() {
+        document.getElementById('bookingForm').reset(); editingBookingId = null;
+        document.getElementById('bookingFormTitle').textContent = '➕ Add New Booking';
+        document.getElementById('bookingCancelBtn').style.display = 'none';
+        document.getElementById('bookingStatus').value = 'Unpaid'; togglePaymentAmount();
+    }
+    function cancelBookingEdit() { resetBookingForm(); }
+
+    function editBooking(id) {
+        const b = allBookings.find(b => b.id === id); if (!b) return;
+        editingBookingId = id;
+        document.getElementById('bookingGuestName').value = b.guestName;
+        document.getElementById('bookingRoom').value = b.room;
+        document.getElementById('bookingCheckin').value = b.checkin;
+        document.getElementById('bookingCheckout').value = b.checkout;
+        document.getElementById('bookingRate').value = b.rate;
+        document.getElementById('bookingStatus').value = b.paymentStatus;
+        document.getElementById('bookingAmountPaid').value = b.amountPaid;
+        document.getElementById('bookingPaymentMethod').value = b.paymentMethod || 'Cash';
+        document.getElementById('bookingFormTitle').textContent = '✏️ Edit Booking';
+        document.getElementById('bookingCancelBtn').style.display = 'block';
+        togglePaymentAmount();
+        document.getElementById('page-bookings').querySelector('.section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteBooking(id) {
+        if (confirm('Delete this booking?')) {
+            allBookings = allBookings.filter(b => b.id !== id);
+            saveBookings(); loadBookings(); applyBookingFilters(); renderBookings(); updateDashboard();
+            showAlert('Booking deleted', 'success');
+        }
+    }
+
+    function openPaymentUpdate(id) {
+        const b = allBookings.find(b => b.id === id); if (!b) return;
+        document.getElementById('paymentUpdateSection').style.display = 'block';
+        document.getElementById('paymentGuestInfo').value = `${b.guestName} - Room ${b.room}`;
+        document.getElementById('paymentStatus').value = b.paymentStatus;
+        document.getElementById('paymentAmount').value = b.amountPaid;
+        document.getElementById('paymentMethod').value = b.paymentMethod || 'Cash';
+        document.getElementById('paymentUpdateForm').dataset.bookingId = id;
+        document.getElementById('page-bookings').querySelector('#paymentUpdateSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cancelPaymentUpdate() {
+        document.getElementById('paymentUpdateSection').style.display = 'none';
+        document.getElementById('paymentUpdateForm').reset();
+    }
+
+    function handlePaymentUpdate(e) {
+        e.preventDefault();
+        const bookingId = document.getElementById('paymentUpdateForm').dataset.bookingId;
+        const booking = allBookings.find(b => b.id === bookingId);
+        if (!booking) return;
+
+        const status = document.getElementById('paymentStatus').value;
+        const amountPaid = parseFloat(document.getElementById('paymentAmount').value);
+        const method = document.getElementById('paymentMethod').value;
+
+        if (amountPaid > booking.totalAmount && status !== 'Unpaid') {
+            showAlert('Paid amount cannot exceed total amount', 'error');
+            return;
+        }
+
+        booking.paymentStatus = status;
+        booking.amountPaid = amountPaid;
+        booking.remainingBalance = booking.totalAmount - amountPaid;
+        booking.paymentMethod = status === 'Unpaid' ? '' : method;
+
+        saveBookings(); loadBookings(); applyBookingFilters(); renderBookings(); updateDashboard();
+        showAlert('Payment updated successfully', 'success');
+        cancelPaymentUpdate();
+    }
+
+    function openCancellation(id) {
+        const b = allBookings.find(b => b.id === id); if (!b) return;
+        document.getElementById('cancellationSection').style.display = 'block';
+        document.getElementById('cancelGuestInfo').value = `${b.guestName} - Room ${b.room}`;
+        document.getElementById('cancellationReason').value = '';
+        document.getElementById('cancellationForm').dataset.bookingId = id;
+        document.getElementById('page-bookings').querySelector('#cancellationSection').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function closeCancellation() {
+        document.getElementById('cancellationSection').style.display = 'none';
+        document.getElementById('cancellationForm').reset();
+    }
+
+    function handleCancelBooking(e) {
+        e.preventDefault();
+        const bookingId = document.getElementById('cancellationForm').dataset.bookingId;
+        const booking = allBookings.find(b => b.id === bookingId);
+        if (!booking) return;
+
+        const reason = document.getElementById('cancellationReason').value.trim();
+
+        if (confirm(`Cancel booking for ${booking.guestName}? This action cannot be undone.`)) {
+            booking.bookingStatus = 'Cancelled';
+            booking.cancellationReason = reason;
+            booking.cancelledAt = new Date().toISOString();
+
+            saveBookings(); loadBookings(); applyBookingFilters(); renderBookings(); updateDashboard();
+            showAlert('Booking cancelled successfully', 'success');
+            closeCancellation();
+        }
+    }
+
+    function togglePaymentAmount() {
+        const status = document.getElementById('bookingStatus').value;
+        const show = status !== 'Unpaid';
+        document.getElementById('bookingAmountPaidGroup').style.display = show ? 'block' : 'none';
+        document.getElementById('bookingPaymentMethodGroup').style.display = show ? 'block' : 'none';
+    }
+
+    function applyBookingFilters() {
+        const room = document.getElementById('bookingFilterRoom').value;
+        const status = document.getElementById('bookingFilterStatus').value;
+        const from = document.getElementById('bookingFilterFrom').value;
+        const to = document.getElementById('bookingFilterTo').value;
+
+        filteredBookings = allBookings.filter(b => {
+            if (room && b.room !== room) return false;
+            if (status && b.paymentStatus !== status) return false;
+            if (from && b.checkin < from) return false;
+            if (to && b.checkin > to) return false;
+            return true;
+        });
+        renderBookings();
+    }
+
+    function clearBookingFilters() {
+        ['bookingFilterRoom','bookingFilterStatus','bookingFilterFrom','bookingFilterTo'].forEach(id => document.getElementById(id).value = '');
+        filteredBookings = [...allBookings]; renderBookings();
+    }
+
+    function renderBookings() {
+        const c = document.getElementById('bookingsTableContainer');
+        if (!filteredBookings.length) { c.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>No bookings found</p></div>'; return; }
+        let h = '<table><thead><tr><th>Guest</th><th>Studio</th><th>Check-in</th><th>Check-out</th><th>Days</th><th>Total</th><th>Paid</th><th>Balance</th><th>Method</th><th>Status</th><th>Action</th></tr></thead><tbody>';
+        filteredBookings.forEach(b => {
+            const isCancelled = b.bookingStatus === 'Cancelled';
+            const rowStyle = isCancelled ? 'opacity:0.7;background:#f9fafb;' : '';
+            h += `<tr style="${rowStyle}"><td>${b.guestName}</td><td>${b.room}</td><td>${fmt(b.checkin)}</td><td>${fmt(b.checkout)}</td><td>${b.days}</td><td>Rs.${b.totalAmount}</td><td>Rs.${b.amountPaid}</td><td>Rs.${b.remainingBalance}</td><td>${b.paymentMethod||'-'}</td><td><span class="status-badge ${isCancelled ? 'status-cancelled' : 'status-' + b.paymentStatus.toLowerCase()}">${isCancelled ? 'Cancelled' : b.paymentStatus}</span></td><td>${isCancelled ? '<span style="font-size:11px;color:#6b7280;">Cancelled</span>' : `<button class="btn-action edit" onclick="editBooking('${b.id}')">✏️</button><button class="btn-action" style="background:var(--info-light);color:var(--info);" onclick="openPaymentUpdate('${b.id}')">💳</button><button class="btn-action" style="background:#fee2e2;color:var(--danger);" onclick="openCancellation('${b.id}')">❌</button><button class="btn-action delete" onclick="deleteBooking('${b.id}')">🗑️</button>`}</td></tr>`;
+        });
+        c.innerHTML = h + '</tbody></table>';
+    }
+
+    function exportBookingsCSV() {
+        if (!filteredBookings.length) { showAlert('No data to export', 'error'); return; }
+        downloadCSV(['Guest','Studio','Check-in','Check-out','Days','Rate','Total','Paid','Balance','Method','Status'],
+            filteredBookings.map(b => [b.guestName,b.room,fmt(b.checkin),fmt(b.checkout),b.days,b.rate,b.totalAmount,b.amountPaid,b.remainingBalance,b.paymentMethod||'',b.paymentStatus]), 'badri-bookings.csv');
+    }
+
+    // ========== EXPENSES ==========
+    function handleExpenseSubmit(e) {
+        e.preventDefault();
+        const date = document.getElementById('expenseDate').value;
+        const category = document.getElementById('expenseCategory').value;
+        const description = document.getElementById('expenseDescription').value.trim();
+        const amount = parseFloat(document.getElementById('expenseAmount').value);
+        const paidBy = document.getElementById('expensePaidBy').value;
+        const note = document.getElementById('expenseNote').value.trim();
+
+        if (!date || !category || !description || !amount) { showAlert('Fill all required fields', 'error'); return; }
+
+        const expense = {
+            id: editingExpenseId || Date.now().toString(), date, category, description, amount, paidBy, note,
+            createdAt: editingExpenseId ? allExpenses.find(e => e.id === editingExpenseId).createdAt : new Date().toISOString()
+        };
+
+        if (editingExpenseId) { allExpenses[allExpenses.findIndex(e => e.id === editingExpenseId)] = expense; showAlert('Expense updated', 'success'); cancelExpenseEdit(); }
+        else { allExpenses.push(expense); showAlert('Expense added', 'success'); }
+
+        saveExpenses(); loadExpenses(); resetExpenseForm(); renderExpenses(); updateDashboard();
+    }
+
+    function resetExpenseForm() {
+        document.getElementById('expenseForm').reset(); editingExpenseId = null;
+        document.getElementById('expenseFormTitle').textContent = '➕ Add New Expense';
+        document.getElementById('expenseCancelBtn').style.display = 'none';
+        document.getElementById('expenseDate').value = new Date().toISOString().split('T')[0];
+    }
+    function cancelExpenseEdit() { resetExpenseForm(); }
+
+    function editExpense(id) {
+        const e = allExpenses.find(e => e.id === id); if (!e) return;
+        editingExpenseId = id;
+        document.getElementById('expenseDate').value = e.date;
+        document.getElementById('expenseCategory').value = e.category;
+        document.getElementById('expenseDescription').value = e.description;
+        document.getElementById('expenseAmount').value = e.amount;
+        document.getElementById('expensePaidBy').value = e.paidBy || 'Cash';
+        document.getElementById('expenseNote').value = e.note;
+        document.getElementById('expenseFormTitle').textContent = '✏️ Edit Expense';
+        document.getElementById('expenseCancelBtn').style.display = 'block';
+        document.getElementById('page-expenses').querySelector('.section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteExpense(id) {
+        if (confirm('Delete this expense?')) {
+            allExpenses = allExpenses.filter(e => e.id !== id);
+            saveExpenses(); loadExpenses(); applyExpenseFilters(); renderExpenses(); updateDashboard();
+            showAlert('Expense deleted', 'success');
+        }
+    }
+
+    function applyExpenseFilters() {
+        const cat = document.getElementById('expenseFilterCategory').value;
+        const paid = document.getElementById('expenseFilterPaidBy').value;
+        const from = document.getElementById('expenseFilterFrom').value;
+        const to = document.getElementById('expenseFilterTo').value;
+        filteredExpenses = allExpenses.filter(e => {
+            if (cat && e.category !== cat) return false;
+            if (paid && e.paidBy !== paid) return false;
+            if (from && e.date < from) return false;
+            if (to && e.date > to) return false;
+            return true;
+        });
+        renderExpenses();
+    }
+
+    function clearExpenseFilters() {
+        ['expenseFilterCategory','expenseFilterPaidBy','expenseFilterFrom','expenseFilterTo'].forEach(id => document.getElementById(id).value = '');
+        filteredExpenses = [...allExpenses]; renderExpenses();
+    }
+
+    const CAT_COLORS = { 'Maintenance':'#fee2e2','Utilities':'#fef3c7','Supplies':'#d1fae5','Staff':'#dbeafe','Marketing':'#f3e8ff','Rent':'#ffe4e6','Tax':'#fce7f3','Other':'#f3f4f6' };
+
+    function renderExpenses() {
+        const c = document.getElementById('expensesTableContainer');
+        if (!filteredExpenses.length) { c.innerHTML = '<div class="empty-state"><div class="empty-icon">💸</div><p>No expenses found</p></div>'; return; }
+        let h = '<table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Paid By</th><th>Note</th><th>Action</th></tr></thead><tbody>';
+        [...filteredExpenses].sort((a,b) => new Date(b.date)-new Date(a.date)).forEach(e => {
+            const col = CAT_COLORS[e.category]||'#f3f4f6';
+            h += `<tr><td>${fmt(e.date)}</td><td><span style="background:${col};padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;">${e.category}</span></td><td>${e.description}</td><td><strong>Rs.${e.amount.toLocaleString()}</strong></td><td><span style="background:${e.paidBy==='Bank'?'#dbeafe':'#d1fae5'};padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;">${e.paidBy||'-'}</span></td><td>${e.note||'-'}</td><td><button class="btn-action edit" onclick="editExpense('${e.id}')">✏️</button><button class="btn-action delete" onclick="deleteExpense('${e.id}')">🗑️</button></td></tr>`;
+        });
+        c.innerHTML = h + '</tbody></table>';
+    }
+
+    function exportExpensesCSV() {
+        if (!filteredExpenses.length) { showAlert('No data to export', 'error'); return; }
+        downloadCSV(['Date','Category','Description','Amount','Paid By','Note'],
+            filteredExpenses.map(e => [fmt(e.date),e.category,e.description,e.amount,e.paidBy||'',e.note||'']), 'badri-expenses.csv');
+    }
+
+    // ========== DASHBOARD ==========
+    function updateDashboard() {
+        const totalRevenue = allBookings.reduce((s,b) => s+b.amountPaid, 0);
+        const totalExpenses = allExpenses.reduce((s,e) => s+e.amount, 0);
+        const netProfit = totalRevenue - totalExpenses;
+        const now = new Date();
+        const thisMonthRevenue = allBookings.filter(b => { const d=new Date(b.checkin); return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); }).reduce((s,b)=>s+b.amountPaid,0);
+        const thisMonthExpenses = allExpenses.filter(e => { const d=new Date(e.date); return d.getMonth()===now.getMonth()&&d.getFullYear()===now.getFullYear(); }).reduce((s,e)=>s+e.amount,0);
+        const activeBookings = allBookings.filter(b => new Date(b.checkout)>=now).length;
+        const pending = allBookings.reduce((s,b)=>s+b.remainingBalance,0);
+
+        document.getElementById('dashTotalBookings').textContent = allBookings.length;
+        document.getElementById('dashTotalRevenue').textContent = `Rs.${totalRevenue.toLocaleString()}`;
+        document.getElementById('dashTotalExpenses').textContent = `Rs.${totalExpenses.toLocaleString()}`;
+        document.getElementById('dashNetProfit').textContent = `Rs.${netProfit.toLocaleString()}`;
+        document.getElementById('dashNetProfit').style.color = netProfit>=0?'#10b981':'#ef4444';
+        document.getElementById('dashPendingPayments').textContent = `Rs.${pending.toLocaleString()}`;
+        document.getElementById('dashMonthRevenue').textContent = `Rs.${thisMonthRevenue.toLocaleString()}`;
+        document.getElementById('dashMonthExpenses').textContent = `Rs.${thisMonthExpenses.toLocaleString()}`;
+        document.getElementById('dashActiveBookings').textContent = activeBookings;
+    }
+
+    function renderDashDateBookings() {
+        const date = document.getElementById('dashDatePicker').value;
+        // Save the selected date to localStorage
+        if (date) localStorage.setItem(DASH_DATE_KEY, date);
+        const c = document.getElementById('dashDateBookingsContainer');
+        if (!date) { c.innerHTML = '<div class="empty-state"><p>Select a date</p></div>'; return; }
+        const selected = new Date(date);
+        const bookings = allBookings.filter(b => selected >= new Date(b.checkin) && selected < new Date(b.checkout));
+        if (!bookings.length) { c.innerHTML = `<div class="empty-state"><div class="empty-icon">🏡</div><p>No bookings on ${fmt(date)}</p></div>`; return; }
+
+        let h = '';
+        // Desktop table view
+        h += '<div class="dash-bookings-table" style="display:block;"><table><thead><tr><th>Guest</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Days</th></tr></thead><tbody>';
+        bookings.forEach(b => { h += `<tr><td>${b.guestName}</td><td>${b.room}</td><td>${fmt(b.checkin)}</td><td>${fmt(b.checkout)}</td><td>${b.days}</td></tr>`; });
+        h += '</tbody></table></div>';
+
+        // Mobile card view
+        h += '<div class="dash-bookings-cards" style="display:none;"><div style="display:flex;flex-direction:column;gap:10px;">';
+        bookings.forEach(b => {
+            h += `<div style="background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;word-wrap:break-word;">
+                <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px;">
+                    <div style="flex:1;">
+                        <div style="font-weight:600;font-size:14px;color:var(--text);margin-bottom:4px;">${b.guestName}</div>
+                        <div style="font-size:12px;color:var(--text-light);">Room ${b.room}</div>
+                    </div>
+                    <div style="text-align:right;flex-shrink:0;">
+                        <div style="font-size:12px;font-weight:600;color:var(--primary);background:var(--primary-light);padding:2px 8px;border-radius:4px;white-space:nowrap;">${b.days} nights</div>
+                    </div>
+                </div>
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;margin-bottom:8px;">
+                    <div><span style="color:var(--text-light);">Check-in:</span><br/><span style="font-weight:600;">${fmt(b.checkin)}</span></div>
+                    <div><span style="color:var(--text-light);">Check-out:</span><br/><span style="font-weight:600;">${fmt(b.checkout)}</span></div>
+                </div>
+                <div style="padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;">
+                    <div><span style="color:var(--text-light);font-size:12px;">Total:</span><br/><span style="font-weight:600;font-size:13px;">Rs.${b.totalAmount}</span></div>
+                    <div style="text-align:right;"><span style="font-size:11px;color:var(--text-light);">Rate:</span><br/><span style="font-weight:600;font-size:13px;">Rs.${b.rate}/night</span></div>
+                </div>
+            </div>`;
+        });
+        h += '</div></div>';
+
+        c.innerHTML = h;
+    }
+
+    function renderUpcomingCheckins() {
+        const c = document.getElementById('upcomingCheckins');
+        const today = new Date(); today.setHours(0,0,0,0);
+        const days = [];
+        for (let i = 1; i <= 4; i++) {
+            const d = new Date(today); d.setDate(d.getDate() + i);
+            const dateStr = d.toISOString().split('T')[0];
+            const label = i === 1 ? 'Tomorrow' : d.toLocaleDateString('en-GB', {weekday:'long', day:'2-digit', month:'short'});
+            const checkins = allBookings.filter(b => b.checkin === dateStr);
+            days.push({ label, date: dateStr, checkins, isToday: false });
+        }
+
+        const hasAny = days.some(d => d.checkins.length > 0);
+        if (!hasAny) { c.innerHTML = '<div class="empty-state"><p>No check-ins in the next 4 days</p></div>'; return; }
+
+        let h = '<div class="checkin-list">';
+        days.forEach(day => {
+            if (!day.checkins.length) return;
+            h += `<div class="checkin-day"><div class="checkin-day-label">${day.label} — ${fmt(day.date)}</div>`;
+            day.checkins.forEach(b => {
+                h += `<div class="checkin-item${day.isToday?' today-item':''}">
+                    <div class="checkin-checkbox">${day.isToday?'✓':''}</div>
+                    <div>
+                        <div class="checkin-name">${b.guestName}</div>
+                        <div style="font-size:12px;color:var(--text-light);">Checkout: ${fmt(b.checkout)} · ${b.days} nights · Rs.${b.totalAmount}</div>
+                    </div>
+                    <div style="display:flex;gap:6px;align-items:center;margin-left:auto;">
+                        <span class="checkin-room">${b.room}</span>
+                        <span class="status-badge status-${b.paymentStatus.toLowerCase()}">${b.paymentStatus}</span>
+                    </div>
+                </div>`;
+            });
+            h += '</div>';
+        });
+        h += '</div>';
+        c.innerHTML = h;
+    }
+
+    // ========== REPORTS ==========
+    function filterBookingsForReport(fromId, toId, roomId, statusId, methodId) {
+        const from = document.getElementById(fromId)?.value || '';
+        const to = document.getElementById(toId)?.value || '';
+        const room = document.getElementById(roomId)?.value || '';
+        const status = document.getElementById(statusId)?.value || '';
+        const method = document.getElementById(methodId)?.value || '';
+        return allBookings.filter(b => {
+            if (from && b.checkin < from) return false;
+            if (to && b.checkin > to) return false;
+            if (room && b.room !== room) return false;
+            if (status && b.paymentStatus !== status) return false;
+            if (method && b.paymentMethod !== method) return false;
+            return true;
+        });
+    }
+
+    function filterExpensesForReport(fromId, toId, catId, paidById) {
+        const from = document.getElementById(fromId)?.value || '';
+        const to = document.getElementById(toId)?.value || '';
+        const cat = document.getElementById(catId)?.value || '';
+        const paid = document.getElementById(paidById)?.value || '';
+        return allExpenses.filter(e => {
+            if (from && e.date < from) return false;
+            if (to && e.date > to) return false;
+            if (cat && e.category !== cat) return false;
+            if (paid && e.paidBy !== paid) return false;
+            return true;
+        });
+    }
+
+    function renderBookingReport() {
+        const list = filterBookingsForReport('brFrom','brTo','brRoom','brStatus','brPayMethod');
+        const total = list.reduce((s,b)=>s+b.totalAmount,0);
+        const paid = list.reduce((s,b)=>s+b.amountPaid,0);
+        const bal = list.reduce((s,b)=>s+b.remainingBalance,0);
+        document.getElementById('bookingReportStats').innerHTML = `<div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;"><div class="stat-card"><div class="stat-content"><h3>Bookings</h3><div class="stat-value" style="font-size:22px;">${list.length}</div></div></div><div class="stat-card success"><div class="stat-content"><h3>Total Amount</h3><div class="stat-value" style="font-size:22px;">Rs.${total.toLocaleString()}</div></div></div><div class="stat-card primary"><div class="stat-content"><h3>Amount Paid</h3><div class="stat-value" style="font-size:22px;">Rs.${paid.toLocaleString()}</div></div></div><div class="stat-card danger"><div class="stat-content"><h3>Balance Due</h3><div class="stat-value" style="font-size:22px;">Rs.${bal.toLocaleString()}</div></div></div></div>`;
+        const c = document.getElementById('bookingReportContainer');
+        if (!list.length) { c.innerHTML = '<div class="empty-state"><p>No bookings match filters</p></div>'; return; }
+        let h = '<table><thead><tr><th>Guest</th><th>Studio</th><th>Check-in</th><th>Check-out</th><th>Days</th><th>Total</th><th>Paid</th><th>Balance</th><th>Method</th><th>Status</th></tr></thead><tbody>';
+        list.sort((a,b)=>new Date(b.checkin)-new Date(a.checkin)).forEach(b => { h += `<tr><td>${b.guestName}</td><td>${b.room}</td><td>${fmt(b.checkin)}</td><td>${fmt(b.checkout)}</td><td>${b.days}</td><td>Rs.${b.totalAmount}</td><td>Rs.${b.amountPaid}</td><td>Rs.${b.remainingBalance}</td><td>${b.paymentMethod||'-'}</td><td><span class="status-badge status-${b.paymentStatus.toLowerCase()}">${b.paymentStatus}</span></td></tr>`; });
+        c.innerHTML = h + '</tbody></table>';
+    }
+
+    function renderSalesReport() {
+        const list = filterBookingsForReport('srFrom','srTo','srRoom','','').filter(b => b.paymentStatus === 'Paid');
+        const total = list.reduce((s,b)=>s+b.amountPaid,0);
+        const cash = list.filter(b=>b.paymentMethod==='Cash').reduce((s,b)=>s+b.amountPaid,0);
+        const bank = list.filter(b=>b.paymentMethod==='Bank').reduce((s,b)=>s+b.amountPaid,0);
+        document.getElementById('salesReportStats').innerHTML = `<div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;"><div class="stat-card success"><div class="stat-content"><h3>Total Sales</h3><div class="stat-value" style="font-size:22px;">Rs.${total.toLocaleString()}</div></div></div><div class="stat-card"><div class="stat-content"><h3>Cash Sales</h3><div class="stat-value" style="font-size:22px;">Rs.${cash.toLocaleString()}</div></div></div><div class="stat-card primary"><div class="stat-content"><h3>Bank Sales</h3><div class="stat-value" style="font-size:22px;">Rs.${bank.toLocaleString()}</div></div></div><div class="stat-card"><div class="stat-content"><h3>Bookings</h3><div class="stat-value" style="font-size:22px;">${list.length}</div></div></div></div>`;
+        const c = document.getElementById('salesReportContainer');
+        if (!list.length) { c.innerHTML = '<div class="empty-state"><p>No paid bookings match filters</p></div>'; return; }
+        let h = '<table><thead><tr><th>Guest</th><th>Studio</th><th>Check-in</th><th>Check-out</th><th>Days</th><th>Amount Paid</th><th>Method</th></tr></thead><tbody>';
+        list.sort((a,b)=>new Date(b.checkin)-new Date(a.checkin)).forEach(b => { h += `<tr><td>${b.guestName}</td><td>${b.room}</td><td>${fmt(b.checkin)}</td><td>${fmt(b.checkout)}</td><td>${b.days}</td><td><strong>Rs.${b.amountPaid.toLocaleString()}</strong></td><td><span style="background:${b.paymentMethod==='Bank'?'#dbeafe':'#d1fae5'};padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;">${b.paymentMethod||'-'}</span></td></tr>`; });
+        c.innerHTML = h + '</tbody></table>';
+    }
+
+    function renderExpenseReport() {
+        const list = filterExpensesForReport('erFrom','erTo','erCategory','erPaidBy');
+        const total = list.reduce((s,e)=>s+e.amount,0);
+        const cash = list.filter(e=>e.paidBy==='Cash').reduce((s,e)=>s+e.amount,0);
+        const bank = list.filter(e=>e.paidBy==='Bank').reduce((s,e)=>s+e.amount,0);
+        document.getElementById('expenseReportStats').innerHTML = `<div class="stats-grid" style="grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;"><div class="stat-card danger"><div class="stat-content"><h3>Total Expenses</h3><div class="stat-value" style="font-size:22px;">Rs.${total.toLocaleString()}</div></div></div><div class="stat-card"><div class="stat-content"><h3>Cash Expenses</h3><div class="stat-value" style="font-size:22px;">Rs.${cash.toLocaleString()}</div></div></div><div class="stat-card primary"><div class="stat-content"><h3>Bank Expenses</h3><div class="stat-value" style="font-size:22px;">Rs.${bank.toLocaleString()}</div></div></div><div class="stat-card"><div class="stat-content"><h3>Entries</h3><div class="stat-value" style="font-size:22px;">${list.length}</div></div></div></div>`;
+        const c = document.getElementById('expenseReportContainer');
+        if (!list.length) { c.innerHTML = '<div class="empty-state"><p>No expenses match filters</p></div>'; return; }
+        let h = '<table><thead><tr><th>Date</th><th>Category</th><th>Description</th><th>Amount</th><th>Paid By</th></tr></thead><tbody>';
+        [...list].sort((a,b)=>new Date(b.date)-new Date(a.date)).forEach(e => {
+            const col = CAT_COLORS[e.category]||'#f3f4f6';
+            h += `<tr><td>${fmt(e.date)}</td><td><span style="background:${col};padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;">${e.category}</span></td><td>${e.description}</td><td><strong>Rs.${e.amount.toLocaleString()}</strong></td><td><span style="background:${e.paidBy==='Bank'?'#dbeafe':'#d1fae5'};padding:3px 8px;border-radius:5px;font-size:11px;font-weight:700;">${e.paidBy||'-'}</span></td></tr>`;
+        });
+        c.innerHTML = h + '</tbody></table>';
+    }
+
+    function renderProfitReport() {
+        const from = document.getElementById('prFrom').value;
+        const to = document.getElementById('prTo').value;
+        const month = document.getElementById('prMonth').value;
+        const year = document.getElementById('prYear').value;
+
+        const bFilter = allBookings.filter(b => {
+            const d = new Date(b.checkin);
+            if (from && b.checkin < from) return false;
+            if (to && b.checkin > to) return false;
+            if (month && (d.getMonth()+1) !== parseInt(month)) return false;
+            if (year && d.getFullYear() !== parseInt(year)) return false;
+            return true;
+        });
+        const eFilter = allExpenses.filter(e => {
+            const d = new Date(e.date);
+            if (from && e.date < from) return false;
+            if (to && e.date > to) return false;
+            if (month && (d.getMonth()+1) !== parseInt(month)) return false;
+            if (year && d.getFullYear() !== parseInt(year)) return false;
+            return true;
+        });
+
+        const totalRevenue = bFilter.reduce((s,b)=>s+b.amountPaid,0);
+        const cashRevenue = bFilter.filter(b=>b.paymentMethod==='Cash').reduce((s,b)=>s+b.amountPaid,0);
+        const bankRevenue = bFilter.filter(b=>b.paymentMethod==='Bank').reduce((s,b)=>s+b.amountPaid,0);
+        const pendingRevenue = bFilter.reduce((s,b)=>s+b.remainingBalance,0);
+
+        const catTotals = {};
+        eFilter.forEach(e => { catTotals[e.category] = (catTotals[e.category]||0) + e.amount; });
+        const totalExpenses = eFilter.reduce((s,e)=>s+e.amount,0);
+        const cashExpenses = eFilter.filter(e=>e.paidBy==='Cash').reduce((s,e)=>s+e.amount,0);
+        const bankExpenses = eFilter.filter(e=>e.paidBy==='Bank').reduce((s,e)=>s+e.amount,0);
+        const netProfit = totalRevenue - totalExpenses;
+        const margin = totalRevenue > 0 ? ((netProfit/totalRevenue)*100).toFixed(1) : 0;
+
+        const periodLabel = from&&to ? `${fmt(from)} – ${fmt(to)}` : month&&year ? `${['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'][parseInt(month)-1]} ${year}` : year ? year : month ? ['January','February','March','April','May','June','July','August','September','October','November','December'][parseInt(month)-1] : 'All Time';
+
+        let h = `<div class="pl-statement">
+            <div style="text-align:center;margin-bottom:20px;"><div style="font-size:20px;font-weight:700;">Badri Homes</div><div style="color:var(--text-light);font-size:14px;">Profit & Loss Statement</div><div style="color:var(--text-lighter);font-size:13px;">Period: ${periodLabel}</div></div>
+
+            <div class="pl-section-header">📥 Income / Revenue</div>
+            <div class="pl-row"><span>Room Revenue (Collected)</span><span class="pl-amount positive">Rs.${totalRevenue.toLocaleString()}</span></div>
+            <div class="pl-row" style="padding-left:32px;color:var(--text-light);font-size:13px;"><span>— Cash Received</span><span>Rs.${cashRevenue.toLocaleString()}</span></div>
+            <div class="pl-row" style="padding-left:32px;color:var(--text-light);font-size:13px;"><span>— Bank Transfer</span><span>Rs.${bankRevenue.toLocaleString()}</span></div>
+            <div class="pl-row" style="padding-left:32px;color:var(--warning);font-size:13px;"><span>— Outstanding (Unpaid)</span><span>Rs.${pendingRevenue.toLocaleString()}</span></div>
+            <div class="pl-row total"><span>Total Revenue</span><span class="pl-amount positive">Rs.${totalRevenue.toLocaleString()}</span></div>
+
+            <div class="pl-section-header">📤 Expenses</div>`;
+
+        Object.entries(catTotals).sort((a,b)=>b[1]-a[1]).forEach(([cat,amt]) => {
+            h += `<div class="pl-row"><span>${cat}</span><span class="pl-amount negative">Rs.${amt.toLocaleString()}</span></div>`;
+        });
+        h += `<div class="pl-row" style="padding-left:32px;color:var(--text-light);font-size:13px;"><span>— Paid by Cash</span><span>Rs.${cashExpenses.toLocaleString()}</span></div>
+            <div class="pl-row" style="padding-left:32px;color:var(--text-light);font-size:13px;"><span>— Paid by Bank</span><span>Rs.${bankExpenses.toLocaleString()}</span></div>
+            <div class="pl-row total"><span>Total Expenses</span><span class="pl-amount negative">Rs.${totalExpenses.toLocaleString()}</span></div>
+
+            <div class="pl-row net-profit ${netProfit>=0?'positive':'negative'}">
+                <span>${netProfit>=0?'✅ Net Profit':'❌ Net Loss'}</span>
+                <span>Rs.${Math.abs(netProfit).toLocaleString()}</span>
+            </div>
+            <div class="pl-row" style="border-top:2px solid var(--border);padding-top:12px;margin-top:8px;"><span style="color:var(--text-light);">Profit Margin</span><span style="font-weight:700;color:${netProfit>=0?'var(--success)':'var(--danger)'};">${margin}%</span></div>
+        </div>`;
+        document.getElementById('profitReportContainer').innerHTML = h;
+    }
+
+    function clearReport(prefix) {
+        document.querySelectorAll(`#report-${prefix==='br'?'booking':prefix==='sr'?'sales':prefix==='er'?'expense':'profit'} input, #report-${prefix==='br'?'booking':prefix==='sr'?'sales':prefix==='er'?'expense':'profit'} select`).forEach(el => { el.value = ''; });
+        if (prefix==='br') renderBookingReport();
+        else if (prefix==='sr') renderSalesReport();
+        else if (prefix==='er') renderExpenseReport();
+        else renderProfitReport();
+    }
+
+    function exportReport(type) {
+        if (type === 'booking') {
+            const list = filterBookingsForReport('brFrom','brTo','brRoom','brStatus','brPayMethod');
+            if (!list.length) { showAlert('No data', 'error'); return; }
+            downloadCSV(['Guest','Studio','Check-in','Check-out','Days','Total','Paid','Balance','Method','Status'], list.map(b=>[b.guestName,b.room,fmt(b.checkin),fmt(b.checkout),b.days,b.totalAmount,b.amountPaid,b.remainingBalance,b.paymentMethod||'',b.paymentStatus]), 'booking-report.csv');
+        } else if (type === 'sales') {
+            const list = filterBookingsForReport('srFrom','srTo','srRoom','','').filter(b=>b.paymentStatus==='Paid');
+            if (!list.length) { showAlert('No data', 'error'); return; }
+            downloadCSV(['Guest','Studio','Check-in','Check-out','Days','Amount Paid','Method'], list.map(b=>[b.guestName,b.room,fmt(b.checkin),fmt(b.checkout),b.days,b.amountPaid,b.paymentMethod||'']), 'sales-report.csv');
+        } else if (type === 'expense') {
+            const list = filterExpensesForReport('erFrom','erTo','erCategory','erPaidBy');
+            if (!list.length) { showAlert('No data', 'error'); return; }
+            downloadCSV(['Date','Category','Description','Amount','Paid By'], list.map(e=>[fmt(e.date),e.category,e.description,e.amount,e.paidBy||'']), 'expense-report.csv');
+        }
+    }
+
+    // ========== INVOICES ==========
+    function renderInvoices() {
+        loadInvoices();
+        loadBookings();
+        renderPaidBookingsDropdown();
+        renderInvoicesList();
+    }
+
+    function renderPaidBookingsDropdown() {
+        const select = document.getElementById('invoiceBookingSelect');
+        const paidBookings = allBookings.filter(b => b.paymentStatus === 'Paid');
+        select.innerHTML = '<option value="">Select a booking (Paid status only)...</option>' +
+            paidBookings.map(b => `<option value="${b.id}" data-booking='${JSON.stringify(b)}'>${b.guestName} - Room ${b.room} (${b.checkin} to ${b.checkout})</option>`).join('');
+    }
+
+    function showInvoicePreview() {
+        const select = document.getElementById('invoiceBookingSelect');
+        if (!select.value) { showAlert('Please select a booking', 'error'); return; }
+        const booking = JSON.parse(select.options[select.selectedIndex].dataset.booking);
+        selectedBookingForInvoice = booking;
+        generateInvoiceHTML(booking);
+        document.getElementById('invoiceModal').style.display = 'block';
+    }
+
+    function generateInvoiceHTML(booking) {
+        const invoiceNumber = 'INV-' + Date.now().toString().slice(-8);
+        const today = new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric'});
+        const checkInDate = new Date(booking.checkin).toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric'});
+        const checkOutDate = new Date(booking.checkout).toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric'});
+
+        currentInvoicePreview = {
+            invoiceNumber, booking, today, checkInDate, checkOutDate,
+            guestName: prompt('Guest name on invoice:', booking.guestName) || booking.guestName
+        };
+
+        const html = `
+            <div style="font-family: Arial, sans-serif; color: #333; line-height: 1.6;">
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-bottom: 40px; border-bottom: 2px solid #e0d6cc; padding-bottom: 30px;">
+                    <div>
+                        <h1 style="margin: 0; font-size: 28px; color: #2C1810;">🏡 Badri Homes</h1>
+                        <p style="margin: 10px 0 0; color: #666; font-size: 14px;">
+                            Saugal Tole, Patan<br>
+                            Lalitpur, Nepal<br>
+                            <strong>PAN:</strong> 620563215<br>
+                            <strong>Registration:</strong> 177183<br>
+                            <strong>Email:</strong> homesbadri@gmail.com
+                        </p>
+                    </div>
+                    <div style="text-align: right;">
+                        <h2 style="margin: 0; font-size: 32px; color: #C4704F; font-weight: normal;">INVOICE</h2>
+                        <div style="font-size: 13px; margin-top: 15px;">
+                            <div style="margin-bottom: 8px;"><strong>DATE:</strong> ${currentInvoicePreview.today}</div>
+                            <div><strong>INVOICE #:</strong> ${invoiceNumber}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 30px; padding: 15px 0; border-top: 2px solid #e0d6cc; border-bottom: 2px solid #e0d6cc;">
+                    <p style="margin: 0 0 8px; font-size: 12px; color: #888; font-weight: bold; text-transform: uppercase;">Bill To:</p>
+                    <h3 style="margin: 0 0 12px; font-size: 16px; color: #2C1810;">${currentInvoicePreview.guestName}</h3>
+                    <p style="margin: 0; font-size: 13px; color: #555; line-height: 1.8;">
+                        <strong>Check-in:</strong> ${currentInvoicePreview.checkInDate}<br>
+                        <strong>Check-out:</strong> ${currentInvoicePreview.checkOutDate}<br>
+                        <strong>Duration:</strong> ${booking.days} night${booking.days !== 1 ? 's' : ''}
+                    </p>
+                </div>
+
+                <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 13px;">
+                    <thead style="background: #8B5D3F; color: white;">
+                        <tr><th style="padding: 12px; text-align: left;">DESCRIPTION</th><th style="padding: 12px; text-align: center;">RATE</th><th style="padding: 12px; text-align: center;">NO. OF NIGHTS</th><th style="padding: 12px; text-align: right;">AMOUNT</th></tr>
+                    </thead>
+                    <tbody>
+                        <tr><td style="padding: 12px; border-bottom: 1px solid #ddd;">Service Fee [Room No. ${String(booking.room).padStart(3, '0')}]</td><td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center;">Rs. ${booking.rate.toLocaleString()}</td><td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: center;">${booking.days}</td><td style="padding: 12px; border-bottom: 1px solid #ddd; text-align: right;"><strong>Rs. ${booking.totalAmount.toLocaleString()}</strong></td></tr>
+                    </tbody>
+                </table>
+
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 40px;">
+                    <div style="width: 300px;">
+                        <div style="display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #ddd; font-size: 13px;">
+                            <span>Subtotal</span><span>Rs. ${booking.totalAmount.toLocaleString()}</span>
+                        </div>
+                        <div style="display: flex; justify-content: space-between; padding: 12px; background: #8B5D3F; color: white; font-weight: bold; border-radius: 4px; margin-top: 5px;">
+                            <span>TOTAL</span><span>Rs. ${booking.totalAmount.toLocaleString()}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; padding-top: 20px; border-top: 2px solid #e0d6cc; color: #666; font-size: 12px; line-height: 1.8;">
+                    <p style="margin: 10px 0; font-weight: bold; color: #2C1810;">Thank you for your business!</p>
+                    <p style="margin: 10px 0;">If you have any questions about this invoice, please contact Badri Homes</p>
+                    <p style="margin: 0;">homesbadri@gmail.com | +977 9851047861</p>
+                </div>
+            </div>
+        `;
+
+        document.getElementById('invoicePreviewContent').innerHTML = html;
+    }
+
+    function createInvoice() {
+        if (!currentInvoicePreview || !selectedBookingForInvoice) {
+            showAlert('Please generate a preview first', 'error'); return;
+        }
+
+        const invoice = {
+            id: Date.now().toString(),
+            invoiceNumber: currentInvoicePreview.invoiceNumber,
+            bookingId: selectedBookingForInvoice.id,
+            guestName: currentInvoicePreview.guestName,
+            room: selectedBookingForInvoice.room,
+            checkin: selectedBookingForInvoice.checkin,
+            checkout: selectedBookingForInvoice.checkout,
+            days: selectedBookingForInvoice.days,
+            rate: selectedBookingForInvoice.rate,
+            totalAmount: selectedBookingForInvoice.totalAmount,
+            createdAt: new Date().toISOString()
+        };
+
+        allInvoices.push(invoice);
+        saveInvoices();
+        closeInvoiceModal();
+        clearInvoiceForm();
+        renderInvoices();
+        showAlert('Invoice created successfully!', 'success');
+    }
+
+    function renderInvoicesList() {
+        const container = document.getElementById('invoicesTableContainer');
+        if (!allInvoices.length) {
+            container.innerHTML = '<div class="empty-state"><div class="empty-icon">📭</div><p>No invoices yet</p></div>';
+            return;
+        }
+
+        const html = `
+            <table>
+                <thead>
+                    <tr><th>Invoice #</th><th>Guest Name</th><th>Room</th><th>Check-in</th><th>Check-out</th><th>Amount (Rs.)</th><th>Created</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    ${allInvoices.map(inv => `
+                        <tr>
+                            <td>${inv.invoiceNumber}</td>
+                            <td>${inv.guestName}</td>
+                            <td>${inv.room}</td>
+                            <td>${fmt(inv.checkin)}</td>
+                            <td>${fmt(inv.checkout)}</td>
+                            <td>Rs. ${inv.totalAmount.toLocaleString()}</td>
+                            <td>${fmt(inv.createdAt)}</td>
+                            <td>
+                                <button class="btn-action edit" onclick="viewInvoiceDetail('${inv.id}')">👁️ View</button>
+                                <button class="btn-action delete" onclick="deleteInvoice('${inv.id}')">🗑️ Delete</button>
+                            </td>
+                        </tr>
+                    `).join('')}
+                </tbody>
+            </table>
+        `;
+        container.innerHTML = html;
+    }
+
+    function viewInvoiceDetail(invoiceId) {
+        const invoice = allInvoices.find(i => i.id === invoiceId);
+        if (!invoice) return;
+        selectedBookingForInvoice = invoice;
+        currentInvoicePreview = {
+            invoiceNumber: invoice.invoiceNumber,
+            booking: invoice,
+            guestName: invoice.guestName,
+            today: new Date().toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric'}),
+            checkInDate: new Date(invoice.checkin).toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric'}),
+            checkOutDate: new Date(invoice.checkout).toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric'})
+        };
+        generateInvoiceHTML(invoice);
+        document.getElementById('invoiceModal').style.display = 'block';
+    }
+
+    function deleteInvoice(invoiceId) {
+        if (confirm('Are you sure you want to delete this invoice?')) {
+            allInvoices = allInvoices.filter(i => i.id !== invoiceId);
+            saveInvoices();
+            renderInvoicesList();
+            showAlert('Invoice deleted', 'success');
+        }
+    }
+
+    function clearInvoiceForm() {
+        document.getElementById('invoiceBookingSelect').value = '';
+        selectedBookingForInvoice = null;
+        currentInvoicePreview = null;
+    }
+
+    function closeInvoiceModal() {
+        document.getElementById('invoiceModal').style.display = 'none';
+    }
+
+    function printInvoice() {
+        const printWindow = window.open('', '', 'width=900,height=1000');
+        printWindow.document.write(document.getElementById('invoicePreviewContent').innerHTML);
+        printWindow.document.close();
+        printWindow.print();
+    }
+
+    function downloadInvoicePDF() {
+        if (typeof html2pdf === 'undefined') {
+            showAlert('PDF library not loaded. Try again.', 'error');
+            return;
+        }
+        const element = document.getElementById('invoicePreviewContent');
+        const opt = {
+            margin: 10,
+            filename: (currentInvoicePreview?.invoiceNumber || 'invoice') + '.pdf',
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2 },
+            jsPDF: { orientation: 'portrait', unit: 'mm', format: 'a4' }
+        };
+        html2pdf().set(opt).from(element).save();
+    }
+
+    // ========== UTILS ==========
+    function fmt(d) { return new Date(d).toLocaleDateString('en-GB', {day:'2-digit',month:'2-digit',year:'numeric'}); }
+
+    function downloadCSV(headers, rows, filename) {
+        const csv = [headers.join(','), ...rows.map(r=>r.map(c=>`"${c}"`).join(','))].join('\n');
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(new Blob([csv], {type:'text/csv'}));
+        link.download = filename; link.click();
+        showAlert('Exported successfully', 'success');
+    }
+
+    // Load PDF library
+    const script = document.createElement('script');
+    script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf/0.10.1/html2pdf.bundle.min.js';
+    document.head.appendChild(script);
+</script>
+</body>
+</html>
