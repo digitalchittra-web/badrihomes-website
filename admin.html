@@ -376,6 +376,11 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
         FAQs
       </div>
+      <div class="sidebar-label">Operations</div>
+      <div class="nav-item" onclick="showSection('invoices')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><polyline points="13 2 13 9 20 9"/><line x1="9" y1="14" x2="15" y2="14"/><line x1="9" y1="18" x2="15" y2="18"/></svg>
+        Invoices
+      </div>
     </nav>
 
     <!-- Content -->
@@ -533,11 +538,61 @@
         </div>
       </div>
 
+      <!-- INVOICES SECTION -->
+      <div class="section-panel" id="panel-invoices">
+        <div class="panel-header">
+          <h2>Generate Invoice / Receipt</h2>
+          <p>Create and print invoices for guest stays</p>
+        </div>
+        <div class="card">
+          <h3>Guest Information</h3>
+          <div class="field">
+            <label>Guest Name</label>
+            <input type="text" id="invoiceGuestName" placeholder="e.g. Mr. Bhuwan Saud" />
+            <div class="hint">Enter the name to appear on the invoice</div>
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label>Check-in Date</label>
+              <input type="date" id="invoiceCheckIn" />
+            </div>
+            <div class="field">
+              <label>Check-out Date</label>
+              <input type="date" id="invoiceCheckOut" />
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <h3>Room Details</h3>
+          <div id="invoiceRoomsList"></div>
+          <button class="btn-add-faq" onclick="addInvoiceRoom()" style="margin-top: 12px;">+ Add Room</button>
+          <br /><br />
+        </div>
+
+        <div class="card">
+          <h3>Invoice Settings</h3>
+          <div class="field">
+            <label>Invoice Number (Optional - Auto-generated if empty)</label>
+            <input type="text" id="invoiceNumber" placeholder="0104" />
+            <div class="hint">Leave empty to auto-generate next invoice number</div>
+          </div>
+          <button class="btn-save" onclick="generateInvoice()">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+            Generate & Preview Invoice
+          </button>
+          <div class="status-bar"><div class="status-dot"></div><span id="invoiceStatus">Ready</span></div>
+        </div>
+      </div>
+
     </main>
   </div>
 </div>
 
 <div id="toast"></div>
+
+<!-- Invoice Generator -->
+<script src="assets/js/invoice-generator.js"></script>
 
 <!-- Firebase SDKs -->
 <script type="module">
@@ -752,6 +807,115 @@
     t.classList.add('show');
     setTimeout(() => t.classList.remove('show'), 3000);
   }
+
+  // ── INVOICES ──
+  let invoiceGenerator = new InvoiceGenerator();
+  let invoiceRooms = [];
+
+  window.addInvoiceRoom = function () {
+    invoiceRooms.push({ number: '', rate: 2000, nights: 1 });
+    renderInvoiceRooms();
+  };
+
+  window.removeInvoiceRoom = function (index) {
+    invoiceRooms.splice(index, 1);
+    renderInvoiceRooms();
+  };
+
+  function renderInvoiceRooms() {
+    const container = document.getElementById('invoiceRoomsList');
+    container.innerHTML = '';
+
+    if (invoiceRooms.length === 0) {
+      container.innerHTML = '<p style="color: var(--muted); font-size: 0.9rem; padding: 12px 0;">No rooms added yet. Click "Add Room" to get started.</p>';
+      return;
+    }
+
+    invoiceRooms.forEach((room, index) => {
+      const roomDiv = document.createElement('div');
+      roomDiv.className = 'faq-admin-item';
+      roomDiv.innerHTML = `
+        <button class="btn-remove-faq" onclick="removeInvoiceRoom(${index})" title="Remove">✕</button>
+        <div class="field-row-3">
+          <div class="field">
+            <label>Room Number</label>
+            <input type="number" min="1" max="10" value="${room.number}" onchange="updateInvoiceRoom(${index},'number',this.value)" placeholder="e.g. 003" />
+          </div>
+          <div class="field">
+            <label>Rate per Night (NPR)</label>
+            <input type="number" value="${room.rate}" onchange="updateInvoiceRoom(${index},'rate',this.value)" placeholder="2000" />
+          </div>
+          <div class="field">
+            <label>Number of Nights</label>
+            <input type="number" min="1" value="${room.nights}" onchange="updateInvoiceRoom(${index},'nights',this.value)" placeholder="1" />
+          </div>
+        </div>
+      `;
+      container.appendChild(roomDiv);
+    });
+  }
+
+  window.updateInvoiceRoom = function (index, field, value) {
+    if (invoiceRooms[index]) {
+      if (field === 'number') invoiceRooms[index].number = parseInt(value) || 0;
+      else if (field === 'rate') invoiceRooms[index].rate = parseFloat(value) || 0;
+      else if (field === 'nights') invoiceRooms[index].nights = parseInt(value) || 1;
+    }
+  };
+
+  window.generateInvoice = function () {
+    const guestName = document.getElementById('invoiceGuestName').value.trim();
+    const checkIn = document.getElementById('invoiceCheckIn').value;
+    const checkOut = document.getElementById('invoiceCheckOut').value;
+    const customInvoiceNumber = document.getElementById('invoiceNumber').value.trim();
+
+    if (!guestName) {
+      showToast('Please enter guest name', true);
+      return;
+    }
+    if (!checkIn || !checkOut) {
+      showToast('Please select check-in and check-out dates', true);
+      return;
+    }
+    if (invoiceRooms.length === 0) {
+      showToast('Please add at least one room', true);
+      return;
+    }
+
+    const checkInDate = new Date(checkIn);
+    const checkOutDate = new Date(checkOut);
+    if (checkInDate >= checkOutDate) {
+      showToast('Check-out date must be after check-in date', true);
+      return;
+    }
+
+    try {
+      const invoiceData = {
+        guestName: guestName,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        rooms: invoiceRooms.map(r => ({
+          number: r.number,
+          rate: r.rate,
+          nights: r.nights
+        })),
+        invoiceNumber: customInvoiceNumber || invoiceGenerator.getNextInvoiceNumber()
+      };
+
+      invoiceGenerator.generateAndDisplay(invoiceData);
+      showToast('Invoice generated successfully!');
+      document.getElementById('invoiceStatus').textContent = 'Generated ✓';
+    } catch (e) {
+      showToast('Error generating invoice – ' + e.message, true);
+    }
+  };
+
+  // Initialize with one room on load
+  document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('invoiceRoomsList')) {
+      addInvoiceRoom();
+    }
+  });
 
   // ── NAV ──
   window.showSection = function (name) {
